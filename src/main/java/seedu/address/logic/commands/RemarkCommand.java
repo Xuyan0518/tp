@@ -33,7 +33,6 @@ public class RemarkCommand extends Command {
     private final Index index;
     private final Remark remark;
 
-
     /**
      * @param index of the person in the filtered person list to edit the remark
      * @param remark of the person to be updated to
