@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import seedu.address.commons.exceptions.IllegalValueException;
+
 /**
  * Entry Class
  */
@@ -71,6 +73,13 @@ public class Entry {
     @Override
     public int hashCode() {
         return description.hashCode();
+    }
+
+    public static Entry createEntry(String field, String value) throws IllegalValueException {
+        if (value != null && !Entry.isValid(field, value)) {
+            throw new IllegalValueException(Entry.MESSAGE_CONSTRAINTS);
+        }
+        return new Entry(field, value != null ? value : "NIL");
     }
 
 }

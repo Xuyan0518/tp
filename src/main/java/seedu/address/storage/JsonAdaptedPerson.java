@@ -75,29 +75,35 @@ class JsonAdaptedPerson {
         }
         final Entry modelName = new Entry("Name", name);
 
-        if (phone == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Entry.class.getSimpleName()));
-        }
-        if (!Entry.isValid("Phone", phone)) {
-            throw new IllegalValueException(Entry.MESSAGE_CONSTRAINTS);
-        }
-        final Entry modelPhone = new Entry("Phone", phone);
+//        if (phone == null) {
+//            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Entry.class.getSimpleName()));
+//        }
+//        if (!Entry.isValid("Phone", phone)) {
+//            throw new IllegalValueException(Entry.MESSAGE_CONSTRAINTS);
+//        }
+//        final Entry modelPhone = new Entry("Phone", phone);
+//
+//        if (email == null) {
+//            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Entry.class.getSimpleName()));
+//        }
+//        if (!Entry.isValid("Email", email)) {
+//            throw new IllegalValueException(Entry.MESSAGE_CONSTRAINTS);
+//        }
+//        final Entry modelEmail = new Entry("Email", email);
+//
+//        if (address == null) {
+//            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Entry.class.getSimpleName()));
+//        }
+//        if (!Entry.isValid("Address", address)) {
+//            throw new IllegalValueException(Entry.MESSAGE_CONSTRAINTS);
+//        }
+//        final Entry modelAddress = new Entry("Address", address);
 
-        if (email == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Entry.class.getSimpleName()));
-        }
-        if (!Entry.isValid("Email", email)) {
-            throw new IllegalValueException(Entry.MESSAGE_CONSTRAINTS);
-        }
-        final Entry modelEmail = new Entry("Email", email);
+        final Entry modelPhone = Entry.createEntry("Phone", phone);
 
-        if (address == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Entry.class.getSimpleName()));
-        }
-        if (!Entry.isValid("Address", address)) {
-            throw new IllegalValueException(Entry.MESSAGE_CONSTRAINTS);
-        }
-        final Entry modelAddress = new Entry("Address", address);
+        final Entry modelEmail = Entry.createEntry("Email", email);
+
+        final Entry modelAddress = Entry.createEntry("Address", address);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         Person result = new Person(modelName, modelTags);

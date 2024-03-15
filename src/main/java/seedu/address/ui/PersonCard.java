@@ -50,6 +50,9 @@ public class PersonCard extends UiPart<Region> {
         for (int i = 0; i < e.size(); i++) {
             Entry entry = e.get(i);
             if (!entry.getCategory().equals("Name")) {
+                if (entry.getDescription().equals("NIL")) {
+                    continue;
+                }
                 text = text + e.get(i).toString() + "\n";
             }
         }
