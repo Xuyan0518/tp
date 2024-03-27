@@ -21,28 +21,27 @@ public class DeleteCategoryCommand extends Command {
     public static final String COMMAND_WORD = "deleteCategory";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the category of person identified by the index number used in the displayed person list.\n"
+            + ": Deletes the category/categories of person identified by the index number used in the displayed person list.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_CATEGORY + "CATEGORY\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_CATEGORY + "Email";
 
-    public static final String MESSAGE_DELETE_CATEGORY_SUCCESS = "Deleted Category %1$s of Person %2$s";
-    public static final String MESSAGE_CATEGORY_DOES_NOT_EXIST = "Category doesn't exist.";
-
-    public static final String MESSAGE_WRONG_CATEGORY = "This person does not have this category.";
+    public static final String MESSAGE_DELETE_CATEGORY_SUCCESS = "Deleted Category of Person %1$s successfully";
+    public static final String MESSAGE_CATEGORY_DOES_NOT_EXIST = "Category \"%1$s\" doesn't exist.";
+    public static final String MESSAGE_EMPTY_CATEGORY = "Please tell me the category you want to delete.";
 
     private final Index targetIndex;
 
-    private final String category;
+    List<String> categories;
 
     /**
      * @param targetIndex of the person in the filtered person list to edit
-     * @param category    the category needed to be deleted
+     * @param categories the category needed to be deleted
      */
-    public DeleteCategoryCommand(Index targetIndex, String category) {
+    public DeleteCategoryCommand(Index targetIndex, List<String> categories) {
         this.targetIndex = targetIndex;
-        this.category = category;
+        this.categories = categories;
     }
 
     @Override
@@ -55,22 +54,20 @@ public class DeleteCategoryCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
-        Entry entry = personToEdit.getEntry(category);
-        if (entry == null) {
-            throw new CommandException(MESSAGE_CATEGORY_DOES_NOT_EXIST);
-        }
+        for (int i = 0; i < categories.size(); i++) {
+            String category = categories.get(i);
+            Entry entry = personToEdit.getEntry(category);
+            if (entry == null) {
+                throw new CommandException(String.format(MESSAGE_CATEGORY_DOES_NOT_EXIST, category));
+            }
 
-        Entry e = personToEdit.getEntry(entry.getCategory());
-        if (e == null) {
-            throw new CommandException(MESSAGE_WRONG_CATEGORY);
-        } else {
             personToEdit.deleteEntry(entry.getCategory());
+            model.setPerson(personToEdit, personToEdit);
+            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         }
 
-        model.setPerson(personToEdit, personToEdit);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(
-                MESSAGE_DELETE_CATEGORY_SUCCESS, category, Messages.format(personToEdit)
+                MESSAGE_DELETE_CATEGORY_SUCCESS, Messages.format(personToEdit)
         ));
     }
 }
