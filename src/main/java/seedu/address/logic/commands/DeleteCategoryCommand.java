@@ -21,7 +21,7 @@ public class DeleteCategoryCommand extends Command {
     public static final String COMMAND_WORD = "deleteCategory";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the category/categories of person identified by the index number used in the displayed person list.\n"
+            + ": Deletes the category of person identified by the index number used in the displayed person list.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_CATEGORY + "CATEGORY\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -33,7 +33,7 @@ public class DeleteCategoryCommand extends Command {
 
     private final Index targetIndex;
 
-    List<String> categories;
+    private final List<String> categories;
 
     /**
      * @param targetIndex of the person in the filtered person list to edit
