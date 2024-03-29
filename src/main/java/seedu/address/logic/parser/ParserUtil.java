@@ -9,6 +9,7 @@ import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.AddCategoryCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.EntryList;
@@ -82,13 +83,16 @@ public class ParserUtil {
      * @param descriptions
      * @return the entrylist
      */
-    public static EntryList parseEntries(List<String> categories, List<String> descriptions) {
+    public static EntryList parseEntries(List<String> categories, List<String> descriptions) throws ParseException {
         requireNonNull(categories);
         requireNonNull(descriptions);
         EntryList e = new EntryList();
         for (int i = 0; i < categories.size(); i++) {
-            String category = categories.get(i);
-            String description = descriptions.get(i);
+            String category = categories.get(i).trim();
+            String description = descriptions.get(i).trim();
+            if (category.isEmpty() || description.isEmpty()) {
+                throw new ParseException(AddCategoryCommand.ENTRY_NOT_ADDED);
+            }
             Entry entry = new Entry(category, description);
             e.add(entry);
         }
