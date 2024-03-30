@@ -44,9 +44,12 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_CATEGORY_DOESNT_EXIST = "Category doesnt exist!";
-    public static final String MESSAGE_TAG_NOT_EDITED = "Invalid tag edit, please specify new tag to edit!";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     public static final String MESSAGE_EMPTY_DESCRIPTION = "Invalid edit, please provide a description!";
+    public static final String ENTRY_NOT_ADDED = "Both fields to add must be provided.";
+    public static final String DIFFERENT_NUMBER_CATEGORIES_DESCRIPTIONS =
+            "Number of specified categories and descriptions must be the same.";
+    public static final String MESSAGE_DUPLICATE_CATEGORY = "No duplicate categories allowed.";
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
 
@@ -90,13 +93,22 @@ public class EditCommand extends Command {
     private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor
             editPersonDescriptor) throws CommandException {
         assert personToEdit != null;
-        if (editPersonDescriptor.getCategory() != null) {
-            Entry personToEditEntry = personToEdit.getEntry(editPersonDescriptor.getCategory());
-            if (personToEditEntry == null) {
+        assert editPersonDescriptor != null;
+        EntryList entryList = editPersonDescriptor.getEntryList();
+        //Checks whether category exist for this person.
+        for (int i = 0; i < entryList.size(); i++) {
+            Entry toAdd = entryList.get(i);
+            Entry test = personToEdit.getEntry(toAdd.getCategory());
+            if (test == null) {
                 throw new CommandException(MESSAGE_CATEGORY_DOESNT_EXIST);
             } else {
-                personToEditEntry.setDescription(editPersonDescriptor.getDescription());
+                personToEdit.deleteEntry(toAdd.getCategory());
             }
+        }
+        //Set new person's entry accordingly to the list
+        for (int i = 0; i < entryList.size(); i++) {
+            Entry entry = entryList.get(i);
+            personToEdit.addEntry(entry);
         }
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         personToEdit.setTags(updatedTags);
@@ -133,7 +145,7 @@ public class EditCommand extends Command {
      */
     public static class EditPersonDescriptor {
         private Set<Tag> tags;
-        private EntryList entryList = new EntryList();
+        private EntryList entryList;
         private String category;
         private String description;
         /**
@@ -147,6 +159,7 @@ public class EditCommand extends Command {
          * A defensive copy of {@code tags} is used internally.
          */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
+            assert toCopy != null;
             this.entryList = toCopy.entryList;
             this.tags = toCopy.tags;
             this.category = toCopy.getCategory();
@@ -189,6 +202,10 @@ public class EditCommand extends Command {
                 e.setDescription(entry.getDescription());
             }
         }
+
+        public void setEntryList(EntryList entryList) {
+            this.entryList = entryList;
+        }
         public EntryList getEntryList() {
             return entryList;
         }
@@ -216,9 +233,6 @@ public class EditCommand extends Command {
          */
         public Optional<Set<Tag>> getTags() {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
-        }
-        public int getTagSize() {
-            return tags.size();
         }
 
         @Override

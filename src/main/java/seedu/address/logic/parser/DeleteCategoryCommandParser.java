@@ -5,6 +5,8 @@ import static seedu.address.logic.Messages.MESSAGE_CANNOT_DELETE_NAME;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 
+import java.util.List;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCategoryCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -35,15 +37,21 @@ public class DeleteCategoryCommandParser implements Parser<DeleteCategoryCommand
             ), pe);
         }
 
-        String category = "";
-        if (argMultimap.getValue(PREFIX_CATEGORY).isPresent()) {
-            category = argMultimap.getValue(PREFIX_CATEGORY).get();
+        // Gets each category from the command
+        List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
+        if (categories.isEmpty()) {
+            throw new ParseException(DeleteCategoryCommand.MESSAGE_EMPTY_CATEGORY);
         }
 
-        if (category.equals("Name")) {
-            throw new ParseException(MESSAGE_CANNOT_DELETE_NAME);
+        for (int i = 0; i < categories.size(); i++) {
+            String category = categories.get(i);
+
+            if (category.equals("Name")) {
+                throw new ParseException(MESSAGE_CANNOT_DELETE_NAME);
+            }
         }
 
-        return new DeleteCategoryCommand(index, category);
+
+        return new DeleteCategoryCommand(index, categories);
     }
 }

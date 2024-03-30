@@ -163,12 +163,11 @@ Users can also add multiple tags to a person upon addition of a new contact by r
 <br> 
 Users can also assign new contact categories upon addition by running `add n/name t/tag c/cat d/description`, where `cat` is the category associated 
 with the new contact and `description` is the category information that is assigned to the new contact. <br>
-<br> 
-Users can also assign multiple categorical information to the new contact added by running `add n/name t/tag c/cat1, cat2, cat3 d/d1, d2, d3`, 
-where `cat1` corresponds to `d1` and `cat2` corresponds to `d2` and so on. Users can definitely add more than 3 categories with descriptions in one addition. 
-<br> 
-<br> 
-The sequence diagram below illustrates how the add function can be used. 
+<br>
+Users can also assign multiple categorical information to the new contact added by running `add n/name t/tag c/cat1, cat2, cat3 d/d1, d2, d3`, where `cat1` corresponds to `d1` and `cat2` corresponds to `d2` and so on. Users can definitely add more than 3 categories with descriptions in one addition.
+<br>
+<br>
+The sequence diagram below illustrates how the add function can be used.
 <puml src="docs/diagrams/AddSequenceDiagram.puml" alt="Add Command Sequence Diagram" />
 
 ### AddCategory function
@@ -186,8 +185,7 @@ Entry requiring only two Strings meant that the type of entries that can be crea
 from games. However, due to deleteCategory requiring the category name, it was decided that categories be unique per person. It was required that index be specified as Name can be non unique in addressbook.
 
 #### 3. Alternatives considered.
-Given our initial vision of a customisable field option for the addressbook persons, there wasnt really much of an alternative as gaming contacts can vary quite widely. It would not make sense to have compulsory fields 
-except for name since many things like phone, address and email may be unknown to the user for online or gaming contacts otherwise. This way, things like gaming information can be captured with no restrictions.
+Given our initial vision of a customisable field option for the addressbook persons, there wasnt really much of an alternative as gaming contacts can vary quite widely. It would not make sense to have compulsory fields except for name since many things like phone, address and email may be unknown to the user for online or gaming contacts otherwise. This way, things like gaming information can be captured with no restrictions.
 
 ### Edit function
 The new edit function allows user to be able to edit any category based they want.<br>
@@ -506,7 +504,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_. 
+1.  Should work on any _mainstream OS_.
 2.  Java `11` or above installed in the user's device.
 3.  The application should not have access to the internet.
 4.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
