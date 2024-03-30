@@ -8,6 +8,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.EntryList;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -38,39 +41,38 @@ public class EditCommandParser implements Parser<EditCommand> {
         } catch (ParseException pe) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
         }
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_CATEGORY, PREFIX_DESCRIPTION);
         //Check whether the String that is parsed in contains the following prefix.
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
-        String category = "";
-        String description;
-        Optional<String> categoryOptional = argMultimap.getValue(PREFIX_CATEGORY);
-        Optional<String> descriptionOptional = argMultimap.getValue(PREFIX_DESCRIPTION);
-        if (categoryOptional.isPresent()) {
-            category = categoryOptional.get();
-            if (descriptionOptional.isEmpty()) {
+        List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
+        List<String> descriptions = argMultimap.getAllValues(PREFIX_DESCRIPTION);
+        //check for duplicate category
+        if (hasDuplicates(categories)) {
+            throw new ParseException(EditCommand.MESSAGE_DUPLICATE_CATEGORY);
+        }
+        for (String description : descriptions) {
+            if (description.trim().isEmpty()) {
                 throw new ParseException(EditCommand.MESSAGE_EMPTY_DESCRIPTION);
             }
-            editPersonDescriptor.set(category, ParserUtil.parse(category, category));
-            editPersonDescriptor.setCategory(category);
-        }
-        if (descriptionOptional.isPresent()) {
-            description = descriptionOptional.get();
-            editPersonDescriptor.set(category, ParserUtil.parse(category, description));
-            editPersonDescriptor.setDescription(description);
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
-        // Checks if either category, description or tags are provided.
-        boolean isCategoryNotSpecified = editPersonDescriptor.getCategory() == null
-                || editPersonDescriptor.getCategory().isEmpty();
-        boolean isDescriptionNotSpecified = editPersonDescriptor.getDescription() == null
-                || editPersonDescriptor.getDescription().isEmpty();
-        if (isCategoryNotSpecified && isDescriptionNotSpecified && !editPersonDescriptor.isAnyTagEdited()) {
+        boolean categoryExists = !categories.isEmpty();
+        boolean descriptionExists = !descriptions.isEmpty();
+        //Checks if either category or description exist, the other must exist
+        //Doing this allows tags to exist without both fields
+        if ((categoryExists && !descriptionExists) || (!categoryExists && descriptionExists)) {
+            throw new ParseException(EditCommand.ENTRY_NOT_ADDED);
+        }
+        //Ensure they are both of same size
+        if (categories.size() != descriptions.size()) {
+            throw new ParseException(EditCommand.DIFFERENT_NUMBER_CATEGORIES_DESCRIPTIONS);
+        }
+
+        if (categories.isEmpty() && !editPersonDescriptor.isAnyTagEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
         }
-        //check if t/ is specified
-        if (editPersonDescriptor.getTags().isPresent() && editPersonDescriptor.getTagSize() == 0) {
-            throw new ParseException(EditCommand.MESSAGE_TAG_NOT_EDITED);
-        }
+
+        EntryList entrylist = ParserUtil.parseEntries(categories, descriptions);
+        editPersonDescriptor.setEntryList(entrylist);
 
         return new EditCommand(index, editPersonDescriptor);
     }
@@ -89,4 +91,15 @@ public class EditCommandParser implements Parser<EditCommand> {
         return Optional.of(ParserUtil.parseTags(tagSet));
     }
 
+    private boolean hasDuplicates(List<String> list) {
+        assert list != null : "The list should not be null";
+        Set<String> set = new HashSet<>();
+        for (String element : list) {
+            if (set.contains(element)) {
+                return true; // Found a duplicate
+            }
+            set.add(element);
+        }
+        return false; // No duplicates found
+    }
 }
