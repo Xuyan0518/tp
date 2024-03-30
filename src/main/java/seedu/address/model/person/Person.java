@@ -28,6 +28,14 @@ public class Person {
         entryList.add(name);
         this.tags.addAll(tags);
     }
+    /**
+     * Every field must be present and not null.
+     * This constructor is used for testing in PersonBuilder
+     */
+    public Person(EntryList entryList, Set<Tag> tags) {
+        this.entryList = entryList;
+        this.tags.addAll(tags);
+    }
 
     /**
      * Adds an entry into the list, and then sorts the list
