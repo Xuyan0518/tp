@@ -23,6 +23,13 @@ public class PersonBuilder {
         tags = new HashSet<>();
         // Add default values for entries and tags if necessary
     }
+    /**
+     * Initializes the PersonBuilder with the data of {@code personToCopy}.
+     */
+    public PersonBuilder(Person personToCopy) {
+        entryList = personToCopy.getList();
+        tags = new HashSet<>(personToCopy.getTags());
+    }
 
     /**
      * Sets the {@code EntryList} of the {@code Person} that we are building.
