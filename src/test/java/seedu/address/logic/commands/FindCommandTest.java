@@ -9,10 +9,13 @@ import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,8 +52,8 @@ public class FindCommandTest {
      */
     @Test
     public void equals() {
-        HashMap<String, String> categoryDescriptionMap = new HashMap<>();
-        categoryDescriptionMap.put("LOL", "King");
+        HashMap<String, List<String>> categoryDescriptionMap = new HashMap<>();
+        categoryDescriptionMap.put("LOL", Arrays.asList("King"));
         PersonFieldsContainKeywordPredicate firstPredicate =
             new PersonFieldsContainKeywordPredicate(categoryDescriptionMap, new HashSet<>());
         PersonFieldsContainKeywordPredicate secondPredicate =
@@ -82,7 +85,7 @@ public class FindCommandTest {
      * Verifies that the correct person is found.
      */
     @Test
-    public void execute_multipleKeywords_multiplePersonsFound() {
+    public void execute_singleCategoryDescription_singlePersonsFound() {
         String expectedMessage = String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
         PersonFieldsContainKeywordPredicate predicate = preparePredicate("Clan", "Rainbow");
         FindCommand command = new FindCommand(predicate);
@@ -95,27 +98,14 @@ public class FindCommandTest {
      * Verifies that all matching persons are correctly identified and listed.
      */
     @Test
-    public void execute_multipleCategoriesAndDescriptions_multiplePersonsFound() {
+    public void execute_multipleCategoriesKeywords_multiplePersonsFound() {
         String expectedMessage = String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
-        PersonFieldsContainKeywordPredicate predicate = preparePredicate("Class", "Warrior", "Class", "Mage", "Class", "Priest");
+        PersonFieldsContainKeywordPredicate predicate = preparePredicate(
+            "Class", "Warrior", "Class", "Mage", "Class", "Priest");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertTrue(model.getFilteredPersonList().containsAll(Arrays.asList(ALICE, BENSON, CARL)));
-    }
-    /**
-     * Tests the FindCommand's ability to filter persons based on tags.
-     * Verifies that the correct person is found when a valid tag is used.
-     */
-    @Test
-    public void execute_validTag_singlePersonFound() {
-        String expectedMessage = String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-        Set<String> tags = new HashSet<>(Arrays.asList("Lord", "Noob")); // Replace "Lord" with the actual unique tag of ALICE
-        PersonFieldsContainKeywordPredicate predicate = new PersonFieldsContainKeywordPredicate(new HashMap<>(), tags);
-        FindCommand command = new FindCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE), model.getFilteredPersonList());
     }
     /**
      * Tests the FindCommand's handling of non-existing category and description pairs.
@@ -131,6 +121,34 @@ public class FindCommandTest {
         assertTrue(model.getFilteredPersonList().isEmpty());
     }
     /**
+     * Tests the FindCommand's ability to filter persons based on one tag.
+     * Verifies that the correct person is found when valid tag is used
+     */
+    @Test
+    public void execute_singleValidTag_singlePersonFound() {
+        String expectedMessage = String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        Set<String> tags = new HashSet<>(Arrays.asList("Noob"));
+        PersonFieldsContainKeywordPredicate predicate = new PersonFieldsContainKeywordPredicate(new HashMap<>(), tags);
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Arrays.asList(ALICE), model.getFilteredPersonList());
+    }
+    /**
+     * Tests the FindCommand's ability to filter persons based on multiple tags.
+     * Verifies that the correct persons are found when valid tags are used.
+     */
+    @Test
+    public void execute_multipleValidTags_multiplePersonsFound() {
+        String expectedMessage = String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, 2);
+        Set<String> tags = new HashSet<>(Arrays.asList("Noob", "Veteran"));
+        PersonFieldsContainKeywordPredicate predicate = new PersonFieldsContainKeywordPredicate(new HashMap<>(), tags);
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Arrays.asList(ALICE, BENSON), model.getFilteredPersonList());
+    }
+    /**
      * Helper method to prepare a {@link PersonFieldsContainKeywordPredicate} based on the provided category
      * and description pairs. Facilitates easier creation of predicates for testing.
      *
@@ -139,11 +157,12 @@ public class FindCommandTest {
      * @return A {@code PersonFieldsContainKeywordPredicate} created from the specified category and description pairs.
      */
     private PersonFieldsContainKeywordPredicate preparePredicate(String... categoryDescriptionPairs) {
-        HashMap<String, String> categoryDescriptionMap = new HashMap<>();
+        Map<String, List<String>> categoryDescriptionMap = new HashMap<>();
         for (int i = 0; i < categoryDescriptionPairs.length; i += 2) {
-            categoryDescriptionMap.put(categoryDescriptionPairs[i], categoryDescriptionPairs[i + 1]);
+            String category = categoryDescriptionPairs[i];
+            String description = categoryDescriptionPairs[i + 1];
+            categoryDescriptionMap.computeIfAbsent(category, k -> new ArrayList<>()).add(description);
         }
         return new PersonFieldsContainKeywordPredicate(categoryDescriptionMap, new HashSet<>());
     }
 }
-

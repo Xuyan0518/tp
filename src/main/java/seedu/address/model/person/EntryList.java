@@ -1,6 +1,8 @@
 package seedu.address.model.person;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import seedu.address.commons.util.ToStringBuilder;
 
@@ -35,7 +37,9 @@ public class EntryList {
         }
         return result;
     }
-
+    public List<Entry> getEntries() {
+        return new ArrayList<>(entryList);
+    }
     public int size() {
         return entryList.size();
     }
