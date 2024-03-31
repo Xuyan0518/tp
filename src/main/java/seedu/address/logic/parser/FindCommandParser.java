@@ -5,7 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -38,27 +38,22 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
             ArgumentTokenizer.tokenize(args, PREFIX_CATEGORY, PREFIX_DESCRIPTION, PREFIX_TAG);
-        boolean isCategoryDescriptionPresent = arePrefixesPresent(argMultimap, PREFIX_CATEGORY)
-            && arePrefixesPresent(argMultimap, PREFIX_DESCRIPTION);
         boolean isTagPresent = arePrefixesPresent(argMultimap, PREFIX_TAG);
-        if (!isCategoryDescriptionPresent && !isTagPresent) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        }
-        Map<String, String> categoryDescriptionMap = new HashMap<>();
-        Set<String> tags = new HashSet<>();
-        if (isCategoryDescriptionPresent) {
+        Map<String, List<String>> categoryDescriptionMap = new HashMap<>();
+        if (arePrefixesPresent(argMultimap, PREFIX_CATEGORY, PREFIX_DESCRIPTION)) {
             List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
             List<String> descriptions = argMultimap.getAllValues(PREFIX_DESCRIPTION);
             for (int i = 0; i < categories.size(); i++) {
-                if (i < descriptions.size()) {
-                    categoryDescriptionMap.put(categories.get(i).trim(), descriptions.get(i).trim());
-                } else {
-                    throw new ParseException("Each category must have a corresponding description.");
-                }
+                categoryDescriptionMap.computeIfAbsent(categories.get(i).trim(), k -> new ArrayList<>())
+                    .add(descriptions.get(i).trim());
             }
         }
+        Set<String> tags = new HashSet<>();
         if (isTagPresent) {
-            tags.addAll(Arrays.asList(argMultimap.getValue(PREFIX_TAG).get().split("\\s+")));
+            tags.addAll(new HashSet<>(argMultimap.getAllValues(PREFIX_TAG)));
+        }
+        if (categoryDescriptionMap.isEmpty() && tags.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
         return new FindCommand(new PersonFieldsContainKeywordPredicate(categoryDescriptionMap, tags));
     }

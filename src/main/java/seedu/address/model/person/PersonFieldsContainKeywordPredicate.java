@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -11,12 +13,12 @@ import java.util.function.Predicate;
  * streamlined manner. The predicate evaluates to true if any of the person's entries match the specified
  * categories or descriptions, or if any of the person's tags match the specified tags.
  *
- * <p>Each person's entry is checked against a map of category descriptions, where the key is the category and
+ * Each person's entry is checked against a map of category descriptions, where the key is the category and
  * the value is the description to match. Additionally, a set of tags can be provided to further filter the
  * persons based on the tags associated with them.
  */
 public class PersonFieldsContainKeywordPredicate implements Predicate<Person> {
-    private final Map<String, String> categoryDescriptionMap;
+    private final Map<String, List<String>> categoryDescriptionMap;
     private final Set<String> tags;
     /**
      * Constructs a {@code PersonFieldsContainKeywordPredicate} with the specified category-description mappings
@@ -26,7 +28,7 @@ public class PersonFieldsContainKeywordPredicate implements Predicate<Person> {
      *                                description to match against a person's entries.
      * @param tags A set of tags to match against a person's tags.
      */
-    public PersonFieldsContainKeywordPredicate(Map<String, String> categoryDescriptionMap, Set<String> tags) {
+    public PersonFieldsContainKeywordPredicate(Map<String, List<String>> categoryDescriptionMap, Set<String> tags) {
         this.categoryDescriptionMap = categoryDescriptionMap;
         this.tags = tags;
     }
@@ -39,14 +41,20 @@ public class PersonFieldsContainKeywordPredicate implements Predicate<Person> {
      */
     @Override
     public boolean test(Person person) {
-        boolean matchesCategoryDescription = categoryDescriptionMap.entrySet().stream().anyMatch(entry -> {
-            Optional<String> personCategoryDescription = Optional.ofNullable(person.getEntry(entry.getKey().trim()))
-                    .map(Entry::getDescription)
-                    .map(String::toLowerCase);
-            return personCategoryDescription.map(description ->
-                    description.contains(entry.getValue().toLowerCase())).orElse(false);
-        });
-        boolean matchesTags = person.getTags().stream().anyMatch(tag -> tags.contains(tag.tagName.toLowerCase()));
+        boolean matchesCategoryDescription = categoryDescriptionMap.entrySet().stream().anyMatch(entry ->
+            Optional.ofNullable(person.getList().getEntries()).orElse(Collections.emptyList()).stream()
+                .filter(e -> Optional.ofNullable(e.getCategory()).orElse("").toLowerCase()
+                    .contains(entry.getKey().toLowerCase()))
+                .anyMatch(e ->
+                    entry.getValue().stream()
+                        .anyMatch(expectedDesc ->
+                            Optional.ofNullable(e.getDescription()).orElse("").toLowerCase()
+                                .contains(expectedDesc.toLowerCase()))
+                )
+        );
+        boolean matchesTags = person.getTags().stream().anyMatch(personTag ->
+            tags.stream().anyMatch(searchTag ->
+                personTag.tagName.toLowerCase().contains(searchTag.toLowerCase())));
         return tags.isEmpty() ? matchesCategoryDescription
                 : !categoryDescriptionMap.isEmpty()
                 ? matchesTags && matchesCategoryDescription
