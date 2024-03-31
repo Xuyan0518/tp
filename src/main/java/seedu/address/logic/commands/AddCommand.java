@@ -19,8 +19,14 @@ import seedu.address.model.person.Person;
  */
 public class AddCommand extends Command {
 
+    /**
+     * The command word for adding a person.
+     */
     public static final String COMMAND_WORD = "add";
 
+    /**
+     * Usage message for the add command.
+     */
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
@@ -34,14 +40,18 @@ public class AddCommand extends Command {
             + PREFIX_CATEGORY + "clan"
             + PREFIX_DESCRIPTION + "rainbow" + ")";
 
+    /**
+     * Message indicating successful addition of a person.
+     */
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
-
     private final Person toAdd;
     private final EntryList entryList;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddCommand to add the specified person.
+     *
+     * @param person    The person to be added.
+     * @param entryList The list of entries associated with the person.
      */
     public AddCommand(Person person, EntryList entryList) {
         requireNonNull(person);
@@ -49,9 +59,17 @@ public class AddCommand extends Command {
         this.entryList = entryList;
     }
 
+    /**
+     * Executes the add command by adding the person to the model.
+     *
+     * @param model The model in which the person is to be added.
+     * @return CommandResult indicating the outcome of the command execution.
+     * @throws CommandException If an error occurs during command execution.
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        assert toAdd != null : "Person to add cannot be null";
         if (entryList == null) {
             model.addPerson(toAdd);
         } else {
@@ -64,6 +82,12 @@ public class AddCommand extends Command {
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
     }
 
+    /**
+     * Checks equality with another object.
+     *
+     * @param other The object to compare with.
+     * @return True if the objects are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -79,6 +103,11 @@ public class AddCommand extends Command {
         return toAdd.equals(otherAddCommand.toAdd);
     }
 
+    /**
+     * Generates a string representation of the AddCommand.
+     *
+     * @return String representation of the AddCommand.
+     */
     @Override
     public String toString() {
         return new ToStringBuilder(this)

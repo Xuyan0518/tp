@@ -40,6 +40,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
+        assert argMultimap.getValue(PREFIX_NAME).isPresent() : "Name prefix is present";
         if (argMultimap.getValue(PREFIX_NAME).get().isEmpty()) {
             throw new ParseException("Name cannot be empty!");
         }
@@ -65,6 +66,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             entryList = ParserUtil.parseEntries(categories, descriptions);
         }
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME);
+        assert argMultimap.getValue(PREFIX_NAME).isPresent() : "Name prefix is present";
         Entry name = ParserUtil.parse("Name", argMultimap.getValue(PREFIX_NAME).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
@@ -83,5 +85,4 @@ public class AddCommandParser implements Parser<AddCommand> {
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
-
 }
