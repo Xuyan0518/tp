@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -17,10 +18,13 @@
         <URL value="@HelpWindow.css" />
       </stylesheets>
 
-      <VBox spacing="10" style="-fx-background-color: #ff667a;">
-        <Label fx:id="helpMenuLabel" style="-fx-background-color: #ff667a;" text="Help Menu" textFill="WHITE" />
+      <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #ffa28f;">
+        <Label fx:id="helpMenuLabel" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #d06651; -fx-text-alignment: center; -fx-background-radius: 5; -fx-padding: 2;" text="Help Menu" textFill="#070707">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Label>
         <HBox alignment="CENTER" spacing="5">
-          <Label fx:id="helpMessage" style="-fx-background-color: #ff667a;" text="Label" textFill="#070707" />
+          <Label fx:id="helpMessage" style="-fx-background-color: #ff667a; -fx-background-radius: 10; -fx-padding: 2;" text="Label" textFill="#070707" />
           <Button fx:id="copyButton" mnemonicParsing="false" onAction="#copyUrl" onMousePressed="#mouseClicked" onMouseReleased="#mouseReleased" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #ffccd5;" text="Copy URL" />
         </HBox>
       </VBox>
