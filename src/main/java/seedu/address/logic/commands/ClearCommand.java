@@ -21,17 +21,7 @@ public class ClearCommand extends Command {
     public static final String MESSAGE_CONFIRMATION =
             "Are you sure you want to clear the address book? This action cannot be undone.";
 
-    private Alert confirmationAlert; // Alert dialog used for confirmation
-
-    /**
-     * Constructs a ClearCommand.
-     */
-    public ClearCommand() {
-        confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Clear Command");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText(MESSAGE_CONFIRMATION);
-    }
+    private Alert confirmationAlert; // Alert dialog used for confirmation.
 
     /**
      * Executes the clear command.
@@ -43,6 +33,10 @@ public class ClearCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
 
+        confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Clear Command");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText(MESSAGE_CONFIRMATION);
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             model.setAddressBook(new AddressBook());
