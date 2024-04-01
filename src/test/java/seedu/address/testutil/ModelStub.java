@@ -80,6 +80,8 @@ public class ModelStub implements Model {
         }
     }
 
+    public void groupPerson(String string) {}
+
     @Override
     public ObservableList<Person> getFilteredPersonList() {
         return persons;
