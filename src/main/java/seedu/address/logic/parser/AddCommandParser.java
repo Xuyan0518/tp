@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -39,6 +40,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
+        assert argMultimap.getValue(PREFIX_NAME).isPresent() : "Name prefix is present";
         if (argMultimap.getValue(PREFIX_NAME).get().isEmpty()) {
             throw new ParseException("Name cannot be empty!");
         }
@@ -52,48 +54,19 @@ public class AddCommandParser implements Parser<AddCommand> {
                 && !arePrefixesPresent(argMultimap, PREFIX_DESCRIPTION)) {
             throw new ParseException("Description cannot be empty!");
         } else {
-            String[] category = null;
-            String[] description = null;
-            if (argMultimap.getValue(PREFIX_CATEGORY).isPresent()) {
-                String categoryString = argMultimap.getValue(PREFIX_CATEGORY).get().trim();
-                if (!categoryString.isEmpty()) {
-                    category = categoryString.split(",");
-                } else {
-                    throw new ParseException(AddCategoryCommand.ENTRY_NOT_ADDED);
-                }
-            }
-            if (argMultimap.getValue(PREFIX_DESCRIPTION).isPresent()) {
-                String descriptionString = argMultimap.getValue(PREFIX_DESCRIPTION).get().trim();
-                if (!descriptionString.isEmpty()) {
-                    description = descriptionString.split(",");
-                } else {
-                    throw new ParseException(AddCategoryCommand.ENTRY_NOT_ADDED);
-                }
-            }
-
-            if (category != null && description != null) {
-                if (category.length > description.length) {
-                    throw new ParseException("Not enough description input.");
-                } else if (category.length < description.length) {
-                    throw new ParseException("Not enough category input.");
-                } else {
-                    for (int i = 0; i < category.length; i++) {
-                        String catString = category[i].trim();
-                        String desString = description[i].trim();
-                        if (catString.isEmpty() || desString.isEmpty()) {
-                            throw new ParseException(AddCategoryCommand.ENTRY_NOT_ADDED);
-                        } else {
-                            Entry entry = new Entry(catString, desString);
-                            entryList.add(entry);
-                        }
-                    }
-                }
-            } else {
+            List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
+            List<String> descriptions = argMultimap.getAllValues(PREFIX_DESCRIPTION);
+            if (categories.size() == 0 || descriptions.size() == 0) {
                 throw new ParseException(AddCategoryCommand.ENTRY_NOT_ADDED);
             }
-        }
 
+            if (categories.size() != descriptions.size()) {
+                throw new ParseException(AddCategoryCommand.DIFFERENT_NUMBER_CATEGORIES_DESCRIPTIONS);
+            }
+            entryList = ParserUtil.parseEntries(categories, descriptions);
+        }
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME);
+        assert argMultimap.getValue(PREFIX_NAME).isPresent() : "Name prefix is present";
         Entry name = ParserUtil.parse("Name", argMultimap.getValue(PREFIX_NAME).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
@@ -112,5 +85,4 @@ public class AddCommandParser implements Parser<AddCommand> {
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
-
 }

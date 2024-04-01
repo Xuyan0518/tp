@@ -154,14 +154,14 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Add functon 
+### Add functon
 The new add function allows user to add new contacts to the address book. <br>
-<br> 
+<br>
 Users can now choose to add tags to the contact upon addition of new contacts by running the command as `add n/name t/tag`. <br>
 <br>
 Users can also add multiple tags to a person upon addition of a new contact by running `add n/name t/tag1 t/tag2`<br>
-<br> 
-Users can also assign new contact categories upon addition by running `add n/name t/tag c/cat d/description`, where `cat` is the category associated 
+<br>
+Users can also assign new contact categories upon addition by running `add n/name t/tag c/cat d/description`, where `cat` is the category associated
 with the new contact and `description` is the category information that is assigned to the new contact. <br>
 <br>
 Users can also assign multiple categorical information to the new contact added by running `add n/name t/tag c/cat1, cat2, cat3 d/d1, d2, d3`, where `cat1` corresponds to `d1` and `cat2` corresponds to `d2` and so on. Users can definitely add more than 3 categories with descriptions in one addition.

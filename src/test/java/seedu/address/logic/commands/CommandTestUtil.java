@@ -14,7 +14,9 @@ import java.util.List;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.person.Entry;
 import seedu.address.model.person.Person;
+import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 /**
  * Contains helper methods for testing commands.
@@ -25,12 +27,19 @@ public class CommandTestUtil {
     public static final String VALID_NAME_BOB = "Bob Choo";
     public static final String VALID_PHONE_AMY = "11111111";
     public static final String VALID_PHONE_BOB = "22222222";
+    public static final String VALID_CLAN_BOB = "Lightning";
+    public static final String VALID_CLASS_BOB = "Explorer";
+    public static final String VALID_CLAN_AMY = "Ocean";
+    public static final String VALID_CLASS_AMY = "Science";
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
+    public static final String VALID_TAG_AMY = "Friendly";
+    public static final String VALID_TAG_BOB = "Strategist";
+
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -52,6 +61,20 @@ public class CommandTestUtil {
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
+    public static final EditCommand.EditPersonDescriptor DESC_AMY;
+    public static final EditCommand.EditPersonDescriptor DESC_BOB;
+
+    static {
+        DESC_AMY = new EditPersonDescriptorBuilder().addEditorEntry(new Entry("Name", VALID_NAME_AMY))
+                .addEditorEntry(new Entry("Clan", VALID_CLAN_AMY))
+                .addEditorEntry(new Entry("Class", VALID_CLASS_AMY))
+                .withTags(VALID_TAG_FRIEND)
+                .build();
+        DESC_BOB = new EditPersonDescriptorBuilder().addEditorEntry(new Entry("Name", VALID_NAME_BOB))
+                .addEditorEntry(new Entry("Clan", VALID_CLAN_BOB))
+                .addEditorEntry(new Entry("Class", VALID_CLASS_BOB))
+                .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+    }
 
 
     /**

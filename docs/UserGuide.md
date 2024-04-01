@@ -1,6 +1,13 @@
-C# Rainbow Dragon User Guide
+#**Rainbow Dragon User Guide**
 
-Rainbow Dragon is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+Welcome to the Rainbow Dragon User Guide! <br>
+<br> 
+If you are: 
+- Passionate about being the **BEST** player in **ANY** games that you like
+- Striving to build an unprecedentedly powerful clan or multiple clans
+- Someone who values **camaraderie** and wants to **maintain and manage** good relationships with all your gaming friends <br>
+
+Don't worry! ***Rainbow Dragon*** is just the right application for you! 
 
 <!-- * Table of Contents -->
 <page-nav-print />

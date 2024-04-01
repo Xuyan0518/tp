@@ -145,7 +145,7 @@ public class EditCommand extends Command {
      */
     public static class EditPersonDescriptor {
         private Set<Tag> tags;
-        private EntryList entryList;
+        private EntryList entryList = new EntryList();
         private String category;
         private String description;
         /**
@@ -164,6 +164,15 @@ public class EditCommand extends Command {
             this.tags = toCopy.tags;
             this.category = toCopy.getCategory();
             this.description = toCopy.getDescription();
+        }
+        /**
+         * Copy constructor.
+         * A defensive copy of {@code tags} is used internally.
+         */
+        public EditPersonDescriptor(Person toCopy) {
+            assert toCopy != null;
+            this.entryList = toCopy.getList();
+            this.tags = toCopy.getTags();
         }
         // Getter and setter for category and description
         public String getCategory() {
@@ -201,6 +210,9 @@ public class EditCommand extends Command {
             } else {
                 e.setDescription(entry.getDescription());
             }
+        }
+        public void addEntry(Entry entry) {
+            entryList.add(entry);
         }
 
         public void setEntryList(EntryList entryList) {

@@ -5,8 +5,9 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AddCategoryCommand;
@@ -39,6 +40,9 @@ public class AddCategoryCommandParser implements Parser<AddCategoryCommand> {
 
         List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
         List<String> descriptions = argMultimap.getAllValues(PREFIX_DESCRIPTION);
+        if (hasDuplicates(categories)) {
+            throw new ParseException(AddCategoryCommand.MESSAGE_DUPLICATE_CATEGORY);
+        }
         if (categories.size() == 0 || descriptions.size() == 0) {
             throw new ParseException(AddCategoryCommand.ENTRY_NOT_ADDED);
         }
@@ -52,12 +56,15 @@ public class AddCategoryCommandParser implements Parser<AddCategoryCommand> {
 
     }
 
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    private boolean hasDuplicates(List<String> list) {
+        Set<String> set = new HashSet<>();
+        for (String element : list) {
+            if (set.contains(element)) {
+                return true; // Found a duplicate
+            }
+            set.add(element);
+        }
+        return false; // No duplicates found
     }
 }
 
