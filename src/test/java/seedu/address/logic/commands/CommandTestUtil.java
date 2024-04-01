@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -10,20 +9,13 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.PersonFieldsContainKeywordPredicate;
-import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 /**
@@ -37,8 +29,8 @@ public class CommandTestUtil {
     public static final String VALID_PHONE_BOB = "22222222";
     public static final String VALID_CLAN_BOB = "Lightning";
     public static final String VALID_CLASS_BOB = "Explorer";
-    public static final String VALID_ClAN_AMY = "Ocean";
-    public static final String VALID_ClASS_AMY = "Science";
+    public static final String VALID_CLAN_AMY = "Ocean";
+    public static final String VALID_CLASS_AMY = "Science";
     public static final String VALID_EMAIL_AMY = "amy@example.com";
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
@@ -74,8 +66,8 @@ public class CommandTestUtil {
 
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().addEditorEntry(new Entry("Name", VALID_NAME_AMY))
-                .addEditorEntry(new Entry("Clan", VALID_ClAN_AMY))
-                .addEditorEntry(new Entry("Class", VALID_ClASS_AMY))
+                .addEditorEntry(new Entry("Clan", VALID_CLAN_AMY))
+                .addEditorEntry(new Entry("Class", VALID_CLASS_AMY))
                 .withTags(VALID_TAG_FRIEND)
                 .build();
         DESC_BOB = new EditPersonDescriptorBuilder().addEditorEntry(new Entry("Name", VALID_NAME_BOB))
@@ -126,25 +118,6 @@ public class CommandTestUtil {
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
         assertEquals(expectedAddressBook, actualModel.getAddressBook());
         assertEquals(expectedFilteredList, actualModel.getFilteredPersonList());
-    }
-
-    /**
-     * Updates {@code model}'s filtered list to show only the person at the given {@code targetIndex} in the
-     * {@code model}'s address book.
-     */
-    public static void showPersonAtIndex(Model model, Index targetIndex) {
-        assertTrue(targetIndex.getZeroBased() < model.getFilteredPersonList().size());
-
-        Person person = model.getFilteredPersonList().get(targetIndex.getZeroBased());
-        Map<String, String> catDescription = new HashMap<>();
-        catDescription.put("Name", "Alice");
-        Set<Tag> tags = person.getTags();
-        Set<String> tagSet = tags.stream()
-                .map(Tag::getTagName) // Assuming Tag has a getName() method that returns a String
-                .collect(Collectors.toSet());
-        model.updateFilteredPersonList(new PersonFieldsContainKeywordPredicate(catDescription, tagSet));
-
-        assertEquals(1, model.getFilteredPersonList().size());
     }
 
 }
