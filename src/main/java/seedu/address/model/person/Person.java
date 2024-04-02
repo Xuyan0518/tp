@@ -54,7 +54,7 @@ public class Person implements Comparable<Person> {
     /**
      * Sets toCompare
      * @param person the object to be compared.
-     * @return
+     * @return int to be compared
      */
     public int compareTo(Person person) {
         if (toCompare.isEmpty() && !person.getToCompare().isEmpty()) {

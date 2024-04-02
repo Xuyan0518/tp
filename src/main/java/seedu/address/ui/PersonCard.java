@@ -18,6 +18,7 @@ import seedu.address.model.person.Person;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
+    private static final String FONT_PATH = "../../resources/view/Pixel_font/PressStart2P-Regular.ttf";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -55,11 +56,11 @@ public class PersonCard extends UiPart<Region> {
             }
         }
         id.setText(displayedIndex + ". ");
-        id.setFont(Font.loadFont("./PressStart2P-Regular.ttf", 120));
+        id.setFont(Font.loadFont(FONT_PATH, 120));
         name.setText(person.getEntry("Name").toString());
-        name.setFont(Font.loadFont("./PressStart2P-Regular.ttf", 120));
+        name.setFont(Font.loadFont(FONT_PATH, 120));
         result.setText(text);
-        result.setFont(Font.loadFont("./PressStart2P-Regular.ttf", 120));
+        result.setFont(Font.loadFont(FONT_PATH, 120));
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
