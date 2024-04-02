@@ -22,6 +22,8 @@ public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final AddressBook addressBook;
+
+    private final AddressBook groupAddressBook;
     private final UserPrefs userPrefs;
     private FilteredList<Person> filteredPersons;
 
@@ -34,6 +36,8 @@ public class ModelManager implements Model {
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
+        //creates an empty addressbook for group.
+        this.groupAddressBook = new AddressBook();
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
     }
