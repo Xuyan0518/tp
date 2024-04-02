@@ -2,12 +2,16 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
@@ -16,6 +20,7 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Person;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -32,7 +37,9 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
+    private PersonListPanel groupPersonListPanel;
     private ResultDisplay resultDisplay;
+    private ResultDisplay groupResultDisplay;
     private HelpWindow helpWindow;
 
     @FXML
@@ -49,6 +56,10 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    @FXML
+    private HBox rightPanel;
+    private ObservableList<Person> groups;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -78,6 +89,7 @@ public class MainWindow extends UiPart<Stage> {
 
     /**
      * Sets the accelerator of a MenuItem.
+     *
      * @param keyCombination the KeyCombination value of the accelerator
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
@@ -121,6 +133,69 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+    }
+
+    void fillOuterParts() {
+        groups = new FilteredList<>(logic.getFilteredPersonList());
+
+        // Create a GridPane
+        GridPane gridPane = new GridPane();
+
+        // Set properties of the GridPane (optional)
+        gridPane.setHgap(10); // Horizontal gap between cells
+        gridPane.setVgap(10); // Vertical gap between cells
+
+        // Add groupPersonCards to the GridPane
+        int columnIndex = 0;
+        int rowIndex = 0;
+        int maxColumns = 5; // Define the maximum number of columns
+        for (int i = 1; i <= groups.size(); i++) {
+            PersonCard groupPersonCard = new PersonCard(groups.get(i - 1), i);
+
+            // Add groupPersonCard to the GridPane
+            gridPane.add(groupPersonCard.getRoot(), columnIndex, rowIndex);
+
+            // Increment row index or move to the next column
+            columnIndex++;
+            if (columnIndex >= maxColumns) {
+                columnIndex = 0;
+                rowIndex++;
+            }
+        }
+        rightPanel.getChildren().add(gridPane);
+    }
+
+    void refreshRightPanel() {
+        // Clear existing content
+        rightPanel.getChildren().clear();
+
+        // Ensure it's observing the right list
+        groups = new FilteredList<>(logic.getFilteredPersonList());
+
+        // Create a new GridPane
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        // Add groupPersonCards to the GridPane
+        int columnIndex = 0;
+        int rowIndex = 0;
+        int maxColumns = 5; // Define the maximum number of columns
+        for (int i = 1; i <= groups.size(); i++) {
+            PersonCard groupPersonCard = new PersonCard(groups.get(i - 1), i);
+
+            // Add groupPersonCard to the GridPane
+            gridPane.add(groupPersonCard.getRoot(), columnIndex, rowIndex);
+
+            // Increment row index or move to the next column
+            columnIndex++;
+            if (columnIndex >= maxColumns) {
+                columnIndex = 0;
+                rowIndex++;
+            }
+        }
+        // Add the GridPane to the rightPanel
+        rightPanel.getChildren().add(gridPane);
     }
 
     /**
@@ -175,6 +250,7 @@ public class MainWindow extends UiPart<Stage> {
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
             CommandResult commandResult = logic.execute(commandText);
+            this.refreshRightPanel();
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
