@@ -18,14 +18,14 @@
         <URL value="@HelpWindow.css" />
       </stylesheets>
 
-      <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #ffa28f;">
-        <Label fx:id="helpMenuLabel" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #d06651; -fx-text-alignment: center; -fx-background-radius: 5; -fx-padding: 2;" text="Help Menu" textFill="#070707">
+      <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #ffffd6;">
+        <Label fx:id="helpMenuLabel" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #ffffd6; -fx-text-alignment: center; -fx-background-radius: 5; -fx-padding: 2;" text="Help Menu">
                <VBox.margin>
                   <Insets />
                </VBox.margin></Label>
         <HBox alignment="CENTER" spacing="5">
-          <Label fx:id="helpMessage" style="-fx-background-color: #ff667a; -fx-background-radius: 10; -fx-padding: 2;" text="Label" textFill="#070707" />
-          <Button fx:id="copyButton" mnemonicParsing="false" onAction="#copyUrl" onMousePressed="#mouseClicked" onMouseReleased="#mouseReleased" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #ffccd5;" text="Copy URL" />
+          <Label fx:id="helpMessage" style="-fx-background-color: #ffffd6; -fx-background-radius: 10; -fx-padding: 2; -fx-border-color: #d6b47a;" text="Label" textFill="#d6b47a" />
+          <Button fx:id="copyButton" mnemonicParsing="false" onAction="#copyUrl" onMousePressed="#mouseClicked" onMouseReleased="#mouseReleased" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #d6b47a;" text="Copy URL" />
         </HBox>
       </VBox>
     </Scene>
