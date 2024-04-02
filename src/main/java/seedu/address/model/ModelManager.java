@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.person.Group;
 import seedu.address.model.person.Person;
 import seedu.address.model.util.CommandHistory;
 
@@ -23,9 +24,13 @@ public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final AddressBook addressBook;
+
+    private final AddressBook groupAddressBook;
     private final UserPrefs userPrefs;
     private FilteredList<Person> filteredPersons;
     private CommandHistory commandHistory = new CommandHistory();
+
+    private Group group = new Group();
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -36,6 +41,8 @@ public class ModelManager implements Model {
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
+        //creates an empty addressbook for group.
+        this.groupAddressBook = new AddressBook();
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
     }
@@ -62,8 +69,9 @@ public class ModelManager implements Model {
             person.toCompare(category);
         }
         Collections.sort(persons);
-        addressBook.setPersons(persons);
-        filteredPersons = new FilteredList<>(addressBook.getPersonList());
+        group.group(persons, category);
+        groupAddressBook.setPersons(group.getGroupList());
+        filteredPersons = new FilteredList<>(groupAddressBook.getPersonList());
     }
 
 
