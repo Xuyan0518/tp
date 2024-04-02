@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -56,6 +57,11 @@ public class AddCommandParser implements Parser<AddCommand> {
         } else {
             List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
             List<String> descriptions = argMultimap.getAllValues(PREFIX_DESCRIPTION);
+
+            if (hasDuplicates(categories)) {
+                throw new ParseException(AddCategoryCommand.MESSAGE_DUPLICATE_CATEGORY);
+            }
+
             if (categories.size() == 0 || descriptions.size() == 0) {
                 throw new ParseException(AddCategoryCommand.ENTRY_NOT_ADDED);
             }
@@ -84,5 +90,24 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+
+    /**
+     * Checks whether a given list contains any duplicate elements.
+     *
+     * @param list The list to be checked for duplicates.
+     * @return {@code true} if the list contains duplicates, {@code false} otherwise.
+     * @throws NullPointerException if the specified list is null.
+     */
+    private boolean hasDuplicates(List<String> list) {
+        Set<String> set = new HashSet<>();
+        for (String element : list) {
+            if (set.contains(element)) {
+                return true;
+            }
+            set.add(element);
+        }
+        return false;
     }
 }
