@@ -7,9 +7,8 @@ import javafx.scene.text.Font;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.EntryList;
 import seedu.address.model.person.Person;
-
 /**
- * An UI component that displays information of a {@code Group}.
+ * A UI component that displays information of a {@code Group}.
  */
 public class GroupCard extends UiPart<Region> {
 
@@ -24,7 +23,7 @@ public class GroupCard extends UiPart<Region> {
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
 
-    public final Person person;
+    public final Person group;
 
     @FXML
     private Label groupNameLabel;
@@ -34,18 +33,23 @@ public class GroupCard extends UiPart<Region> {
     /**
      * Creates a Group
      */
-    public GroupCard(Person person) {
+    public GroupCard(Person group) {
         super(FXML);
-        this.person = person;
+        this.group = group;
         String text = "";
-        EntryList e = person.getList();
+        EntryList e = group.getList();
         for (int i = 0; i < e.size(); i++) {
             Entry entry = e.get(i);
-            if (!entry.getCategory().equals("Name")) {
+            if (!entry.getCategory().equals("Group Name")) {
                 text = text + e.get(i).toString() + "\n";
             }
         }
-        groupNameLabel.setText(person.getEntry("Name").toString());
+        Entry groupNameEntry = group.getEntry("Group Name");
+        if (groupNameEntry != null) {
+            groupNameLabel.setText(groupNameEntry.toString());
+        } else {
+            groupNameLabel.setText("");
+        }
         groupNameLabel.setFont(Font.loadFont(FONT_PATH, 120));
         nameListLabel.setText(text);
         nameListLabel.setFont(Font.loadFont(FONT_PATH, 120));
