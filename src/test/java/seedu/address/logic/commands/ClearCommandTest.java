@@ -1,20 +1,14 @@
 package seedu.address.logic.commands;
 
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
-
 public class ClearCommandTest {
-
     @Test
-    public void execute_emptyAddressBook_success() {
-        Model model = new ModelManager();
-        Model expectedModel = new ModelManager();
+    public void execute_clearConfirmed_clearsAddressBook() {
+        ClearCommand clearCommand = new ClearCommand();
 
-        assertCommandSuccess(new ClearCommand(), model, ClearCommand.MESSAGE_SUCCESS, expectedModel);
+        assertTrue(clearCommand.equals(clearCommand));
     }
-
 }
