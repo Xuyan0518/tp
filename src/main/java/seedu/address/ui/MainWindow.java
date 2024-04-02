@@ -10,6 +10,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -136,19 +137,65 @@ public class MainWindow extends UiPart<Stage> {
 
     void fillOuterParts() {
         groups = new FilteredList<>(logic.getFilteredPersonList());
+
+        // Create a GridPane
+        GridPane gridPane = new GridPane();
+
+        // Set properties of the GridPane (optional)
+        gridPane.setHgap(10); // Horizontal gap between cells
+        gridPane.setVgap(10); // Vertical gap between cells
+
+        // Add groupPersonCards to the GridPane
+        int columnIndex = 0;
+        int rowIndex = 0;
+        int maxColumns = 5; // Define the maximum number of columns
         for (int i = 1; i <= groups.size(); i++) {
             PersonCard groupPersonCard = new PersonCard(groups.get(i - 1), i);
-            rightPanel.getChildren().add(groupPersonCard.getRoot());
+
+            // Add groupPersonCard to the GridPane
+            gridPane.add(groupPersonCard.getRoot(), columnIndex, rowIndex);
+
+            // Increment row index or move to the next column
+            columnIndex++;
+            if (columnIndex >= maxColumns) {
+                columnIndex = 0;
+                rowIndex++;
+            }
         }
+        rightPanel.getChildren().add(gridPane);
     }
 
     void refreshRightPanel() {
-        rightPanel.getChildren().clear(); // Clear existing content
-        groups = new FilteredList<>(logic.getFilteredPersonList()); // Ensure it's observing the right list
-        for (int i = 0; i < groups.size(); i++) {
-            PersonCard groupPersonCard = new PersonCard(groups.get(i), i);
-            rightPanel.getChildren().add(groupPersonCard.getRoot());
+        // Clear existing content
+        rightPanel.getChildren().clear();
+
+        // Ensure it's observing the right list
+        groups = new FilteredList<>(logic.getFilteredPersonList());
+
+        // Create a new GridPane
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        // Add groupPersonCards to the GridPane
+        int columnIndex = 0;
+        int rowIndex = 0;
+        int maxColumns = 5; // Define the maximum number of columns
+        for (int i = 1; i <= groups.size(); i++) {
+            PersonCard groupPersonCard = new PersonCard(groups.get(i - 1), i);
+
+            // Add groupPersonCard to the GridPane
+            gridPane.add(groupPersonCard.getRoot(), columnIndex, rowIndex);
+
+            // Increment row index or move to the next column
+            columnIndex++;
+            if (columnIndex >= maxColumns) {
+                columnIndex = 0;
+                rowIndex++;
+            }
         }
+        // Add the GridPane to the rightPanel
+        rightPanel.getChildren().add(gridPane);
     }
 
     /**
