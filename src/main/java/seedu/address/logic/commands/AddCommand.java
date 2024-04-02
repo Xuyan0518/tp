@@ -44,6 +44,7 @@ public class AddCommand extends Command {
      * Message indicating successful addition of a person.
      */
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
+    public static final String MESSAGE_DUPLICATE_NAME = "This person already exists in the address book!";
     private final Person toAdd;
     private final EntryList entryList;
 
@@ -70,6 +71,10 @@ public class AddCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         assert toAdd != null : "Person to add cannot be null";
+
+        if (model.hasPerson(toAdd)) {
+            throw new CommandException(MESSAGE_DUPLICATE_NAME);
+        }
         if (entryList == null) {
             model.addPerson(toAdd);
         } else {

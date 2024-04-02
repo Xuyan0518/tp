@@ -52,9 +52,15 @@ public class Person implements Comparable<Person> {
     }
 
     /**
-     * Sets toCompare
-     * @param person the object to be compared.
-     * @return
+     * Compares this person with the specified person for order. Returns a negative integer,
+     * zero, or a positive integer as this person is less than, equal to, or greater than the
+     * specified person. Comparison is based on the string representations obtained from the
+     * {@code toCompare} properties of the persons, ignoring case sensitivity.
+     *
+     * @param person The person to be compared.
+     * @return A negative integer, zero, or a positive integer as this person is less than,
+     *         equal to, or greater than the specified person.
+     * @throws NullPointerException if the specified person is null.
      */
     public int compareTo(Person person) {
         if (toCompare.isEmpty() && !person.getToCompare().isEmpty()) {
@@ -106,10 +112,11 @@ public class Person implements Comparable<Person> {
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
-        if (otherPerson == this) {
+        String thisName = this.getEntry("Name").getDescription();
+        String otherName = otherPerson.getEntry("Name").getDescription();
+        if (otherName.equalsIgnoreCase(thisName)) {
             return true;
         }
-
         return false;
     }
 
@@ -127,7 +134,6 @@ public class Person implements Comparable<Person> {
         if (!(other instanceof Person)) {
             return false;
         }
-
         return false;
     }
 

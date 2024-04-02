@@ -56,6 +56,13 @@ public class AddCategoryCommandParser implements Parser<AddCategoryCommand> {
 
     }
 
+    /**
+     * Checks whether a given list contains any duplicate elements.
+     *
+     * @param list The list to be checked for duplicates.
+     * @return {@code true} if the list contains duplicates, {@code false} otherwise.
+     * @throws NullPointerException if the specified list is null.
+     */
     private boolean hasDuplicates(List<String> list) {
         Set<String> set = new HashSet<>();
         for (String element : list) {
