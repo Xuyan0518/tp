@@ -2,12 +2,15 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
@@ -16,6 +19,7 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Person;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -32,7 +36,9 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
+    private PersonListPanel groupPersonListPanel;
     private ResultDisplay resultDisplay;
+    private ResultDisplay groupResultDisplay;
     private HelpWindow helpWindow;
 
     @FXML
@@ -49,6 +55,10 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    @FXML
+    private HBox rightPanel;
+    private ObservableList<Person> groups;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -78,6 +88,7 @@ public class MainWindow extends UiPart<Stage> {
 
     /**
      * Sets the accelerator of a MenuItem.
+     *
      * @param keyCombination the KeyCombination value of the accelerator
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
@@ -121,6 +132,23 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+    }
+
+    void fillOuterParts() {
+        groups = new FilteredList<>(logic.getFilteredPersonList());
+        for (int i = 1; i <= groups.size(); i++) {
+            PersonCard groupPersonCard = new PersonCard(groups.get(i - 1), i);
+            rightPanel.getChildren().add(groupPersonCard.getRoot());
+        }
+    }
+
+    void refreshRightPanel() {
+        rightPanel.getChildren().clear(); // Clear existing content
+        groups = new FilteredList<>(logic.getFilteredPersonList()); // Ensure it's observing the right list
+        for (int i = 0; i < groups.size(); i++) {
+            PersonCard groupPersonCard = new PersonCard(groups.get(i), i);
+            rightPanel.getChildren().add(groupPersonCard.getRoot());
+        }
     }
 
     /**
@@ -175,6 +203,7 @@ public class MainWindow extends UiPart<Stage> {
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
             CommandResult commandResult = logic.execute(commandText);
+            this.refreshRightPanel();
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
