@@ -15,7 +15,7 @@ import seedu.address.commons.core.LogsCenter;
  * Controller for a help page
  */
 public class HelpWindow extends UiPart<Stage> {
-
+    //testing
     public static final String USERGUIDE_URL = "https://ay2324s2-cs2103t-w13-3.github.io/tp/UserGuide.html";
 
     public static final String DASH = "----------------------------------------"
