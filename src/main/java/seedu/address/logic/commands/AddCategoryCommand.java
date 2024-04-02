@@ -74,6 +74,7 @@ public class AddCategoryCommand extends Command {
             Entry entry = entrylist.get(i);
             personToEdit.addEntry(entry);
         }
+        model.saveAddressBookState();
         model.setPerson(personToEdit, personToEdit);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(

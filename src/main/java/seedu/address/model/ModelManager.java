@@ -14,6 +14,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
+import seedu.address.model.util.CommandHistory;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -24,6 +25,7 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private FilteredList<Person> filteredPersons;
+    private CommandHistory commandHistory = new CommandHistory();
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -126,6 +128,20 @@ public class ModelManager implements Model {
         requireAllNonNull(target, editedPerson);
 
         addressBook.setPerson(target, editedPerson);
+    }
+    
+    public void undo() {
+        if (!commandHistory.isEmpty()) {
+            setAddressBook(commandHistory.pop());
+        }
+    }
+    
+    public boolean canUndo() {
+        return !commandHistory.isEmpty();
+    }
+    
+    public void saveAddressBookState() {
+        commandHistory.push(new AddressBook(addressBook));
     }
 
     //=========== Filtered Person List Accessors =============================================================
