@@ -18,22 +18,22 @@ public class TypicalPersons {
                     TypicalPersons.entry("Class", "Warrior"),
                     TypicalPersons.entry("Game", "RPG"))
             .withTag("Noob", "Lord").build();
-    public static final Person BENSON = new PersonBuilder().withEntries(TypicalPersons.entry("Name", "Bob"),
+    public static final Person BENSON = new PersonBuilder().withEntries(TypicalPersons.entry("Name", "Benson"),
                     TypicalPersons.entry("Clan", "Thunder"),
                     TypicalPersons.entry("Class", "Mage"),
                     TypicalPersons.entry("Game", "Strategy"))
             .withTag("Veteran", "Strategist").build();
-    public static final Person CARL = new PersonBuilder().withEntries(TypicalPersons.entry("Name", "Carol"),
+    public static final Person CARL = new PersonBuilder().withEntries(TypicalPersons.entry("Name", "Carl"),
                     TypicalPersons.entry("Clan", "Sunshine"),
                     TypicalPersons.entry("Class", "Priest"),
                     TypicalPersons.entry("Game", "MMORPG"))
             .withTag("Healer", "Friendly").build();
-    public static final Person DANIEL = new PersonBuilder().withEntries(TypicalPersons.entry("Name", "Dave"),
+    public static final Person DANIEL = new PersonBuilder().withEntries(TypicalPersons.entry("Name", "Daniel"),
                     TypicalPersons.entry("Clan", "Shadow"),
                     TypicalPersons.entry("Class", "Rogue"),
                     TypicalPersons.entry("Game", "Stealth"))
             .withTag("Sneaky", "Assassin").build();
-    public static final Person ELLE = new PersonBuilder().withEntries(TypicalPersons.entry("Name", "Ella"),
+    public static final Person ELLE = new PersonBuilder().withEntries(TypicalPersons.entry("Name", "Elle"),
                     TypicalPersons.entry("Clan", "Flame"),
                     TypicalPersons.entry("Class", "Berserker"),
                     TypicalPersons.entry("Game", "Action"))

@@ -12,11 +12,11 @@ import seedu.address.logic.commands.DeleteCategoryCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
- * Parser class for deletecategorycommand
+ * Parser class for deleteCategoryCommand
  */
 public class DeleteCategoryCommandParser implements Parser<DeleteCategoryCommand> {
     /**
-     * Creates the deletecategorycommand
+     * Creates the deleteCategoryCommand
      *
      * @param args our arguments
      * @return the command
@@ -50,7 +50,6 @@ public class DeleteCategoryCommandParser implements Parser<DeleteCategoryCommand
                 throw new ParseException(MESSAGE_CANNOT_DELETE_NAME);
             }
         }
-
 
         return new DeleteCategoryCommand(index, categories);
     }
