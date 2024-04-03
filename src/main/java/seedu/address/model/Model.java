@@ -98,19 +98,38 @@ public interface Model {
      */
     void undo();
     /**
+     * Performs a redo action. This method allows reverting the last undo command made to the address book data,
+     * supporting redo functionality for user actions.
+     */
+    void redo();
+    /**
      * Checks if an undo operation can be performed. This method allows the application to determine
      * if there are actions that can be undone, typically to enable or disable undo functionality in the UI.
      * @return true if an undo operation can be performed, false otherwise.
      */
     boolean canUndo();
     /**
+     * Checks if a redo operation can be performed. This method allows the application to determine
+     * if there are actions that can be redone, typically to enable or disable redo functionality in the UI.
+     * @return true if a redo operation can be performed, false otherwise.
+     */
+    boolean canRedo();
+    /**
      * Saves the address book state.
      */
     void saveAddressBookState();
     /**
+     * Saves the undone address book state.
+     */
+    void saveUndoneAddressBookState();
+    /**
      * Saves the group address book state.
      */
     void saveGroupAddressBookState();
+    /**
+     * Saves the undone group address book state.
+     */
+    void saveUndoneGroupAddressBookState();
     /**
      * Saves the person's current state by replacing the before with after.
      * @param before person to be replaced.
@@ -123,6 +142,11 @@ public interface Model {
      */
     boolean canUndoGrouping();
     /**
+     * Checks if a group command can be redone.
+     * @return
+     */
+    boolean canRedoGrouping();
+    /**
      * Replaces the target person with the replacing person.
      * @param target person to be replaced.
      * @param replacing to replace the target.
@@ -132,4 +156,8 @@ public interface Model {
      *
      */
     void setGroupAddressBook(ReadOnlyAddressBook addressBook);
+   /**
+    * Clears all states from the undo history.
+    */
+    void clearUndoHistory();
 }

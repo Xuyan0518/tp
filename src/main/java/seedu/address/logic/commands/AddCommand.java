@@ -71,6 +71,7 @@ public class AddCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         model.saveAddressBookState();
+        model.clearUndoHistory();
         assert toAdd != null : "Person to add cannot be null";
 
         if (model.hasPerson(toAdd)) {

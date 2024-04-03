@@ -79,6 +79,7 @@ public class EditCommand extends Command {
         //Over here, they replaced the old person info with the new person (editpersondescriptor)
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
         model.savePersonState(editedPerson, originalPerson);
+        model.clearUndoHistory();
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }

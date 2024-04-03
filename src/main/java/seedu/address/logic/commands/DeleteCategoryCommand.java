@@ -66,6 +66,7 @@ public class DeleteCategoryCommand extends Command {
 
             personToEdit.deleteEntry(entry.getCategory());
             model.savePersonState(personToEdit, original);
+            model.clearUndoHistory();
             model.setPerson(personToEdit, personToEdit);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         }
