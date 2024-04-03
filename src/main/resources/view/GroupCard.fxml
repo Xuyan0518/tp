@@ -3,21 +3,42 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
-   <GridPane style="-fx-background-color: #ff8f8f;" HBox.hgrow="ALWAYS">
+   <GridPane style="-fx-background-color: #ff8f8f;" styleClass="grid-pane" HBox.hgrow="ALWAYS">
       <columnConstraints>
          <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
       </columnConstraints>
-      <VBox alignment="CENTER_LEFT" minHeight="105" style="-fx-background-color: #ffa28f; -fx-border-color: #ffffff; -fx-border-width: 2;" GridPane.columnIndex="0">
+      <VBox alignment="TOP_LEFT" minHeight="105" style="-fx-background-color: #ffa28f; -fx-border-color: #ffffff; -fx-border-width: 2;" GridPane.columnIndex="0">
          <padding>
             <Insets bottom="5" left="15" right="5" top="5" />
          </padding>
-         <HBox alignment="CENTER_LEFT" spacing="5">
-            <Label fx:id="groupNameLabel" styleClass="cell_big_label" text="\$first" />
+         <HBox alignment="TOP_LEFT" spacing="5">
+            <!-- Wrap groupNameLabel inside a ScrollPane for horizontal scrolling -->
+            <ScrollPane hbarPolicy="ALWAYS" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="NEVER">
+               <content>
+                  <Label fx:id="groupNameLabel" alignment="TOP_LEFT" styleClass="cell_big_label" text="\$first">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </content>
+            </ScrollPane>
          </HBox>
          <FlowPane fx:id="tags" />
-         <Label fx:id="nameListLabel" styleClass="cell_small_label" text="\$result" />
+         <VBox alignment="TOP_LEFT" styleClass="cell_small_label" VBox.vgrow="ALWAYS">
+            <!-- Wrap nameListLabel inside a ScrollPane for vertical scrolling -->
+            <ScrollPane hbarPolicy="NEVER" maxHeight="200" minHeight="200" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="ALWAYS">
+               <content>
+                  <Label fx:id="nameListLabel" alignment="TOP_LEFT" styleClass="cell_small_label" text="\$result">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+               </content>
+            </ScrollPane>
+         </VBox>
       </VBox>
       <rowConstraints>
          <RowConstraints />
