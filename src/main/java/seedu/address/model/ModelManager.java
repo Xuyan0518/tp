@@ -69,8 +69,8 @@ public class ModelManager implements Model {
         }
         Collections.sort(persons);
         group.group(persons, category);
-        saveGroupAddressBookState();
         groupAddressBook.setPersons(group.getGroupList());
+        saveGroupAddressBookState();
         filteredGroupPerson = new FilteredList<>(groupAddressBook.getPersonList());
     }
 
