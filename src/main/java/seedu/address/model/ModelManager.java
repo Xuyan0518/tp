@@ -28,11 +28,14 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private FilteredList<Person> filteredPersons;
     private CommandHistory commandHistory = new CommandHistory();
-    private ReadOnlyAddressBook previousGroupAddressBookState = null;
+
     private boolean lastActionWasGroup = false;
     private FilteredList<Person> filteredGroupPerson;
 
+    private CommandHistory groupCommmandHistory = new CommandHistory();
+
     private Group group = new Group();
+
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -69,8 +72,8 @@ public class ModelManager implements Model {
         }
         Collections.sort(persons);
         group.group(persons, category);
-        groupAddressBook.setPersons(group.getGroupList());
         saveGroupAddressBookState();
+        groupAddressBook.setPersons(group.getGroupList());
         filteredGroupPerson = new FilteredList<>(groupAddressBook.getPersonList());
     }
 
@@ -110,6 +113,11 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void setGroupAddressBook(ReadOnlyAddressBook addressBook) {
+        this.groupAddressBook.resetData(addressBook);
+    }
+
+    @Override
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
     }
@@ -139,16 +147,20 @@ public class ModelManager implements Model {
     }
     @Override
     public void undo() {
-        if (lastActionWasGroup && previousGroupAddressBookState != null) {
+        System.out.println("Non-group command history: " + commandHistory.size());
+        System.out.print("Group command history: " + groupCommmandHistory.size() + System.lineSeparator());
+        if (lastActionWasGroup && !groupCommmandHistory.isEmpty() && groupCommmandHistory.size() != 1) {
             undoGrouping();
-            lastActionWasGroup = false; // Reset flag after undoing
+            lastActionWasGroup = true; // Reset flag after undoing
+        } else if (lastActionWasGroup && groupCommmandHistory.size() == 1) {
+            undoGrouping();
+            lastActionWasGroup = false;
         } else if (!commandHistory.isEmpty()) {
             setAddressBook(commandHistory.pop());
         }
     }
     private void undoGrouping() {
-        groupAddressBook.resetData(addressBook);
-        previousGroupAddressBookState = null;
+        setGroupAddressBook(groupCommmandHistory.pop());
     }
     @Override
     public boolean canUndo() {
@@ -156,7 +168,7 @@ public class ModelManager implements Model {
     }
     @Override
     public boolean canUndoGrouping() {
-        return lastActionWasGroup && previousGroupAddressBookState != null;
+        return lastActionWasGroup && !groupCommmandHistory.isEmpty();
     }
     @Override
     public void saveAddressBookState() {
@@ -165,7 +177,7 @@ public class ModelManager implements Model {
     }
     @Override
     public void saveGroupAddressBookState() {
-        this.previousGroupAddressBookState = new AddressBook(groupAddressBook);
+        groupCommmandHistory.push(new AddressBook(groupAddressBook));
         lastActionWasGroup = true;
     }
     @Override

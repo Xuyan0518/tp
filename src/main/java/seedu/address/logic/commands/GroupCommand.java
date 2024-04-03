@@ -45,7 +45,6 @@ public class GroupCommand extends Command {
      */
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.saveAddressBookState();
         model.groupPerson(category);
         return new CommandResult("All persons have been grouped!");
     }

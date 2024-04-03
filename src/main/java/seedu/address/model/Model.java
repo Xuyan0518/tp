@@ -128,4 +128,8 @@ public interface Model {
      * @param replacing to replace the target.
      */
     void replacePerson(Person target, Person replacing);
+    /**
+     *
+     */
+    void setGroupAddressBook(ReadOnlyAddressBook addressBook);
 }

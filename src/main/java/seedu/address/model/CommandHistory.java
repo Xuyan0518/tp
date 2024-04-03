@@ -31,4 +31,11 @@ public class CommandHistory {
     public boolean isEmpty() {
         return history.isEmpty();
     }
+
+    /**
+     * Finds the number of copies of histories
+     */
+    public int size() {
+        return history.size();
+    }
 }
