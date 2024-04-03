@@ -93,7 +93,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void removePerson(Person key) {
         persons.remove(key);
     }
-
+    /**
+     * Replace the target with the edited person.
+     * @param target to be replaced.
+     * @param editedPerson to replace the target.
+     */
+    public void replacePerson(Person target, Person editedPerson) {
+        persons.replacePerson(target, editedPerson);
+    }
     //// util methods
 
     @Override
@@ -102,7 +109,6 @@ public class AddressBook implements ReadOnlyAddressBook {
                 .add("persons", persons)
                 .toString();
     }
-
     @Override
     public ObservableList<Person> getPersonList() {
         return persons.asUnmodifiableObservableList();

@@ -54,14 +54,15 @@ public class DeleteCategoryCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
+        Person original = personToEdit.deepCopy();
         for (int i = 0; i < categories.size(); i++) {
             String category = categories.get(i);
             Entry entry = personToEdit.getEntry(category);
             if (entry == null) {
                 throw new CommandException(String.format(MESSAGE_CATEGORY_DOES_NOT_EXIST, category));
             }
-
             personToEdit.deleteEntry(entry.getCategory());
+            model.savePersonState(personToEdit, original);
             model.setPerson(personToEdit, personToEdit);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         }
