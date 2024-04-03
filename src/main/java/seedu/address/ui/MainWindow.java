@@ -136,7 +136,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     void fillOuterParts() {
-        groups = new FilteredList<>(logic.getFilteredPersonList());
+        groups = new FilteredList<>(logic.getFilteredGroupPersonList());
 
         // Create a GridPane
         GridPane gridPane = new GridPane();
@@ -170,7 +170,7 @@ public class MainWindow extends UiPart<Stage> {
         rightPanel.getChildren().clear();
 
         // Ensure it's observing the right list
-        groups = new FilteredList<>(logic.getFilteredPersonList());
+        groups = new FilteredList<>(logic.getFilteredGroupPersonList());
 
         // Create a new GridPane
         GridPane gridPane = new GridPane();

@@ -27,6 +27,7 @@ public class ModelManager implements Model {
     private final AddressBook groupAddressBook;
     private final UserPrefs userPrefs;
     private FilteredList<Person> filteredPersons;
+    private FilteredList<Person> filteredGroupPerson;
 
     private Group group = new Group();
 
@@ -43,6 +44,7 @@ public class ModelManager implements Model {
         this.groupAddressBook = new AddressBook();
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredGroupPerson = new FilteredList<>(this.groupAddressBook.getPersonList());
     }
 
     public ModelManager() {
@@ -69,7 +71,7 @@ public class ModelManager implements Model {
         Collections.sort(persons);
         group.group(persons, category);
         groupAddressBook.setPersons(group.getGroupList());
-        filteredPersons = new FilteredList<>(groupAddressBook.getPersonList());
+        filteredGroupPerson = new FilteredList<>(groupAddressBook.getPersonList());
     }
 
 
@@ -145,6 +147,11 @@ public class ModelManager implements Model {
     @Override
     public ObservableList<Person> getFilteredPersonList() {
         return filteredPersons;
+    }
+
+    @Override
+    public ObservableList<Person> getFilteredGroupPersonList() {
+        return filteredGroupPerson;
     }
 
     @Override
