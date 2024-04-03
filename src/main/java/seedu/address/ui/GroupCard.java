@@ -41,7 +41,9 @@ public class GroupCard extends UiPart<Region> {
         for (int i = 0; i < e.size(); i++) {
             Entry entry = e.get(i);
             if (!entry.getCategory().equals("Group Name")) {
-                text = text + e.get(i).toString() + "\n";
+                String inputString = entry.toString();
+                int colonIndex = inputString.indexOf(':');
+                text = text + inputString.substring(colonIndex + 1).trim() + "\n";
             }
         }
         Entry groupNameEntry = group.getEntry("Group Name");
@@ -55,4 +57,3 @@ public class GroupCard extends UiPart<Region> {
         nameListLabel.setFont(Font.loadFont(FONT_PATH, 120));
     }
 }
-
