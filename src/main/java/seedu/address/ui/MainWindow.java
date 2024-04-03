@@ -149,8 +149,8 @@ public class MainWindow extends UiPart<Stage> {
         int columnIndex = 0;
         int rowIndex = 0;
         int maxColumns = 5; // Define the maximum number of columns
-        for (int i = 1; i <= groups.size(); i++) {
-            GroupCard groupPersonCard = new GroupCard(groups.get(i - 1));
+        for (int i = 0; i < groups.size(); i++) {
+            GroupCard groupPersonCard = new GroupCard(groups.get(i));
 
             // Add groupPersonCard to the GridPane
             gridPane.add(groupPersonCard.getRoot(), columnIndex, rowIndex);
@@ -181,8 +181,8 @@ public class MainWindow extends UiPart<Stage> {
         int columnIndex = 0;
         int rowIndex = 0;
         int maxColumns = 5; // Define the maximum number of columns
-        for (int i = 1; i <= groups.size(); i++) {
-            GroupCard groupPersonCard = new GroupCard(groups.get(i - 1));
+        for (int i = 0; i < groups.size(); i++) {
+            GroupCard groupPersonCard = new GroupCard(groups.get(i));
 
             // Add groupPersonCard to the GridPane
             gridPane.add(groupPersonCard.getRoot(), columnIndex, rowIndex);
