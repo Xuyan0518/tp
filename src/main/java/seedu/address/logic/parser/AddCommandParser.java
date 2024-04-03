@@ -69,6 +69,12 @@ public class AddCommandParser implements Parser<AddCommand> {
             if (categories.size() != descriptions.size()) {
                 throw new ParseException(AddCategoryCommand.DIFFERENT_NUMBER_CATEGORIES_DESCRIPTIONS);
             }
+
+            for (int i = 0; i < categories.size(); i++) {
+                if (categories.get(i).equalsIgnoreCase("Name")) {
+                    throw new ParseException("Name already exists!");
+                }
+            }
             entryList = ParserUtil.parseEntries(categories, descriptions);
         }
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME);
