@@ -112,12 +112,6 @@ public class Person implements Comparable<Person> {
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
-//        String thisName = this.getEntry("Name").getDescription();
-//        String otherName = otherPerson.getEntry("Name").getDescription();
-//        if (otherName.equalsIgnoreCase(thisName)) {
-//            return true;
-//        }
-//        return false;
         if (otherPerson.equals(this)) {
             return true;
         } else {
