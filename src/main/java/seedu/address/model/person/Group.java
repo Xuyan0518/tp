@@ -29,15 +29,16 @@ public class Group {
         String currCat = null;
         Person currentGroup = null;
         int index = 1;
+        // Create a separate group for persons without the category
+        Person noCategoryGroup = new Person(new Entry("Group Name", "No group"), new HashSet<>());
+        boolean noCategoryGroupAdded = false;
 
         for (Person person : personArrayList) {
             String personCat = person.getEntry(category) != null ? person.getEntry(category).getDescription() : null;
 
             if (personCat == null) {
-                if (currentGroup == null) {
-                    currentGroup = new Person(new Entry("Group Name", "No group"), new HashSet<>());
-                }
-                currentGroup.addEntry(new Entry(String.valueOf(index++), person.getEntry("Name").getDescription()));
+                noCategoryGroup.addEntry(new Entry(String.valueOf(index++), person.getEntry("Name").getDescription()));
+                noCategoryGroupAdded = true;
             } else {
                 if (currCat == null || !personCat.equals(currCat)) {
                     if (currentGroup != null) {
@@ -50,13 +51,16 @@ public class Group {
                 currentGroup.addEntry(new Entry(String.valueOf(index++), person.getEntry("Name").getDescription()));
             }
         }
-
         if (currentGroup != null) {
             groupedPerson.add(currentGroup);
         }
-
+        // Add the no category group if it contains any persons
+        if (noCategoryGroupAdded) {
+            groupedPerson.add(noCategoryGroup);
+        }
         groupList = groupedPerson;
     }
+
     public ArrayList<Person> getGroupList() {
         return groupList;
     }
