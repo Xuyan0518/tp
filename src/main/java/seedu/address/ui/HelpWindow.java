@@ -15,30 +15,37 @@ import seedu.address.commons.core.LogsCenter;
  * Controller for a help page
  */
 public class HelpWindow extends UiPart<Stage> {
-
+    //testing
     public static final String USERGUIDE_URL = "https://ay2324s2-cs2103t-w13-3.github.io/tp/UserGuide.html";
 
+    public static final String DASH = "----------------------------------------"
+           + "--------------------------------------\n";
+
     public static final String HELP_MENU = "Here is a list of commands and their examples.\n"
-            + "-------------------------------------------\n"
+            + DASH
             + "Add: add n/NAME [t/TAG]…\n"
-            + "e.g., add n/James Ho t/friend t/colleague\n"
-            + "-------------------------------------------\n"
+            + "e.g. add n/James Ho t/friend t/colleague\n"
+            + DASH
             + "Clear: clear\n"
-            + "-------------------------------------------\n"
-            + "Add a Category: addCategory 1 c/class d/warrior\n"
-            + "-------------------------------------------\n"
-            + "Delete a Category: deleteCategory 1 c/class\n"
-            + "-------------------------------------------\n"
+            + DASH
+            + "Add a Category: addCategory INDEX [c/CATEGORY] [d/DESCRIPTION]\n"
+            + "e.g. addCategory 1 c/class d/warrior\n"
+            + DASH
+            + "Delete a Category: deleteCategory INDEX [c/CATEGORY]\n"
+            + "deleteCategory 1 c/class\n"
+            + DASH
             + "Delete an entry: delete INDEX\n"
-            + "e.g., delete 3\n"
-            + "-------------------------------------------\n"
+            + "e.g. delete 3\n"
+            + DASH
             + "Edit a category: edit INDEX [c/CATEGORY] [d/DESCRIPTION]\n"
-            + "e.g.,edit 2 c/clan d/rainbow\n"
-            + "\n" + "edit INDEX [t/TAG]\n"
-            + "e.g.,edit 1 t/warrior t/mage\n"
-            + "-------------------------------------------\n"
+            + "Or\n"
+            + "edit INDEX [t/TAG]"
+            + "e.g. edit 2 c/clan d/rainbow\n"
+            + "e.g. edit 1 t/warrior t/mage\n"
+            + DASH
             + "Find: find KEYWORD [MORE_KEYWORDS]\n"
-            + "e.g., find James Jake\n" + "List\tlist";
+            + "e.g. find James Jake\n"
+            + "List: list";
     public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
@@ -62,7 +69,7 @@ public class HelpWindow extends UiPart<Stage> {
         super(FXML, root);
         helpMessage.setText(HELP_MESSAGE);
         helpMenuLabel.setText(HELP_MENU);
-        root.setResizable(false);
+        helpMessage.prefWidthProperty().bind(helpMenuLabel.widthProperty());
     }
 
     /**
@@ -132,7 +139,7 @@ public class HelpWindow extends UiPart<Stage> {
         if (event.getSource() instanceof Button) {
             Button button = (Button) event.getSource();
             // Change the button's background color
-            button.setStyle("-fx-background-color: #ff2043;"); // Change to your desired color
+            button.setStyle("-fx-background-color: #f09905;"); // Change to your desired color
         }
     }
 
@@ -141,7 +148,7 @@ public class HelpWindow extends UiPart<Stage> {
         if (event.getSource() instanceof Button) {
             Button button = (Button) event.getSource();
             // Change the button's background color
-            button.setStyle("-fx-background-color: #ffccd5;"); // Change to your desired color
+            button.setStyle("-fx-background-color: #d6b47a;"); // Change to your desired color
         }
     }
 
