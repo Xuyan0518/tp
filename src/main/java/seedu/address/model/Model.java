@@ -156,8 +156,8 @@ public interface Model {
      *
      */
     void setGroupAddressBook(ReadOnlyAddressBook addressBook);
-   /**
-    * Clears all states from the undo history.
-    */
+    /**
+     * Clears all states from the undo history.
+     */
     void clearUndoHistory();
 }
