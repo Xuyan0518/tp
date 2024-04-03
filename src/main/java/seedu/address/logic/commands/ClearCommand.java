@@ -32,7 +32,7 @@ public class ClearCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-
+        model.saveAddressBookState();
         confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Clear Command");
         confirmationAlert.setHeaderText(null);

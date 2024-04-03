@@ -38,7 +38,11 @@ public interface Model {
      * Returns the user prefs' address book file path.
      */
     Path getAddressBookFilePath();
-
+    /**
+     * Groups persons in the address book based on a specified category. This method allows for organizing
+     * contacts into groups, such as by last name, city, or any other specified category.
+     * @param category The category by which to group persons.
+     */
     void groupPerson(String category);
 
     /**
@@ -86,4 +90,40 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+    /**
+     * Performs an undo action. This method allows reverting the last change made to the address book data,
+     * supporting undo functionality for user actions.
+     */
+    void undo();
+    /**
+     * Checks if an undo operation can be performed. This method allows the application to determine
+     * if there are actions that can be undone, typically to enable or disable undo functionality in the UI.
+     * @return true if an undo operation can be performed, false otherwise.
+     */
+    boolean canUndo();
+    /**
+     * Saves the address book state.
+     */
+    void saveAddressBookState();
+    /**
+     * Saves the group address book state.
+     */
+    void saveGroupAddressBookState();
+    /**
+     * Saves the person's current state by replacing the before with after.
+     * @param before person to be replaced.
+     * @param after the replacing person.
+     */
+    void savePersonState(Person before, Person after);
+    /**
+     * Checks if a group command can be undone.
+     * @return
+     */
+    boolean canUndoGrouping();
+    /**
+     * Replaces the target person with the replacing person.
+     * @param target person to be replaced.
+     * @param replacing to replace the target.
+     */
+    void replacePerson(Person target, Person replacing);
 }
