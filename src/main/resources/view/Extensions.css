@@ -4,7 +4,6 @@
 }
 
 .list-cell:empty {
-    /* Empty cells will not have alternating colours */
     -fx-background: #d06651;
 }
 
@@ -17,4 +16,14 @@
 
 .tooltip-text {
     -fx-text-fill: white;
+}
+
+/* Hide the vertical scroll bar */
+.scroll-pane .scroll-bar:vertical {
+    -fx-opacity: 0;
+}
+
+/* Hide the horizontal scroll bar */
+.scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 0;
 }

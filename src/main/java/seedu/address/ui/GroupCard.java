@@ -55,4 +55,3 @@ public class GroupCard extends UiPart<Region> {
         nameListLabel.setFont(Font.loadFont(FONT_PATH, 120));
     }
 }
-
