@@ -30,6 +30,8 @@ public class ModelManager implements Model {
     private CommandHistory commandHistory = new CommandHistory();
     private ReadOnlyAddressBook previousGroupAddressBookState = null;
     private boolean lastActionWasGroup = false;
+    private FilteredList<Person> filteredGroupPerson;
+
     private Group group = new Group();
 
     /**
@@ -45,6 +47,7 @@ public class ModelManager implements Model {
         this.groupAddressBook = new AddressBook();
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredGroupPerson = new FilteredList<>(this.groupAddressBook.getPersonList());
     }
 
     public ModelManager() {
@@ -66,9 +69,9 @@ public class ModelManager implements Model {
         }
         Collections.sort(persons);
         group.group(persons, category);
-        saveGroupAddressBookState();
         groupAddressBook.setPersons(group.getGroupList());
-        filteredPersons = new FilteredList<>(groupAddressBook.getPersonList());
+        saveGroupAddressBookState();
+        filteredGroupPerson = new FilteredList<>(groupAddressBook.getPersonList());
     }
 
 
@@ -185,6 +188,11 @@ public class ModelManager implements Model {
     @Override
     public ObservableList<Person> getFilteredPersonList() {
         return filteredPersons;
+    }
+
+    @Override
+    public ObservableList<Person> getFilteredGroupPersonList() {
+        return filteredGroupPerson;
     }
 
     @Override
