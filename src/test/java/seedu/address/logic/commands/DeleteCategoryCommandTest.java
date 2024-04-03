@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -17,13 +18,11 @@ import seedu.address.model.person.Entry;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 
-import java.util.List;
-
 public class DeleteCategoryCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    public void execute_validOneCategory_deleteCategory_success() {
+    public void execute_validOneCategoryDeleteCategory_success() {
         Index validIndex = INDEX_SIXTH_PERSON;
         List<String> validCategory = List.of("Clan");
         DeleteCategoryCommand deleteCategoryCommand = new DeleteCategoryCommand(validIndex, validCategory);
@@ -44,7 +43,7 @@ public class DeleteCategoryCommandTest {
     }
 
     @Test
-    public void execute_validManyCategories_deleteCategory_failure() {
+    public void execute_validManyCategoriesDeleteCategory_failure() {
         Index validIndex = INDEX_FOURTH_PERSON;
         List<String> validCategory = List.of("Clan", "Class");
         DeleteCategoryCommand deleteCategoryCommand = new DeleteCategoryCommand(validIndex, validCategory);

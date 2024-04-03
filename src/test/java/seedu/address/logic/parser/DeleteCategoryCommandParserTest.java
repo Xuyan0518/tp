@@ -7,10 +7,10 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.DeleteCategoryCommand;
-public class DeleteCategoryParserTest {
-    private DeleteCategoryCommandParser parser = new DeleteCategoryCommandParser();
+public class DeleteCategoryCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCategoryCommand.MESSAGE_USAGE);
+    private DeleteCategoryCommandParser parser = new DeleteCategoryCommandParser();
 
     @Test
     public void parse_missingParts_failure() {
