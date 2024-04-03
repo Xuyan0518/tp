@@ -93,6 +93,22 @@ public class UniquePersonList implements Iterable<Person> {
 
         internalList.setAll(persons);
     }
+    /**
+     * Replaces the target with the edited person.
+      * @param target to be replaced.
+     * @param editedPerson to replace the target.
+     */
+    public void replacePerson(Person target, Person editedPerson) {
+        requireAllNonNull(target, editedPerson);
+        int index = internalList.indexOf(target);
+        if (index == -1) {
+            throw new PersonNotFoundException();
+        }
+        if (!target.isSamePerson(editedPerson) && contains(editedPerson)) {
+            throw new DuplicatePersonException();
+        }
+        internalList.set(index, editedPerson);
+    }
 
     /**
      * Returns the backing list as an unmodifiable {@code ObservableList}.

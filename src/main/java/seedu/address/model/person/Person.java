@@ -149,4 +149,19 @@ public class Person implements Comparable<Person> {
     public void setList(EntryList e) {
         entryList = e;
     }
+    /**
+     * Create a deep copy person.
+      * @return
+     */
+    public Person deepCopy() {
+        EntryList copiedEntryList = new EntryList();
+        for (Entry e : this.entryList.getEntries()) {
+            copiedEntryList.add(new Entry(e.getCategory(), e.getDescription()));
+        }
+        Set<Tag> copiedTags = new HashSet<>();
+        for (Tag t : tags) {
+            copiedTags.add(new Tag(t.getTagName()));
+        }
+        return new Person(copiedEntryList, copiedTags);
+    }
 }

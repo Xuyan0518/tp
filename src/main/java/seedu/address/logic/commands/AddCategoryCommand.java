@@ -63,6 +63,7 @@ public class AddCategoryCommand extends Command {
         }
         //Get the person you want to edit based on index
         Person personToEdit = lastShownList.get(index.getZeroBased());
+        Person original = personToEdit.deepCopy();
         for (int i = 0; i < entrylist.size(); i++) {
             Entry toAdd = entrylist.get(i);
             Entry test = personToEdit.getEntry(toAdd.getCategory());
@@ -74,7 +75,7 @@ public class AddCategoryCommand extends Command {
             Entry entry = entrylist.get(i);
             personToEdit.addEntry(entry);
         }
-        model.saveAddressBookState();
+        model.savePersonState(personToEdit, original);
         model.setPerson(personToEdit, personToEdit);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(

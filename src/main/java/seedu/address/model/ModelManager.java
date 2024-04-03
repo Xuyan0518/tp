@@ -29,7 +29,8 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private FilteredList<Person> filteredPersons;
     private CommandHistory commandHistory = new CommandHistory();
-
+    private ReadOnlyAddressBook previousGroupAddressBookState = null;
+    private boolean lastActionWasGroup = false;
     private Group group = new Group();
 
     /**
@@ -58,11 +59,7 @@ public class ModelManager implements Model {
         requireNonNull(userPrefs);
         this.userPrefs.resetData(userPrefs);
     }
-
-    /**
-     * Sorts the person list by the specified category
-     * @param category
-     */
+    @Override
     public void groupPerson(String category) {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
         for (Person person: persons) {
@@ -70,6 +67,7 @@ public class ModelManager implements Model {
         }
         Collections.sort(persons);
         group.group(persons, category);
+        saveGroupAddressBookState();
         groupAddressBook.setPersons(group.getGroupList());
         filteredPersons = new FilteredList<>(groupAddressBook.getPersonList());
     }
@@ -137,21 +135,48 @@ public class ModelManager implements Model {
 
         addressBook.setPerson(target, editedPerson);
     }
-    
+    @Override
     public void undo() {
-        if (!commandHistory.isEmpty()) {
+        if (lastActionWasGroup && previousGroupAddressBookState != null) {
+            undoGrouping();
+            lastActionWasGroup = false; // Reset flag after undoing
+        } else if (!commandHistory.isEmpty()) {
             setAddressBook(commandHistory.pop());
         }
     }
-    
+    private void undoGrouping() {
+        groupAddressBook.resetData(addressBook);
+        previousGroupAddressBookState = null;
+    }
+    @Override
     public boolean canUndo() {
         return !commandHistory.isEmpty();
     }
-    
+    @Override
+    public boolean canUndoGrouping() {
+        return lastActionWasGroup && previousGroupAddressBookState != null;
+    }
+    @Override
     public void saveAddressBookState() {
         commandHistory.push(new AddressBook(addressBook));
+        lastActionWasGroup = false; // The last action is not a group operation
     }
-
+    @Override
+    public void saveGroupAddressBookState() {
+        this.previousGroupAddressBookState = new AddressBook(groupAddressBook);
+        lastActionWasGroup = true;
+    }
+    @Override
+    public void savePersonState(Person before, Person after) {
+        AddressBook withEditedPerson = new AddressBook(addressBook);
+        withEditedPerson.replacePerson(before, after);
+        commandHistory.push(withEditedPerson);
+        lastActionWasGroup = false;
+    }
+    @Override
+    public void replacePerson(Person target, Person replacing) {
+        this.addressBook.replacePerson(target, replacing);
+    }
     //=========== Filtered Person List Accessors =============================================================
 
     /**
