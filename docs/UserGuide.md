@@ -1,4 +1,4 @@
-#**Rainbow Dragon User Guide**
+# **Rainbow Dragon User Guide**
 
 Welcome to the Rainbow Dragon User Guide! <br>
 <br>
@@ -13,25 +13,25 @@ Don't worry! ***Rainbow Dragon*** is just the right application for you!
 
 [Features](#features) 
 
-[Viewing help : help](#viewing-help--help)
+[Viewing help : help](#viewing-help-help)
 
-[Adding a person: add](#adding-a-person--add)
+[Adding a person: add](#adding-a-person-add)
 
-[Adding an entry to a person](#adding-an-entry-to-a-person--addcategory)
+[Adding an entry to a person](#adding-an-entry-to-a-person-addcategory)
 
-[Listing all persons : list](#listing-all-persons--list)
+[Listing all persons : list](#listing-all-persons-list)
 
-[Editing a person : edit](#editing-a-person--edit)
+[Editing a person : edit](#editing-a-person-edit)
 
-[Locating persons by category and description or by tag: find](#locating-persons-by-category-and-description-or-by-tag--find)
+[Locating persons by category and description or by tag: find](#locating-persons-by-category-and-description-or-by-tag-find)
 
-[Deleting a person : delete](#deleting-a-person--delete)
+[Deleting a person : delete](#deleting-a-person-delete)
 
-[Deleting a category of a person](#deleting-a-category-of-a-person--deletecategory)
+[Deleting a category of a person](#deleting-a-category-of-a-person-deletecategory)
 
-[Clearing all entries : clear](#clearing-all-entries--clear)
+[Clearing all entries : clear](#clearing-all-entries-clear)
 
-[Exiting the program : exit](#exiting-the-program--exit)
+[Exiting the program : exit](#exiting-the-program-exit)
 
 [Saving the data](#saving-the-data)
 
