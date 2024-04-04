@@ -5,7 +5,6 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -69,10 +68,6 @@ public class ModelManager implements Model {
     @Override
     public void groupPerson(String category) {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
-        for (Person person: persons) {
-            person.toCompare(category);
-        }
-        Collections.sort(persons);
         group.group(persons, category);
         saveGroupAddressBookState();
         groupAddressBook.setPersons(group.getGroupList());

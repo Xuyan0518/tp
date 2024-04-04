@@ -16,7 +16,7 @@
          </padding>
          <HBox alignment="TOP_LEFT" spacing="5">
             <!-- Wrap groupNameLabel inside a ScrollPane for horizontal scrolling -->
-            <ScrollPane hbarPolicy="ALWAYS" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="NEVER">
+            <ScrollPane hbarPolicy="ALWAYS" maxHeight="50" minHeight="50" prefHeight="50" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="NEVER">
                <content>
                   <Label fx:id="groupNameLabel" alignment="TOP_LEFT" styleClass="cell_big_label" style="-fx-text-fill: black;" text="\$first">
                      <font>
