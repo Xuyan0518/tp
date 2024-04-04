@@ -1,7 +1,9 @@
 package seedu.address.model.person;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Represents a grouping of {@code Person} objects based on a specific category.
@@ -24,12 +26,7 @@ public class Group {
         if (personArrayList.isEmpty()) {
             return;
         }
-
-        ArrayList<Person> groupedPerson = new ArrayList<>();
-        String currCat = null;
-        Person currentGroup = null;
-        int index = 1;
-        // Create a separate group for persons without the category
+        Map<String, Person> groupMap = new HashMap<>();
         Person noCategoryGroup = new Person(new Entry("Group Name", "No group"), new HashSet<>());
         boolean noCategoryGroupAdded = false;
 
@@ -37,29 +34,24 @@ public class Group {
             String personCat = person.getEntry(category) != null ? person.getEntry(category).getDescription() : null;
 
             if (personCat == null) {
-                noCategoryGroup.addEntry(new Entry(String.valueOf(index++), person.getEntry("Name").getDescription()));
+                noCategoryGroup.addEntry(new Entry("No category", person.getEntry("Name").getDescription()));
                 noCategoryGroupAdded = true;
             } else {
-                if (currCat == null || !personCat.equals(currCat)) {
-                    if (currentGroup != null) {
-                        groupedPerson.add(currentGroup);
-                    }
-                    currCat = personCat;
-                    currentGroup = new Person(new Entry("Group Name", currCat), new HashSet<>());
-                    index = 1;
+                Person group = groupMap.get(personCat);
+                if (group == null) {
+                    group = new Person(new Entry("Group Name", personCat), new HashSet<>());
+                    groupMap.put(personCat, group);
                 }
-                currentGroup.addEntry(new Entry(String.valueOf(index++), person.getEntry("Name").getDescription()));
+                group.addEntry(new Entry("Name", person.getEntry("Name").getDescription()));
             }
         }
-        if (currentGroup != null) {
-            groupedPerson.add(currentGroup);
-        }
-        // Add the no category group if it contains any persons
+        ArrayList<Person> groupedPerson = new ArrayList<>(groupMap.values());
         if (noCategoryGroupAdded) {
             groupedPerson.add(noCategoryGroup);
         }
         groupList = groupedPerson;
     }
+
 
     public ArrayList<Person> getGroupList() {
         return groupList;

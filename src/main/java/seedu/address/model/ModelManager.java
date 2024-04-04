@@ -174,9 +174,6 @@ public class ModelManager implements Model {
                 actionTracker.pop();
             }
         }
-        System.out.println("Non-group command history: " + commandHistory.size());
-        System.out.print("Group command history: " + groupCommandHistory.size() + System.lineSeparator());
-        System.out.println("Action tracker: " + ModelManager.getActionTracker().toString());
     }
     @Override
     public void redo() {

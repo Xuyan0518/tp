@@ -26,16 +26,11 @@ public class HelpWindow extends UiPart<Stage> {
             + "Add: add n/NAME [t/TAG]…\n"
             + "e.g. add n/James Ho t/friend t/colleague\n"
             + DASH
-            + "Clear: clear\n"
-            + DASH
             + "Add a Category: addCategory INDEX [c/CATEGORY] [d/DESCRIPTION]\n"
             + "e.g. addCategory 1 c/class d/warrior\n"
             + DASH
             + "Delete a Category: deleteCategory INDEX [c/CATEGORY]\n"
             + "deleteCategory 1 c/class\n"
-            + DASH
-            + "Delete an entry: delete INDEX\n"
-            + "e.g. delete 3\n"
             + DASH
             + "Edit a category: edit INDEX [c/CATEGORY] [d/DESCRIPTION]\n"
             + "Or\n"
@@ -45,7 +40,21 @@ public class HelpWindow extends UiPart<Stage> {
             + DASH
             + "Find: find KEYWORD [MORE_KEYWORDS]\n"
             + "e.g. find James Jake\n"
-            + "List: list";
+            + DASH
+            + "Delete an entry: delete INDEX\n"
+            + "e.g. delete 3\n"
+            + DASH
+            + "Group: group [c/CATEGORY]\n"
+            + "e.g. group c/clans\n"
+            + DASH
+            + "List: list\n"
+            + DASH
+            + "Undo: undo\n"
+            + DASH
+            + "Redo: redo\n"
+            + DASH
+            + "Clear: clear\n";
+
     public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
