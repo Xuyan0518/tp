@@ -100,6 +100,7 @@ The application supports custom fields, enabling you to record any information y
   2. addCategory
   3. edit
   4. deleteCategory
+  5. find
 
 > **Note**
 > * After calling `group`, subsequent commands will not refresh your groups until you call `group` again.
