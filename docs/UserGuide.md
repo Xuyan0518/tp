@@ -12,27 +12,20 @@ If you are:
 
 [Quick start](#quick-start)
 
-[Features](#features) 
-
-[Viewing help : help](#viewing-help-help)
-
-[Adding a person: add](#adding-a-person-add)
-
-[Adding an entry to a person](#adding-an-entry-to-a-person-addcategory)
-
-[Listing all persons : list](#listing-all-persons-list)
-
-[Editing a person : edit](#editing-a-person-edit)
-
-[Locating persons by category and description or by tag: find](#locating-persons-by-category-and-description-or-by-tag-find)
-
-[Deleting a person : delete](#deleting-a-person-delete)
-
-[Deleting a category of a person](#deleting-a-category-of-a-person-deletecategory)
-
-[Clearing all entries : clear](#clearing-all-entries-clear)
-
-[Exiting the program : exit](#exiting-the-program-exit)
+[Features](#features)
+1. [Viewing help : help](#viewing-help-help)
+2. [Adding a person: add](#adding-a-person-add)
+3. [Adding an entry to a person](#adding-an-entry-to-a-person-addcategory)
+4. [Listing all persons : list](#listing-all-persons-list)
+5. [Editing a person : edit](#editing-a-person-edit)
+6. [Finding person/s : find](#fing-a-contact)
+7. [Deleting a person : delete](#deleting-a-person-delete)
+8. [Deleting a category of a person : deleteCategory](#deleting-a-category-of-a-person-deletecategory)
+9. [Clearing all entries : clear](#clearing-all-entries-clear)
+10. [Undoing a command : undo](#undoing-a-command)
+11. [Redoing an undo command : redo](#redoing-an-undo-command)
+12. [Grouping all persons by Category : group](#group-all-persons-by-category-group)
+13. [Exiting the program : exit](#exiting-the-program-exit)
 
 [Saving the data](#saving-the-data)
 
@@ -84,7 +77,12 @@ If you are:
 **Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+  e.g. in `add n/NAME c/CATEGORY d/DESCRIPTION`, `NAME` is a parameter which can be used as `add n/John Doe c/clan d/rainbow dragon`.
+
+* In Rainbow Dragon, there are no restrictions on the types of fields you can create. 
+The application supports custom fields, enabling you to record any information you need, tailored to your specific requirements.
+
+* We call these fields **categories** and `c/` is the prefix for category and `d/` is the prefix for the description for the category. 
 
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
@@ -94,6 +92,17 @@ If you are:
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+
+* Rainbow Dragon accepts duplicated name as a gamer might have the same name and play a different game.
+
+* The following command supports batch processing: 
+  1. add
+  2. addCategory
+  3. edit
+  4. deleteCategory
+
+> **Note**
+> * After calling `group`, subsequent commands will not refresh your groups until you call `group` again.
 
 </box>
 
@@ -259,6 +268,11 @@ Clears all entries from the address book.
 Examples:
 ![ClearCommand](images/ClearCommand.png)
 
+<box type="warning" seamless>
+**Caution:**
+You cannot undo or redo a clear command!
+</box>
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Exiting the program : `exit`
@@ -266,6 +280,46 @@ Examples:
 Exits the program.
 
 *Format:* `exit`
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+## Undoing a command
+Undoes a non-clear command.
+
+Format `undo`
+- Able to go back to the most recent state of the address book.
+- Supports multiple `undo` actions, until the point where the address book was not changed during the same launch.
+
+--------------------------------------------------------------------------------------------------------------------
+## Redoing an undo command
+Redoes an undo command.
+
+Format `redo`
+
+- Able to go back to the previous state of the address book after an undo command.
+- Supports multiple `redo` actions, until the point where there is no more existing undo state.
+
+--------------------------------------------------------------------------------------------------------------------
+## Group all Persons by Category : `Group`
+
+Groups the addressbook by a specified category
+
+Format: `group [c/CATEGORY]`
+
+* Groups all persons by the specified category.
+* Persons with the same description for the specified category will be grouped together.
+* Persons without this category will be grouped under 'No Group'.
+* The category does not need to exist.
+* The group panel will not refresh unless 'Group' is called.
+
+<box type="tip" seamless>
+
+**Tip:** Each Group Panel is scrollable horizontally!
+</box>
+
+Examples:
+* `list` followed by `group c/clan`  groups all persons with the same clan together
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -284,12 +338,6 @@ AddressBook data are saved automatically as a JSON file `[JAR file location]/dat
 If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
-
---------------------------------------------------------------------------------------------------------------------
-
-## Organised groupings of contacts `[coming in v2.0]`
-
-_Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -312,10 +360,13 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add n/NAME [t/TAG]…​` <br> e.g., `add n/James Ho t/friend t/colleague`
 **Clear**  | `clear`
-**addCategory**  | `addCategory 1 c/class d/warrior`
-**deleteCategory**  | `deleteCategory 1 c/class`
+**AddCategory**  | `addCategory 1 c/class d/warrior`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
+**DeleteCategory**  | `deleteCategory INDEX [c/CATEGORY]…​` <br> e.g., `deleteCategory 1 c/clan`
 **Edit**   | `edit INDEX [c/CATEGORY] [d/DESCRIPTION] …​`<br> e.g.,`edit 2 c/clan d/rainbow` <br><br> `edit INDEX [t/TAG]` <br> e.g.,`edit 1 t/warrior t/mage`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find**   | `find [c/CATEGORY]…[d/DESCRIPTION]…​`<br> e.g., `find c/clan d/rainbow` <br><br> `find t/[TAG]…​` <br> e.g., `find t/leader`
+**Undo**   | `undo`
+**Redo**   | `redo`
+**Group**  | `group c/clan`
 **List**   | `list`
 **Help**   | `help`
