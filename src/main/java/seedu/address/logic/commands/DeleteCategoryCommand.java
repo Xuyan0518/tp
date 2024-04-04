@@ -10,6 +10,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.Person;
 
@@ -66,6 +67,7 @@ public class DeleteCategoryCommand extends Command {
 
             personToEdit.deleteEntry(entry.getCategory());
             model.savePersonState(personToEdit, original);
+            ModelManager.getActionTracker().push(false);
             model.clearUndoHistory();
             model.setPerson(personToEdit, personToEdit);
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);

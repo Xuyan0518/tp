@@ -41,4 +41,10 @@ public class CommandHistory {
     public int size() {
         return history.size();
     }
+    /**
+     * Clears the deque.
+     */
+    public void clear() {
+        history.clear();;
+    }
 }

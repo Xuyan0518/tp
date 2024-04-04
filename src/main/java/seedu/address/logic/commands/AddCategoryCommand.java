@@ -12,6 +12,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.EntryList;
 import seedu.address.model.person.Person;
@@ -76,6 +77,7 @@ public class AddCategoryCommand extends Command {
             personToEdit.addEntry(entry);
         }
         model.savePersonState(personToEdit, original);
+        ModelManager.getActionTracker().push(false);
         model.clearUndoHistory();
         model.setPerson(personToEdit, personToEdit);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
