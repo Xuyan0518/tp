@@ -70,10 +70,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (categories.isEmpty() && !editPersonDescriptor.isAnyTagEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
         }
-
         EntryList entrylist = ParserUtil.parseEntries(categories, descriptions);
         editPersonDescriptor.setEntryList(entrylist);
-
         return new EditCommand(index, editPersonDescriptor);
     }
 
