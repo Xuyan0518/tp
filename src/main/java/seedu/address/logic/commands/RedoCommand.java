@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.model.Model;
 
 /**
@@ -16,12 +18,10 @@ public class RedoCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) {
-        if (model.canRedoGrouping()) {
+        requireNonNull(model);
+        if (model.canRedo()) {
             model.redo();
-            return new CommandResult(MESSAGE_SUCCESS + " Last grouping operation redone.");
-        } else if (model.canRedo()) {
-            model.redo();
-            return new CommandResult(MESSAGE_SUCCESS + " Last command redone.");
+            return new CommandResult(MESSAGE_SUCCESS);
         } else {
             return new CommandResult(MESSAGE_FAILURE);
         }

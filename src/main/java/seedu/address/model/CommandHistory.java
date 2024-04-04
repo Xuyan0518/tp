@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import java.util.Deque;
 import java.util.LinkedList;
+
 /**
  * Represents a history of commands executed on the address book, allowing for undo operations.
  * This class maintains a stack-like structure of address book states, where each state represents
