@@ -97,7 +97,9 @@ Don't worry! ***Rainbow Dragon*** is just the right application for you!
 
 </box>
 
-### Viewing help : `help`
+--------------------------------------------------------------------------------------------------------------------
+
+## Viewing help : `help`
 
 Shows a message explaining how to access the help page.
 
@@ -105,8 +107,9 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
+--------------------------------------------------------------------------------------------------------------------
 
-### Adding a person: `add`
+## Adding a person: `add`
 
 Adds a person to the address book.
 
@@ -121,13 +124,17 @@ Examples:
 * `add n/John Doe t/friend` Adds the person named "John Doe" to the address book with one tag "friend"
 * `add n/Betsy Crowe t/lover t/family` Adds the person named "Betsy Crowe" to the address book with two tags, "lover" and "family".
 
-### Listing all persons : `list`
+--------------------------------------------------------------------------------------------------------------------
+
+## Listing all persons : `list`
 
 Shows a list of all persons in the address book.
 
 Format: `list`
 
-### Editing a person : `edit`
+--------------------------------------------------------------------------------------------------------------------
+
+## Editing a person : `edit`
 
 Edits an existing person in the address book.
 
@@ -150,7 +157,9 @@ Examples:
 * To edit person 1's tags to `warrior` and `mage`:<br>
 > `edit 1 t/warrior t/mage`
 
-### Adding an entry to a person : `addCategory`
+--------------------------------------------------------------------------------------------------------------------
+
+## Adding an entry to a person : `addCategory`
 
 Adds an entry to an existing person in the address book.
 
@@ -166,7 +175,9 @@ Examples:
 * To add person 1's class `warrior` to person 1:<br>
 > `addCategory 1 t/class d/warrior`
 
-### Locating persons by category and description or by tag: `find`
+--------------------------------------------------------------------------------------------------------------------
+
+## Locating persons by category and description or by tag: `find`
 
 Find a specific person from the address book.
 
@@ -176,7 +187,9 @@ Format: `find c/<category> d/<description>` or `find t/<tag>`
 * Category refers to a field a person has, such as `name`, `phone` and etc.
 * Tag refers to the specific type of person in the address book, such as `friends`, `neighbours` and etc.
 
-### Deleting a person : `delete`
+--------------------------------------------------------------------------------------------------------------------
+
+## Deleting a person : `delete`
 
 Deletes the specified person from the address book.
 
@@ -190,7 +203,9 @@ Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
-### Deleting a category of a person : `deleteCategory`
+--------------------------------------------------------------------------------------------------------------------
+
+## Deleting a category of a person : `deleteCategory`
 
 Deletes the specified category of a person.
 
@@ -205,23 +220,31 @@ Examples:
 * `list` followed by `deleteCategory 2 c/Email` deletes the category "Email" of the 2nd person in the list.
 * `find Jack` followed by `deleteCategory 1 c/Address` deletes the category "Address" of the 1st person in the results of the `find` command.
 
-### Clearing all entries : `clear`
+--------------------------------------------------------------------------------------------------------------------
+
+## Clearing all entries : `clear`
 
 Clears all entries from the address book.
 
 Format: `clear`
 
-### Exiting the program : `exit`
+--------------------------------------------------------------------------------------------------------------------
+
+## Exiting the program : `exit`
 
 Exits the program.
 
 Format: `exit`
 
-### Saving the data
+--------------------------------------------------------------------------------------------------------------------
+
+## Saving the data
 
 AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
-### Editing the data file
+--------------------------------------------------------------------------------------------------------------------
+
+## Editing the data file
 
 AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
@@ -231,7 +254,9 @@ If your changes to the data file makes its format invalid, AddressBook will disc
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
-### Organised groupings of contacts `[coming in v2.0]`
+--------------------------------------------------------------------------------------------------------------------
+
+## Organised groupings of contacts `[coming in v2.0]`
 
 _Details coming soon ..._
 
