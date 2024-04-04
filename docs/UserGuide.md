@@ -45,7 +45,6 @@ Don't worry! ***Rainbow Dragon*** is just the right application for you!
 
 <!-- * Table of Contents -->
 <page-nav-print />
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## Quick start

@@ -10,6 +10,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.EntryList;
 import seedu.address.model.person.Person;
@@ -71,6 +72,7 @@ public class AddCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         model.saveAddressBookState();
+        ModelManager.getActionTracker().push(false);
         model.clearUndoHistory();
         assert toAdd != null : "Person to add cannot be null";
 

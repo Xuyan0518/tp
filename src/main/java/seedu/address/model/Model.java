@@ -103,15 +103,13 @@ public interface Model {
      */
     void redo();
     /**
-     * Checks if an undo operation can be performed. This method allows the application to determine
-     * if there are actions that can be undone, typically to enable or disable undo functionality in the UI.
-     * @return true if an undo operation can be performed, false otherwise.
+     * Keep track if the address book can undo
      */
     boolean canUndo();
     /**
-     * Checks if a redo operation can be performed. This method allows the application to determine
-     * if there are actions that can be redone, typically to enable or disable redo functionality in the UI.
-     * @return true if a redo operation can be performed, false otherwise.
+     * Checks if an undo operation can be performed. This method allows the application to determine
+     * if there are actions that can be undone, typically to enable or disable undo functionality in the UI.
+     * @return true if an undo operation can be performed, false otherwise.
      */
     boolean canRedo();
     /**
@@ -137,11 +135,6 @@ public interface Model {
      */
     void savePersonState(Person before, Person after);
     /**
-     * Checks if a group command can be undone.
-     * @return
-     */
-    boolean canUndoGrouping();
-    /**
      * Checks if a group command can be redone.
      * @return
      */
@@ -160,4 +153,8 @@ public interface Model {
      * Clears all states from the undo history.
      */
     void clearUndoHistory();
+    /**
+     * Clears all histories
+     */
+    void clearAllCommandHistories();
 }

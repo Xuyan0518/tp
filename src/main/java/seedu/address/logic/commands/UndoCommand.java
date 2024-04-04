@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.model.Model;
 
 /**
@@ -14,12 +16,10 @@ public class UndoCommand extends Command {
     public static final String MESSAGE_FAILURE = "No actions to undo.";
     @Override
     public CommandResult execute(Model model) {
-        if (model.canUndoGrouping()) {
+        requireNonNull(model);
+        if (model.canUndo()) {
             model.undo();
-            return new CommandResult(MESSAGE_SUCCESS + " Last grouping operation undone.");
-        } else if (model.canUndo()) {
-            model.undo();
-            return new CommandResult(MESSAGE_SUCCESS + " Last command undone.");
+            return new CommandResult(MESSAGE_SUCCESS);
         } else {
             return new CommandResult(MESSAGE_FAILURE);
         }

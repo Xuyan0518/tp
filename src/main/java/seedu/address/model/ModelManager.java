@@ -5,6 +5,8 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -20,7 +22,7 @@ import seedu.address.model.person.Person;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-
+    private static Stack<Boolean> actionTracker = new Stack<>();
     private final AddressBook addressBook;
 
     private final AddressBook groupAddressBook;
@@ -28,11 +30,10 @@ public class ModelManager implements Model {
     private FilteredList<Person> filteredPersons;
     private CommandHistory commandHistory = new CommandHistory();
     private UndoHistory undoHistory = new UndoHistory();
-    private boolean lastActionWasGroup = false;
     private boolean lastUndoActionWasGroup = false;
     private FilteredList<Person> filteredGroupPerson;
 
-    private CommandHistory groupCommmandHistory = new CommandHistory();
+    private CommandHistory groupCommandHistory = new CommandHistory();
     private UndoHistory groupUndoHistory = new UndoHistory();
 
     private Group group = new Group();
@@ -60,6 +61,9 @@ public class ModelManager implements Model {
 
     //=========== UserPrefs ==================================================================================
 
+    public static Stack<Boolean> getActionTracker() {
+        return ModelManager.actionTracker;
+    }
     @Override
     public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
         requireNonNull(userPrefs);
@@ -68,9 +72,14 @@ public class ModelManager implements Model {
     @Override
     public void groupPerson(String category) {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
+        for (Person person: persons) {
+            person.toCompare(category);
+        }
+        Collections.sort(persons);
         group.group(persons, category);
         saveGroupAddressBookState();
         groupAddressBook.setPersons(group.getGroupList());
+        ModelManager.getActionTracker().push(true);
         filteredGroupPerson = new FilteredList<>(groupAddressBook.getPersonList());
     }
 
@@ -144,18 +153,26 @@ public class ModelManager implements Model {
     }
     @Override
     public void undo() {
-        System.out.println("Non-group command history: " + commandHistory.size());
-        System.out.print("Group command history: " + groupCommmandHistory.size() + System.lineSeparator());
-        if (lastActionWasGroup && !groupCommmandHistory.isEmpty() && groupCommmandHistory.size() != 1) {
-            undoGrouping();
-            lastActionWasGroup = true; // Reset flag after undoing
-        } else if (lastActionWasGroup && groupCommmandHistory.size() == 1) {
-            undoGrouping();
-            lastActionWasGroup = false;
-        } else if (!commandHistory.isEmpty()) {
-            saveUndoneAddressBookState();
-            setAddressBook(commandHistory.pop());
-            lastUndoActionWasGroup = false;
+        if (actionTracker.isEmpty()) {
+            System.out.println("Nothing to undo.");
+            return;
+        }
+        // Peek at the last action to decide whether it's a group or non-group action.
+        boolean lastActionWasGroup = actionTracker.peek();
+        if (lastActionWasGroup) {
+            // If the last action was a group action and there's something to undo.
+            if (!groupCommandHistory.isEmpty()) {
+                undoGrouping();
+                // After undoing, pop the action type since it's been handled.
+                actionTracker.pop();
+            }
+        } else {
+            // If the last action was a non-group action and there's something to undo.
+            if (!commandHistory.isEmpty()) {
+                setAddressBook(commandHistory.pop());
+                // After undoing, pop the action type since it's been handled.
+                actionTracker.pop();
+            }
         }
     }
     @Override
@@ -171,30 +188,25 @@ public class ModelManager implements Model {
         } else if (!undoHistory.isEmpty()) {
             saveAddressBookState();
             setAddressBook(undoHistory.pop());
-            lastActionWasGroup = false;
+            //lastActionWasGroup = false;
         }
     }
     private void undoGrouping() {
-        saveUndoneGroupAddressBookState();
-        setGroupAddressBook(groupCommmandHistory.pop());
-        lastUndoActionWasGroup = true;
+        //saveUndoneGroupAddressBookState();
+        setGroupAddressBook(groupCommandHistory.pop());
     }
     private void redoGrouping() {
         saveGroupAddressBookState();
         setGroupAddressBook(groupUndoHistory.pop());
-        lastActionWasGroup = true;
+        //lastActionWasGroup = true;
     }
     @Override
     public boolean canUndo() {
-        return !commandHistory.isEmpty();
+        return (!commandHistory.isEmpty() || !groupCommandHistory.isEmpty()) && !actionTracker.isEmpty();
     }
     @Override
     public boolean canRedo() {
         return !undoHistory.isEmpty();
-    }
-    @Override
-    public boolean canUndoGrouping() {
-        return lastActionWasGroup && !groupCommmandHistory.isEmpty();
     }
     @Override
     public boolean canRedoGrouping() {
@@ -203,7 +215,6 @@ public class ModelManager implements Model {
     @Override
     public void saveAddressBookState() {
         commandHistory.push(new AddressBook(addressBook));
-        lastActionWasGroup = false; // The last action is not a group operation
     }
     @Override
     public void saveUndoneAddressBookState() {
@@ -212,8 +223,7 @@ public class ModelManager implements Model {
     }
     @Override
     public void saveGroupAddressBookState() {
-        groupCommmandHistory.push(new AddressBook(groupAddressBook));
-        lastActionWasGroup = true;
+        groupCommandHistory.push(new AddressBook(groupAddressBook));
     }
     @Override
     public void saveUndoneGroupAddressBookState() {
@@ -225,7 +235,6 @@ public class ModelManager implements Model {
         AddressBook withEditedPerson = new AddressBook(addressBook);
         withEditedPerson.replacePerson(before, after);
         commandHistory.push(withEditedPerson);
-        lastActionWasGroup = false;
     }
     @Override
     public void replacePerson(Person target, Person replacing) {
@@ -234,6 +243,11 @@ public class ModelManager implements Model {
     @Override
     public void clearUndoHistory() {
         this.undoHistory.clear();
+    }
+    @Override
+    public void clearAllCommandHistories() {
+        commandHistory.clear();
+        groupCommandHistory.clear();
     }
     //=========== Filtered Person List Accessors =============================================================
 
