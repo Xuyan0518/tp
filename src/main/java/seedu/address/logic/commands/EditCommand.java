@@ -98,17 +98,15 @@ public class EditCommand extends Command {
         //Checks whether category exist for this person.
         for (int i = 0; i < entryList.size(); i++) {
             Entry toAdd = entryList.get(i);
-            Entry test = personToEdit.getEntry(toAdd.getCategory());
+            Entry test = personToEdit.getEntry(toAdd.getCategory().toLowerCase());
             if (test == null) {
                 throw new CommandException(MESSAGE_CATEGORY_DOESNT_EXIST);
             } else {
+                //if the category exit
+                Entry entryToAdd = new Entry(test.getCategory(), toAdd.getDescription());
                 personToEdit.deleteEntry(toAdd.getCategory());
+                personToEdit.addEntry(entryToAdd);
             }
-        }
-        //Set new person's entry accordingly to the list
-        for (int i = 0; i < entryList.size(); i++) {
-            Entry entry = entryList.get(i);
-            personToEdit.addEntry(entry);
         }
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         personToEdit.setTags(updatedTags);
