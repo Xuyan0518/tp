@@ -275,15 +275,6 @@ You cannot undo or redo a clear command!
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Exiting the program : `exit`
-
-Exits the program.
-
-*Format:* `exit`
-
---------------------------------------------------------------------------------------------------------------------
-
-
 ## Undoing a command
 Undoes a non-clear command.
 
@@ -320,6 +311,14 @@ Format: `group [c/CATEGORY]`
 
 Examples:
 * `list` followed by `group c/clan`  groups all persons with the same clan together
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Exiting the program : `exit`
+
+Exits the program.
+
+*Format:* `exit`
 
 --------------------------------------------------------------------------------------------------------------------
 
