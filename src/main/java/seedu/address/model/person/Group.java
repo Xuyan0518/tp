@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import seedu.address.logic.commands.exceptions.CommandException;
+
 /**
  * Represents a grouping of {@code Person} objects based on a specific category.
  * This class allows for the organization of persons into groups where each group
@@ -12,7 +14,9 @@ import java.util.Map;
  */
 public class Group {
 
+    private static final String MESSAGE_EMPTY_ADDRESS_BOOK = "Address book is empty!";
     private ArrayList<Person> groupList;
+
     /**
      * Groups a list of {@code Person} objects based on the specified category.
      * Each group is represented by a {@code Person} object where the "Group Name"
@@ -22,9 +26,9 @@ public class Group {
      * @param personArrayList The list of {@code Person} objects to be grouped.
      * @param category The category used to group the {@code Person} objects.
      */
-    public void group(ArrayList<Person> personArrayList, String category) {
+    public void group(ArrayList<Person> personArrayList, String category) throws CommandException {
         if (personArrayList.isEmpty()) {
-            return;
+            throw new CommandException(MESSAGE_EMPTY_ADDRESS_BOOK);
         }
         Map<String, Person> groupMap = new HashMap<>();
         Person noCategoryGroup = new Person(new Entry("Group Name", "No group"), new HashSet<>());

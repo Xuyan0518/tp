@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Group;
 import seedu.address.model.person.Person;
 
@@ -66,14 +67,15 @@ public class ModelManager implements Model {
         this.userPrefs.resetData(userPrefs);
     }
     @Override
-    public void groupPerson(String category) {
+    public void groupPerson(String category) throws CommandException {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
+
         group.group(persons, category);
         saveGroupAddressBookState();
         groupAddressBook.setPersons(group.getGroupList());
         filteredGroupPerson = new FilteredList<>(groupAddressBook.getPersonList());
-    }
 
+    }
 
     @Override
     public ReadOnlyUserPrefs getUserPrefs() {
@@ -118,6 +120,7 @@ public class ModelManager implements Model {
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
     }
+
 
     @Override
     public boolean hasPerson(Person person) {
