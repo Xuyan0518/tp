@@ -5,9 +5,10 @@ Welcome to the Rainbow Dragon User Guide! <br>
 If you are:
 - Passionate about being the **BEST** player in **ANY** games that you like
 - Striving to build an unprecedentedly powerful clan or multiple clans
-- Someone who values **camaraderie** and wants to **maintain and manage** good relationships with all your gaming friends <br>
+- Someone who values **camaraderie** and wants to **maintain and manage** good relationships with all your gaming friends
+- More used to typing on keyboards than using the mouse <br>
 
-Don't worry! ***Rainbow Dragon*** is just the right application for you!
+***Rainbow Dragon*** is just the right application for you!
 
 [Quick start](#quick-start)
 

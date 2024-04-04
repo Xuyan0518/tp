@@ -5,7 +5,6 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -14,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Group;
 import seedu.address.model.person.Person;
 
@@ -69,12 +69,8 @@ public class ModelManager implements Model {
         this.userPrefs.resetData(userPrefs);
     }
     @Override
-    public void groupPerson(String category) {
+    public void groupPerson(String category) throws CommandException {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
-        for (Person person: persons) {
-            person.toCompare(category);
-        }
-        Collections.sort(persons);
         group.group(persons, category);
         saveGroupAddressBookState();
         groupAddressBook.setPersons(group.getGroupList());
@@ -125,6 +121,7 @@ public class ModelManager implements Model {
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
     }
+
 
     @Override
     public boolean hasPerson(Person person) {
