@@ -153,7 +153,6 @@ public interface Model {
      * Clears all states from the undo history.
      */
     void clearUndoHistory();
-    
     /**
      * Clears all histories
      */

@@ -6,9 +6,9 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
-import java.util.Stack;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -22,7 +22,7 @@ import seedu.address.model.person.Person;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-
+    private static Stack<Boolean> actionTracker = new Stack<>();
     private final AddressBook addressBook;
 
     private final AddressBook groupAddressBook;
@@ -37,7 +37,6 @@ public class ModelManager implements Model {
     private UndoHistory groupUndoHistory = new UndoHistory();
 
     private Group group = new Group();
-    private static Stack<Boolean> actionTracker = new Stack<>();
 
 
     /**
@@ -154,17 +153,12 @@ public class ModelManager implements Model {
     }
     @Override
     public void undo() {
-        System.out.println("Non-group command history: " + commandHistory.size());
-        System.out.println("Group command history: " + groupCommandHistory.size() + System.lineSeparator());
-        System.out.println("Action tracker: " + ModelManager.getActionTracker().toString());
         if (actionTracker.isEmpty()) {
             System.out.println("Nothing to undo.");
             return;
         }
-    
         // Peek at the last action to decide whether it's a group or non-group action.
         boolean lastActionWasGroup = actionTracker.peek();
-    
         if (lastActionWasGroup) {
             // If the last action was a group action and there's something to undo.
             if (!groupCommandHistory.isEmpty()) {
@@ -204,23 +198,19 @@ public class ModelManager implements Model {
         //saveUndoneGroupAddressBookState();
         setGroupAddressBook(groupCommandHistory.pop());
     }
-    
     private void redoGrouping() {
         saveGroupAddressBookState();
         setGroupAddressBook(groupUndoHistory.pop());
         //lastActionWasGroup = true;
     }
-    
     @Override
     public boolean canUndo() {
         return (!commandHistory.isEmpty() || !groupCommandHistory.isEmpty()) && !actionTracker.isEmpty();
     }
-    
     @Override
     public boolean canRedo() {
         return !undoHistory.isEmpty();
     }
-    
     @Override
     public boolean canRedoGrouping() {
         return lastUndoActionWasGroup && !groupUndoHistory.isEmpty();
