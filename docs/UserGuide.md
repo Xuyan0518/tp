@@ -275,15 +275,6 @@ You cannot undo or redo a clear command!
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Exiting the program : `exit`
-
-Exits the program.
-
-*Format:* `exit`
-
---------------------------------------------------------------------------------------------------------------------
-
-
 ## Undoing a command
 Undoes a non-clear command.
 
@@ -323,6 +314,13 @@ Examples:
 
 --------------------------------------------------------------------------------------------------------------------
 
+## Exiting the program : `exit`
+
+Exits the program.
+
+*Format:* `exit`
+
+--------------------------------------------------------------------------------------------------------------------
 ## Saving the data
 
 AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
