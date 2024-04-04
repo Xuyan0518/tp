@@ -19,6 +19,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.EntryList;
 import seedu.address.model.person.Person;
@@ -79,6 +80,7 @@ public class EditCommand extends Command {
         //Over here, they replaced the old person info with the new person (editpersondescriptor)
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
         model.savePersonState(editedPerson, originalPerson);
+        ModelManager.getActionTracker().push(false);
         model.clearUndoHistory();
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);

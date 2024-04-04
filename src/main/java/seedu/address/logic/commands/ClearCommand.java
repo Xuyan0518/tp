@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
 
 /**
  * Clears the address book.
@@ -32,8 +33,9 @@ public class ClearCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.saveAddressBookState();
         model.clearUndoHistory();
+        model.clearAllCommandHistories();
+        ModelManager.getActionTracker().clear();
         confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Clear Command");
         confirmationAlert.setHeaderText(null);
@@ -41,6 +43,7 @@ public class ClearCommand extends Command {
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             model.setAddressBook(new AddressBook());
+            model.setGroupAddressBook(new AddressBook());
             return new CommandResult(MESSAGE_SUCCESS);
         } else {
             return new CommandResult(MESSAGE_CANCEL);
