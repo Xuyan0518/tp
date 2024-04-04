@@ -12,27 +12,19 @@ If you are:
 
 [Quick start](#quick-start)
 
-[Features](#features) 
-
-[Viewing help : help](#viewing-help-help)
-
-[Adding a person: add](#adding-a-person-add)
-
-[Adding an entry to a person](#adding-an-entry-to-a-person-addcategory)
-
-[Listing all persons : list](#listing-all-persons-list)
-
-[Editing a person : edit](#editing-a-person-edit)
-
-[Locating persons by category and description or by tag: find](#locating-persons-by-category-and-description-or-by-tag-find)
-
-[Deleting a person : delete](#deleting-a-person-delete)
-
-[Deleting a category of a person](#deleting-a-category-of-a-person-deletecategory)
-
-[Clearing all entries : clear](#clearing-all-entries-clear)
-
-[Exiting the program : exit](#exiting-the-program-exit)
+[Features](#features)
+1. [Viewing help : help](#viewing-help-help)
+2. [Adding a person: add](#adding-a-person-add)
+3. [Adding an entry to a person](#adding-an-entry-to-a-person-addcategory)
+4. [Listing all persons : list](#listing-all-persons-list)
+5. [Editing a person : edit](#editing-a-person-edit)
+6. [Finding person/s : find](#fing-a-contact)
+7. [Deleting a person : delete](#deleting-a-person-delete)
+8. [Deleting a category of a person : deleteCategory](#deleting-a-category-of-a-person-deletecategory)
+9. [Clearing all entries : clear](#clearing-all-entries-clear)
+10. [Undoing a command : undo](#undoing-a-command)
+11. [Redoing an undo command : redo](#redoing-an-undo-command)
+12. [Exiting the program : exit](#exiting-the-program-exit)
 
 [Saving the data](#saving-the-data)
 
@@ -84,7 +76,12 @@ If you are:
 **Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+  e.g. in `add n/NAME c/CATEGORY d/DESCRIPTION`, `NAME` is a parameter which can be used as `add n/John Doe c/clan d/rainbow dragon`.
+
+* In Rainbow Dragon, there are no restrictions on the types of fields you can create. 
+The application supports custom fields, enabling you to record any information you need, tailored to your specific requirements.
+
+* We call these fields **categories** and `c/` is the prefix for category and `d/` is the prefix for the description for the category. 
 
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
@@ -94,6 +91,17 @@ If you are:
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+
+* Rainbow Dragon accepts duplicated name as a gamer might have the same name and play a different game.
+
+* The following command supports batch processing: 
+  1. add
+  2. addCategory
+  3. edit
+  4. deleteCategory
+
+> **Note**
+> * After calling `group`, subsequent commands will not refresh your groups until you call `group` again.
 
 </box>
 
@@ -177,18 +185,6 @@ Examples:
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Locating persons by category and description or by tag: `find`
-
-Find a specific person from the address book.
-
-Format: `find c/<category> d/<description>` or `find t/<tag>`
-
-* Find anyone in the address book with matching category and description or tag only
-* Category refers to a field a person has, such as `name`, `phone` and etc.
-* Tag refers to the specific type of person in the address book, such as `friends`, `neighbours` and etc.
-
---------------------------------------------------------------------------------------------------------------------
-
 ## Deleting a person : `delete`
 
 Deletes the specified person from the address book.
@@ -209,7 +205,7 @@ Examples:
 
 Deletes the specified category of a person.
 
-Format: `deleteCategory INDEX c/CATEGORY`
+Format: `deleteCategory INDEX [c/CATEGORY]…`
 
 * Deletes the `CATEGORY` of a person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
@@ -236,6 +232,46 @@ Exits the program.
 
 Format: `exit`
 
+--------------------------------------------------------------------------------------------------------------------
+
+## Finding person/s
+Format:
+(Every `find`, by category and description pair/s or by tag/s, is case insensitive)
+- `find c/CATEGORY d/DESCRIPTION`
+    - Finds all persons who have at least one category and description pair that matches the CATEGORY and DESCRIPTION pair specified in the command line.
+    - As long as both CATEGORY and DESCRIPTION specified in the command line partially match a person, the person is considered to be found.
+- `find c/TAG`
+    - Finds all persons who have at least one tag that matches the TAG specified in the command line.
+    - Finding by tag also enables successful search of partially matched TAG specified in the command line and the tag of a person.
+- `find c/CATEGORY_1 d/DESCRIPTION_1 c/CATEGORY_2 d/DESCRIPTION_2 c/… d/…`
+    - Finding also allows batch processing, where any of the specified category and description pairs matches that of a person, the person is considered to be found.
+- `find t/[TAG]…`
+    - Finding by tag also allows batch processing as well as partial match between the TAG specified in the command line and that tag of a person.
+      Example:
+    - `find c/clan d/rain`
+    - `find t/leader`
+    - `find c/clan d/rain c/class d/master`
+    - `find t/leader t/troller`
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Undoing a command
+Undoes a non-clear command.
+
+Format `undo`
+- Able to go back to the most recent state of the address book.
+- Supports multiple `undo` actions, until the point where the address book was not changed during the same launch.
+
+
+--------------------------------------------------------------------------------------------------------------------
+## Redoing an undo command
+Redoes an undo command.
+
+Format `redo`
+
+- Able to go back to the previous state of the address book after an undo command.
+- Supports multiple `redo` actions, until the point where there is no more existing undo state.
+-
 --------------------------------------------------------------------------------------------------------------------
 
 ## Saving the data
@@ -281,10 +317,12 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add n/NAME [t/TAG]…​` <br> e.g., `add n/James Ho t/friend t/colleague`
 **Clear**  | `clear`
-**addCategory**  | `addCategory 1 c/class d/warrior`
-**deleteCategory**  | `deleteCategory 1 c/class`
+**AddCategory**  | `addCategory 1 c/class d/warrior`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
+**DeleteCategory**  | `deleteCategory INDEX [c/CATEGORY]…​` <br> e.g., `deleteCategory 1 c/clan`
 **Edit**   | `edit INDEX [c/CATEGORY] [d/DESCRIPTION] …​`<br> e.g.,`edit 2 c/clan d/rainbow` <br><br> `edit INDEX [t/TAG]` <br> e.g.,`edit 1 t/warrior t/mage`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find**   | `find [c/CATEGORY]…[d/DESCRIPTION]…​`<br> e.g., `find c/clan d/rainbow` <br><br> `find t/[TAG]…​` <br> e.g., `find t/leader`
+**Undo**   | `undo`
+**Redo**   | `redo`
 **List**   | `list`
 **Help**   | `help`
