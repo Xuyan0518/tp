@@ -10,7 +10,7 @@
       <columnConstraints>
          <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
       </columnConstraints>
-      <VBox alignment="TOP_LEFT" minHeight="105" style="-fx-background-color: #d6b47a; -fx-border-color: #8a5803; -fx-border-width: 3; -fx-background-radius: 9; -fx-border-radius: 10;" GridPane.columnIndex="0">
+      <VBox alignment="TOP_LEFT" minHeight="105" style="-fx-background-color: #ffe680; -fx-border-color: #ffb380; -fx-border-width: 3; -fx-background-radius: 9; -fx-border-radius: 10;" GridPane.columnIndex="0">
          <padding>
             <Insets bottom="5" left="15" right="5" top="5" />
          </padding>

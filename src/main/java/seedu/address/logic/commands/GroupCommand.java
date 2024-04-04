@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Group;
 
@@ -43,10 +44,10 @@ public class GroupCommand extends Command {
      * @param model {@code Model} which the command should operate on.
      * @return success result
      */
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         model.clearUndoHistory();
         model.groupPerson(category);
-        return new CommandResult("All persons have been grouped!");
+        return new CommandResult("All person in the address book are grouped.");
     }
 }

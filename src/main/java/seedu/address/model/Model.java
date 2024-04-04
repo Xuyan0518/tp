@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Person;
 
 /**
@@ -43,7 +44,7 @@ public interface Model {
      * contacts into groups, such as by last name, city, or any other specified category.
      * @param category The category by which to group persons.
      */
-    void groupPerson(String category);
+    void groupPerson(String category) throws CommandException;
 
     /**
      * Sets the user prefs' address book file path.
@@ -54,6 +55,7 @@ public interface Model {
      * Replaces address book data with the data in {@code addressBook}.
      */
     void setAddressBook(ReadOnlyAddressBook addressBook);
+
 
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
