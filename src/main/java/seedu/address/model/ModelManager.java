@@ -23,21 +23,17 @@ import seedu.address.model.person.Person;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
     private static Stack<Boolean> actionTracker = new Stack<>();
+    private static Stack<Boolean> undoActionTracker = new Stack<>();
     private final AddressBook addressBook;
-
     private final AddressBook groupAddressBook;
     private final UserPrefs userPrefs;
     private FilteredList<Person> filteredPersons;
     private CommandHistory commandHistory = new CommandHistory();
     private UndoHistory undoHistory = new UndoHistory();
-    private boolean lastUndoActionWasGroup = false;
     private FilteredList<Person> filteredGroupPerson;
-
     private CommandHistory groupCommandHistory = new CommandHistory();
     private UndoHistory groupUndoHistory = new UndoHistory();
-
     private Group group = new Group();
-
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -64,6 +60,9 @@ public class ModelManager implements Model {
     public static Stack<Boolean> getActionTracker() {
         return ModelManager.actionTracker;
     }
+    public static Stack<Boolean> getUndoActionTracker() {
+        return ModelManager.undoActionTracker;
+    }
     @Override
     public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
         requireNonNull(userPrefs);
@@ -82,7 +81,6 @@ public class ModelManager implements Model {
         ModelManager.getActionTracker().push(true);
         filteredGroupPerson = new FilteredList<>(groupAddressBook.getPersonList());
     }
-
 
     @Override
     public ReadOnlyUserPrefs getUserPrefs() {
@@ -151,6 +149,7 @@ public class ModelManager implements Model {
 
         addressBook.setPerson(target, editedPerson);
     }
+
     @Override
     public void undo() {
         if (actionTracker.isEmpty()) {
@@ -164,41 +163,50 @@ public class ModelManager implements Model {
             if (!groupCommandHistory.isEmpty()) {
                 undoGrouping();
                 // After undoing, pop the action type since it's been handled.
-                actionTracker.pop();
+                undoActionTracker.push(actionTracker.pop());
             }
         } else {
             // If the last action was a non-group action and there's something to undo.
             if (!commandHistory.isEmpty()) {
+                saveUndoneAddressBookState();
                 setAddressBook(commandHistory.pop());
                 // After undoing, pop the action type since it's been handled.
-                actionTracker.pop();
+                undoActionTracker.push(actionTracker.pop());
             }
         }
     }
     @Override
     public void redo() {
-        System.out.println("Non-group undo history: " + undoHistory.size());
-        System.out.print("Group undo history: " + groupUndoHistory.size() + System.lineSeparator());
-        if (lastUndoActionWasGroup && !groupUndoHistory.isEmpty() && groupUndoHistory.size() != 1) {
-            redoGrouping();
-            lastUndoActionWasGroup = true;
-        } else if (lastUndoActionWasGroup && groupUndoHistory.size() == 1) {
-            redoGrouping();
-            lastUndoActionWasGroup = false;
-        } else if (!undoHistory.isEmpty()) {
-            saveAddressBookState();
-            setAddressBook(undoHistory.pop());
-            //lastActionWasGroup = false;
+        if (undoActionTracker.isEmpty()) {
+            System.out.println("Nothing to redo.");
+            return;
+        }
+        // Peek at the last undo action to decide whether it's a group or non-group action.
+        boolean lastUndoActionWasGroup = undoActionTracker.peek();
+        if (lastUndoActionWasGroup) {
+            // If the last undo action was a group action and there's something to redo.
+            if (!groupUndoHistory.isEmpty()) {
+                redoGrouping();
+                // After redoing, pop the action type since it's been handled.
+                actionTracker.push(undoActionTracker.pop());
+            }
+        } else {
+            // If the last undo action was a non-group action and there's something to redo.
+            if (!undoHistory.isEmpty()) {
+                saveAddressBookState();
+                setAddressBook(undoHistory.pop());
+                // After redoing, pop the action type since it's been handled.
+                actionTracker.push(undoActionTracker.pop());
+            }
         }
     }
     private void undoGrouping() {
-        //saveUndoneGroupAddressBookState();
+        saveUndoneGroupAddressBookState();
         setGroupAddressBook(groupCommandHistory.pop());
     }
     private void redoGrouping() {
         saveGroupAddressBookState();
         setGroupAddressBook(groupUndoHistory.pop());
-        //lastActionWasGroup = true;
     }
     @Override
     public boolean canUndo() {
@@ -206,11 +214,7 @@ public class ModelManager implements Model {
     }
     @Override
     public boolean canRedo() {
-        return !undoHistory.isEmpty();
-    }
-    @Override
-    public boolean canRedoGrouping() {
-        return lastUndoActionWasGroup && !groupUndoHistory.isEmpty();
+        return (!undoHistory.isEmpty() || !groupUndoHistory.isEmpty()) && !undoActionTracker.isEmpty();
     }
     @Override
     public void saveAddressBookState() {
@@ -219,7 +223,6 @@ public class ModelManager implements Model {
     @Override
     public void saveUndoneAddressBookState() {
         undoHistory.push(new AddressBook(addressBook));
-        lastUndoActionWasGroup = false;
     }
     @Override
     public void saveGroupAddressBookState() {
@@ -228,7 +231,6 @@ public class ModelManager implements Model {
     @Override
     public void saveUndoneGroupAddressBookState() {
         groupUndoHistory.push(new AddressBook(groupAddressBook));
-        lastUndoActionWasGroup = true;
     }
     @Override
     public void savePersonState(Person before, Person after) {
@@ -243,12 +245,14 @@ public class ModelManager implements Model {
     @Override
     public void clearUndoHistory() {
         this.undoHistory.clear();
+        this.groupUndoHistory.clear();
     }
     @Override
     public void clearAllCommandHistories() {
         commandHistory.clear();
         groupCommandHistory.clear();
     }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**
@@ -287,5 +291,4 @@ public class ModelManager implements Model {
                 && userPrefs.equals(otherModelManager.userPrefs)
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }
-
 }

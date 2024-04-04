@@ -135,11 +135,6 @@ public interface Model {
      */
     void savePersonState(Person before, Person after);
     /**
-     * Checks if a group command can be redone.
-     * @return
-     */
-    boolean canRedoGrouping();
-    /**
      * Replaces the target person with the replacing person.
      * @param target person to be replaced.
      * @param replacing to replace the target.

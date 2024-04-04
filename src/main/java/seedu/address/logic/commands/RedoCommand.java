@@ -2,6 +2,8 @@ package seedu.address.logic.commands;
 
 import seedu.address.model.Model;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Represents a redo command used to reapply the last change made to the address book that was previously undone.
  * This command allows users to redo their last action that was undone, whether it was a modification
@@ -16,12 +18,10 @@ public class RedoCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) {
-        if (model.canRedoGrouping()) {
+        requireNonNull(model);
+        if (model.canRedo()) {
             model.redo();
-            return new CommandResult(MESSAGE_SUCCESS + " Last grouping operation redone.");
-        } else if (model.canRedo()) {
-            model.redo();
-            return new CommandResult(MESSAGE_SUCCESS + " Last command redone.");
+            return new CommandResult(MESSAGE_SUCCESS);
         } else {
             return new CommandResult(MESSAGE_FAILURE);
         }

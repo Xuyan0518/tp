@@ -36,6 +36,7 @@ public class ClearCommand extends Command {
         model.clearUndoHistory();
         model.clearAllCommandHistories();
         ModelManager.getActionTracker().clear();
+        ModelManager.getUndoActionTracker().clear();
         confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Clear Command");
         confirmationAlert.setHeaderText(null);
