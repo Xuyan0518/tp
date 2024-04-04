@@ -18,7 +18,7 @@ If you are:
 3. [Adding an entry to a person](#adding-an-entry-to-a-person-addcategory)
 4. [Listing all persons : list](#listing-all-persons-list)
 5. [Editing a person : edit](#editing-a-person-edit)
-6. [Finding person/s : find](#fing-a-contact)
+6. [Finding person/s : find](#finding-persons-by-category-and-description-or-by-tag-find)
 7. [Deleting a person : delete](#deleting-a-person-delete)
 8. [Deleting a category of a person : deleteCategory](#deleting-a-category-of-a-person-deletecategory)
 9. [Clearing all entries : clear](#clearing-all-entries-clear)
@@ -197,7 +197,7 @@ Examples:
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Locating persons by category and description or by tag: `find`
+## Finding persons by category and description or by tag: `find`
 
 Find a specific person from the address book.
 
