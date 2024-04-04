@@ -9,6 +9,40 @@ If you are:
 
 Don't worry! ***Rainbow Dragon*** is just the right application for you!
 
+[Quick start](#quick-start)
+
+[Features](#features) 
+
+[Viewing help : help](#viewing-help--help)
+
+[Adding a person: add](#adding-a-person--add)
+
+[Adding an entry to a person](#adding-an-entry-to-a-person--addcategory)
+
+[Listing all persons : list](#listing-all-persons--list)
+
+[Editing a person : edit](#editing-a-person--edit)
+
+[Locating persons by category and description or by tag: find](#locating-persons-by-category-and-description-or-by-tag--find)
+
+[Deleting a person : delete](#deleting-a-person--delete)
+
+[Deleting a category of a person](#deleting-a-category-of-a-person--deletecategory)
+
+[Clearing all entries : clear](#clearing-all-entries--clear)
+
+[Exiting the program : exit](#exiting-the-program--exit)
+
+[Saving the data](#saving-the-data)
+
+[Editing the data file](#editing-the-data-file)
+
+[FAQ](#faq)
+
+[Known issues](#known-issues)
+
+[Command summary](#command-summary)
+
 <!-- * Table of Contents -->
 <page-nav-print />
 
@@ -65,7 +99,7 @@ Don't worry! ***Rainbow Dragon*** is just the right application for you!
 
 ### Viewing help : `help`
 
-Shows a message explaning how to access the help page.
+Shows a message explaining how to access the help page.
 
 ![help message](images/helpMessage.png)
 
