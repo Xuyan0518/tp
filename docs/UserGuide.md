@@ -225,6 +225,11 @@ Clears all entries from the address book.
 
 Format: `clear`
 
+<box type="warning" seamless>
+**Caution:**
+You cannot undo or redo a clear command!
+</box>
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Exiting the program : `exit`
@@ -279,11 +284,16 @@ Groups the addressbook by a specified category
 
 Format: `group [c/CATEGORY]`
 
-* Groups all persons by the specified category
-* Persons with the same description for the specified category will be grouped together
-* Persons without this category will be grouped under 'No Group'
+* Groups all persons by the specified category.
+* Persons with the same description for the specified category will be grouped together.
+* Persons without this category will be grouped under 'No Group'.
 * The category does not need to exist.
-* The group panel will not refresh unless 'Group' is called
+* The group panel will not refresh unless 'Group' is called.
+
+<box type="tip" seamless>
+
+**Tip:** Each Group Panel is scrollable horizontally!
+</box>
 
 Examples:
 * `list` followed by `group c/clan`  groups all persons with the same clan together
