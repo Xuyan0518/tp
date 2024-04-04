@@ -24,7 +24,8 @@ If you are:
 9. [Clearing all entries : clear](#clearing-all-entries-clear)
 10. [Undoing a command : undo](#undoing-a-command)
 11. [Redoing an undo command : redo](#redoing-an-undo-command)
-12. [Exiting the program : exit](#exiting-the-program-exit)
+12. [Grouping all persons by Category : group](#group-all-persons-by-category-group)
+13. [Exiting the program : exit](#exiting-the-program-exit)
 
 [Saving the data](#saving-the-data)
 
@@ -262,7 +263,6 @@ Format `undo`
 - Able to go back to the most recent state of the address book.
 - Supports multiple `undo` actions, until the point where the address book was not changed during the same launch.
 
-
 --------------------------------------------------------------------------------------------------------------------
 ## Redoing an undo command
 Redoes an undo command.
@@ -271,7 +271,23 @@ Format `redo`
 
 - Able to go back to the previous state of the address book after an undo command.
 - Supports multiple `redo` actions, until the point where there is no more existing undo state.
--
+
+--------------------------------------------------------------------------------------------------------------------
+## Group all Persons by Category : `Group`
+
+Groups the addressbook by a specified category
+
+Format: `group [c/CATEGORY]`
+
+* Groups all persons by the specified category
+* Persons with the same description for the specified category will be grouped together
+* Persons without this category will be grouped under 'No Group'
+* The category does not need to exist.
+* The group panel will not refresh unless 'Group' is called
+
+Examples:
+* `list` followed by `group c/clan`  groups all persons with the same clan together
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Saving the data
@@ -324,5 +340,6 @@ Action     | Format, Examples
 **Find**   | `find [c/CATEGORY]…[d/DESCRIPTION]…​`<br> e.g., `find c/clan d/rainbow` <br><br> `find t/[TAG]…​` <br> e.g., `find t/leader`
 **Undo**   | `undo`
 **Redo**   | `redo`
+**Group**  | `group c/clan`
 **List**   | `list`
 **Help**   | `help`
