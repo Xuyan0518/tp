@@ -1,8 +1,8 @@
 package seedu.address.logic.commands;
 
-import seedu.address.model.Model;
-
 import static java.util.Objects.requireNonNull;
+
+import seedu.address.model.Model;
 
 /**
  * Represents a redo command used to reapply the last change made to the address book that was previously undone.
