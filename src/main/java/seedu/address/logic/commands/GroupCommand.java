@@ -45,6 +45,7 @@ public class GroupCommand extends Command {
      */
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        model.clearUndoHistory();
         model.groupPerson(category);
         return new CommandResult("All persons have been grouped!");
     }

@@ -76,6 +76,7 @@ public class AddCategoryCommand extends Command {
             personToEdit.addEntry(entry);
         }
         model.savePersonState(personToEdit, original);
+        model.clearUndoHistory();
         model.setPerson(personToEdit, personToEdit);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(String.format(

@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import seedu.address.model.Model;
+
 /**
  * Represents an undo command used to revert the last change made to the address book.
  * This command allows users to undo their last action, whether it was a modification

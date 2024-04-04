@@ -10,6 +10,7 @@ import java.util.LinkedList;
  */
 public class CommandHistory {
     private Deque<ReadOnlyAddressBook> history = new LinkedList<>();
+
     /**
      * Pushing the current state of the address book into the command history.
      * @param currentState represents the current address book.
@@ -17,6 +18,7 @@ public class CommandHistory {
     public void push(ReadOnlyAddressBook currentState) {
         history.push(currentState);
     }
+
     /**
      * Retrieve the most recent address book state.
      * @return
@@ -24,6 +26,7 @@ public class CommandHistory {
     public ReadOnlyAddressBook pop() {
         return history.pop();
     }
+
     /**
      * Check for the presence of command history.
      * @return
