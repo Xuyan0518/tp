@@ -56,9 +56,9 @@ If you are:
 
 1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png)
+1. Open a command terminal, navigate into the folder you put the jar file in using `cd FILE_PATH`, and use the `java -jar addressbook.jar` command to run the application.<br>
+   A GUI similar to the below should appear in a few seconds if you are a first-time user. Note how the app contains some sample data.<br>
+   ![Ui](images/Ui.png) <br><br> The UI below will only be displayed if `group` command is called and the different groups will be displayed as follows:  ![UiWithGroups](images/UiWithGroups.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
@@ -99,38 +99,51 @@ If you are:
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Viewing help : `help`
+## Viewing the menu of commands: `help`
 
-Shows a message explaining how to access the help page.
+Shows a window explaining all the commands and their respective format.
+<br>
+<br>
+At the bottom of the help window, you can directly copy the URL to our user guide and paste it into your browser to access it.
+<br>
+<br>
+*Format:* `help`
 
 ![help message](images/helpMessage.png)
 
-Format: `help`
+--------------------------------------------------------------------------------------------------------------------
+## Listing all persons : `list`
+
+Shows a list of all persons in the address book.
+
+*Format:* `list`
+
+Example:
+![ListCommand](images/ListCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
-
 ## Adding a person: `add`
 
 Adds a person to the address book.
 
-Format: `add n/NAME [t/TAG]…​`
+*Format:* `add n/NAME [t/TAG]` + `c/ CATEGORY d/DESCRIPTION` (*Optional*)
 
 <box type="tip" seamless>
 
-**Tip:** A person can have any number of tags (including 0)
+**Note:** 
+- A person can have any number of tags (including 0).
+- A person can have any number of categories with corresponding description. **But the number of categories and descriptions must match.**
 </box>
 
 Examples:
 * `add n/John Doe t/friend` Adds the person named "John Doe" to the address book with one tag "friend"
 * `add n/Betsy Crowe t/lover t/family` Adds the person named "Betsy Crowe" to the address book with two tags, "lover" and "family".
-
---------------------------------------------------------------------------------------------------------------------
-
-## Listing all persons : `list`
-
-Shows a list of all persons in the address book.
-
-Format: `list`
+* `add n/Cedric t/classmate c/class d/CS2103T` Adds the person named "Cedric" to the address book with the tag "classmate". It also adds a category "class" with corresponding description "CS2103T".
+* `add n/Joe t/classmate c/class d/CS2103T c/team d/3` Adds the person named "Joe"  to the address book with the tag "classmate". It also adds 2 categories, "class" and "team" with corresponding descriptions "CS2103T" and "3".
+<br>
+<br>
+Successful execution of the above commands will result in the following being displayed:
+![SuccessfulAddCommand](images/SuccessfulAddCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -138,7 +151,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [c/CATEGORY] [d/DESCRIPTION] [t/TAG]…​`
+*Format:* `edit INDEX c/CATEGORY d/DESCRIPTION t/TAG…`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The category you want to edit must **exist**.
@@ -150,12 +163,10 @@ Format: `edit INDEX [c/CATEGORY] [d/DESCRIPTION] [t/TAG]…​`
 * If you want to add more than 1 tag, cascade your commands.
 
 Examples:
-* To edit person 1's clan name to `rainbow`:<br>
->`edit 1 c/Clan d/rainbow`
-* To edit person 1's clan name to `rainbow` and his tags to `warrior`:<br>
-> `edit 1 c/Clan d/rainow t/warrior`
-* To edit person 1's tags to `warrior` and `mage`:<br>
-> `edit 1 t/warrior t/mage`
+* `edit 1 c/Clan d/rainbow` Edits person 1's clan name to "rainbow".
+* `edit 1 c/Clan d/rainow t/warrior` Edits person 1's clan name to "rainbow" and his tags to "warrior".
+* `edit 1 t/warrior t/mage` Edits person 1's tags to "warrior" and "mage".
+![EditCommand](images/EditCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -163,17 +174,17 @@ Examples:
 
 Adds an entry to an existing person in the address book.
 
-Format: `addCategory INDEX [c/CATEGORY] [d/DESCRIPTION]`
+*Format:* `addCategory INDEX c/CATEGORY d/DESCRIPTION`
 
 * Adds an entry to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The category you want to add must not already **exist** for that person.
 * Both Category and Description must be provided.
 
 Examples:
-* To add person 1's clan name`rainbow` to person 1:<br>
->`addCategory 1 c/Clan d/rainbow`
-* To add person 1's class `warrior` to person 1:<br>
-> `addCategory 1 t/class d/warrior`
+* `addCategory 1 c/Clan d/rainbow` Adds the clan name "rainbow" to person 1.
+* `addCategory 1 t/class d/warrior` Adds the class "warrior" to person 1.
+![AddCategoryCommand](images/AddCategoryCommand.png)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -181,11 +192,16 @@ Examples:
 
 Find a specific person from the address book.
 
-Format: `find c/<category> d/<description>` or `find t/<tag>`
+*Format:* `find c/CATEGORY d/DESCRIPTON` or `find t/TAG`
 
 * Find anyone in the address book with matching category and description or tag only
 * Category refers to a field a person has, such as `name`, `phone` and etc.
 * Tag refers to the specific type of person in the address book, such as `friends`, `neighbours` and etc.
+
+Examples:
+* `find c/name d/Joe` Finds the person named "Joe" in the address book.
+* `find t/friend` Finds the person whose tag is "friend".
+![FindCommand](images/FindCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -193,15 +209,20 @@ Format: `find c/<category> d/<description>` or `find t/<tag>`
 
 Deletes the specified person from the address book.
 
-Format: `delete INDEX`
+*Format:* `delete INDEX`
 
 * Deletes the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* The index **must NOT be greater than the number of contacts in the address book**.
+* After `delete` command is called, there will be a pop-up alert asking whether the user wants to delete the person.
+![DeleteAlert](images/DeleteAlert.png)
+* If the user clicks "Ok", the person will be deleted from the address book. 
+* If the user clicks "Cancel", the deletion will be aborted. 
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `delete 1` deletes the first person in the address book.
+![DeleteCommand](images/DeleteCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -209,7 +230,7 @@ Examples:
 
 Deletes the specified category of a person.
 
-Format: `deleteCategory INDEX c/CATEGORY`
+*Format:* `deleteCategory INDEX c/CATEGORY`
 
 * Deletes the `CATEGORY` of a person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
@@ -217,16 +238,26 @@ Format: `deleteCategory INDEX c/CATEGORY`
 * The category **must exist**.
 
 Examples:
-* `list` followed by `deleteCategory 2 c/Email` deletes the category "Email" of the 2nd person in the list.
-* `find Jack` followed by `deleteCategory 1 c/Address` deletes the category "Address" of the 1st person in the results of the `find` command.
+* `deleteCategory 2 c/Email` deletes the category "Email" of the second person in the list.
+* `deleteCategory 1 c/Address` deletes the category "Address" of the first person in the address book.
+![DeleteCategory](images/DeleteCategory.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Clearing all entries : `clear`
 
 Clears all entries from the address book.
+* After the `clear` command is called, there will be a pop-up alert asking whether the user really wants to clear the address book.
+![ClearAlert](images/ClearAlert.png)
+* If the user clicks "Ok", the address book will be cleared.
+* If the user clicks "Cancel", the `clear` action will be aborted.
 
-Format: `clear`
+**WARNING: This command CANNOT be undone!**
+
+*Format:* `clear`
+
+Examples:
+![ClearCommand](images/ClearCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -234,7 +265,7 @@ Format: `clear`
 
 Exits the program.
 
-Format: `exit`
+*Format:* `exit`
 
 --------------------------------------------------------------------------------------------------------------------
 
