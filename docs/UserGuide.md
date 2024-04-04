@@ -13,7 +13,7 @@ If you are:
 [Quick start](#quick-start)
 
 [Features](#features)
-1. [Viewing help : help](#viewing-help-help)
+1. [Viewing help : help](#viewing-the-menu-of-commands-help)
 2. [Adding a person: add](#adding-a-person-add)
 3. [Adding an entry to a person](#adding-an-entry-to-a-person-addcategory)
 4. [Listing all persons : list](#listing-all-persons-list)
