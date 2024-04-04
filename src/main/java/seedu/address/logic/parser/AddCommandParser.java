@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,8 +58,14 @@ public class AddCommandParser implements Parser<AddCommand> {
         } else {
             List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
             List<String> descriptions = argMultimap.getAllValues(PREFIX_DESCRIPTION);
+            List<String> lowercaseCategories = new ArrayList<>();
 
-            if (hasDuplicates(categories)) {
+            for (int i = 0; i < categories.size(); i++) {
+                String cat = categories.get(i);
+                lowercaseCategories.add(cat.toLowerCase().trim());
+            }
+
+            if (hasDuplicates(lowercaseCategories)) {
                 throw new ParseException(AddCategoryCommand.MESSAGE_DUPLICATE_CATEGORY);
             }
 
@@ -75,6 +82,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     throw new ParseException("Name already exists!");
                 }
             }
+
             entryList = ParserUtil.parseEntries(categories, descriptions);
         }
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME);
