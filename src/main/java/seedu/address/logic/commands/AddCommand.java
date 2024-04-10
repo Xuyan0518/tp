@@ -32,7 +32,7 @@ public class AddCommand extends Command {
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + "[" + PREFIX_TAG + "TAG]..."
-            + "[" + PREFIX_CATEGORY + "CATEGORY NAME]... "
+            + "[" + PREFIX_CATEGORY + "CATEGORY]... "
             + "[" + PREFIX_DESCRIPTION + "DESCRIPTION]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
