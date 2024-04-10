@@ -136,7 +136,7 @@ Example:
 
 Adds a person to the address book.
 
-*Format:* `add n/NAME [t/TAG]` + `c/ CATEGORY d/DESCRIPTION` (*Optional*)
+*Format:* `add n/NAME [t/TAG]` + `[c/ CATEGORY] [d/DESCRIPTION]`
 
 <box type="tip" seamless>
 
