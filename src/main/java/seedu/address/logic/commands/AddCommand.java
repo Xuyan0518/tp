@@ -28,18 +28,17 @@ public class AddCommand extends Command {
     /**
      * Usage message for the add command.
      */
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book.\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + "[" + PREFIX_TAG + "TAG]..."
-            + "(optional: [" + PREFIX_CATEGORY + "CATEGORY NAME] "
-            + "[" + PREFIX_DESCRIPTION + "DESCRIPTION])\n"
+            + "[" + PREFIX_CATEGORY + "CATEGORY NAME]... "
+            + "[" + PREFIX_DESCRIPTION + "DESCRIPTION]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
-            + PREFIX_TAG + "owesMoney"
-            + "(optional: "
-            + PREFIX_CATEGORY + "clan"
-            + PREFIX_DESCRIPTION + "rainbow" + ")";
+            + PREFIX_TAG + "owesMoney "
+            + PREFIX_CATEGORY + "clan "
+            + PREFIX_DESCRIPTION + "rainbow";
 
     /**
      * Message indicating successful addition of a person.
