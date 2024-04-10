@@ -15,7 +15,7 @@ If you are:
 [Features](#features)
 1. [Viewing help : help](#viewing-the-menu-of-commands-help)
 2. [Adding a person: add](#adding-a-person-add)
-3. [Adding an entry to a person](#adding-an-entry-to-a-person-addcategory)
+3. [Adding a category to a person](#adding-a-category-to-a-person-addcategory)
 4. [Listing all persons : list](#listing-all-persons-list)
 5. [Editing a person : edit](#editing-a-person-edit)
 6. [Finding person/s : find](#finding-persons-by-category-and-description-or-by-tag-find)
@@ -45,11 +45,11 @@ If you are:
 
 1. Ensure you have Java `11` or above installed in your Computer.
 
-1. Download the latest `addressbook.jar` from [here](https://github.com/AY2324S2-CS2103T-W13-3/tp/releases/tag/v1.2).
+1. Download the latest `Rainbow_Dragon.jar` from [here](https://github.com/AY2324S2-CS2103T-W13-3/tp/releases/).
 
 1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-1. Open a command terminal, navigate into the folder you put the jar file in using `cd FILE_PATH`, and use the `java -jar addressbook.jar` command to run the application.<br>
+1. Open a command terminal, navigate into the folder you put the jar file in using `cd FILE_PATH`, and use the `java -jar Rainbow_Dragon.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds if you are a first-time user. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png) <br><br> The UI below will only be displayed if `group` command is called and the different groups will be displayed as follows:  ![UiWithGroups](images/UiWithGroups.png)
 
@@ -95,6 +95,14 @@ The application supports custom fields, enabling you to record any information y
 
 * Rainbow Dragon accepts duplicated name as a gamer might have the same name and play a different game.
 
+* We accept non-alphanumeric characters, such as '/', numbers and spaces for all names, categories, descriptions and tags. Thus, please follow the command format and prefixes, such as leaving a space before each prefix.
+
+* Using invalid prefixes such as 'e/', or not leaving spaces such as 'add n/Johnt/friend', will not throw errors as these characters are acceptable inputs. 
+
+* Only duplicate Categories for the same Person is not allowed. There can be multiple Persons with the same name, categories and descriptions, and are not considered duplicates.
+
+* Panels that displays command responses, Persons, and Groups is scrollable horizontally! This is to ensure long entries are still able to be displayed.
+
 * The following command supports batch processing: 
   1. add
   2. addCategory
@@ -115,6 +123,8 @@ Shows a window explaining all the commands and their respective format.
 <br>
 <br>
 At the bottom of the help window, you can directly copy the URL to our user guide and paste it into your browser to access it.
+
+The help menu requires a mouse to close. This is intentional to allow for using the app while referencing the help menu.
 <br>
 <br>
 *Format:* `help`
@@ -136,14 +146,17 @@ Example:
 
 Adds a person to the address book.
 
-*Format:* `add n/NAME [t/TAG]` + `[c/ CATEGORY] [d/DESCRIPTION]`
+*Format:* `add n/NAME [t/TAG…] [c/ CATEGORY d/DESCRIPTION]` 
 
 <box type="tip" seamless>
 
 **Note:** 
 - A person can have any number of tags (including 0).
 - A person can have any number of categories with corresponding description. **But the number of categories and descriptions must match.**
-</box>
+- Adding of tags, or category and description, is optional.
+- Name added is a Description, with "Name" as its Category.
+- If using batch processing, the number of specified Categories and Descriptions must be the same!
+- </box>
 
 Examples:
 * `add n/John Doe t/friend` Adds the person named "John Doe" to the address book with one tag "friend"
@@ -161,7 +174,7 @@ Successful execution of the above commands will result in the following being di
 
 Edits an existing person in the address book.
 
-*Format:* `edit INDEX c/CATEGORY d/DESCRIPTION t/TAG…`
+*Format:* `edit INDEX [c/CATEGORY d/DESCRIPTION] [t/TAG…]`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The category you want to edit must **exist**.
@@ -170,17 +183,18 @@ Edits an existing person in the address book.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
 * You can just edit the tags without needing to specify the category and description.
-* If you want to add more than 1 tag, cascade your commands.
+* If you want to add more than 1 tag, cascade your commands. 
+* If using batch processing, the number of specified Categories and Descriptions must be the same!
 
-Examples:
+* Examples:
 * `edit 1 c/Clan d/rainbow` Edits person 1's clan name to "rainbow".
-* `edit 1 c/Clan d/rainow t/warrior` Edits person 1's clan name to "rainbow" and his tags to "warrior".
+* `edit 1 c/Clan d/rainbow t/warrior` Edits person 1's clan name to "rainbow" and his tags to "warrior".
 * `edit 1 t/warrior t/mage` Edits person 1's tags to "warrior" and "mage".
 ![EditCommand](images/EditCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Adding an entry to a person : `addCategory`
+## Adding a category to a person : `addCategory`
 
 Adds an entry to an existing person in the address book.
 
@@ -189,6 +203,7 @@ Adds an entry to an existing person in the address book.
 * Adds an entry to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The category you want to add must not already **exist** for that person.
 * Both Category and Description must be provided.
+* If using batch processing, the number of specified Categories and Descriptions must be the same!
 
 Examples:
 * `addCategory 1 c/Clan d/rainbow` Adds the clan name "rainbow" to person 1.
@@ -207,6 +222,7 @@ Find a specific person from the address book.
 * Find anyone in the address book with matching category and description or tag only
 * Category refers to a field a person has, such as `name`, `phone` and etc.
 * Tag refers to the specific type of person in the address book, such as `friends`, `neighbours` and etc.
+* If using batch processing, the number of specified Categories and Descriptions must be the same!
 
 Examples:
 * `find c/name d/Joe` Finds the person named "Joe" in the address book.
@@ -246,6 +262,7 @@ Deletes the specified category of a person.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 * The category **must exist**.
+* You cannot delete a person's name!
 
 Examples:
 * `deleteCategory 2 c/Email` deletes the category "Email" of the second person in the list.
@@ -297,17 +314,19 @@ Format `redo`
 
 Groups the addressbook by a specified category
 
-Format: `group [c/CATEGORY]`
+Format: `group c/CATEGORY`
 
 * Groups all persons by the specified category.
 * Persons with the same description for the specified category will be grouped together.
 * Persons without this category will be grouped under 'No Group'.
-* The category does not need to exist.
+* If this category does not exist for any Person, all Persons will be listed under 'No Group'
 * The group panel will not refresh unless 'Group' is called.
-
+* If the app is closed and reopened, active groups will not be saved. Call 'Group' again to redisplay the groups.
+* If you wish to ungroup, call the Undo function to return the Group Panels to a previous state.
+* If the group panels are being cut off, please maximise your window to see the entire group panel.
 <box type="tip" seamless>
 
-**Tip:** Each Group Panel is scrollable horizontally!
+**Tip:** Each Group Panel is scrollable horizontally! There is a invisible scrollpane for the group name, as well as for the names of the Persons in that group.
 </box>
 
 Examples:
@@ -346,6 +365,15 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
 
+**Q**: Why are my Descriptions being cut off?
+**A**: All panels are scrollable horizontally.
+
+**Q**: How do i save my data?
+**A**: All data is saved automatically after every command.
+
+**Q**: Can i save characters, objects and game details instead of Persons?
+**A**: Yes! Our inputs allow any characters, so feel free to save any type of information. You can tag these objects to allow for easier finding in the future.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Known issues
@@ -360,13 +388,20 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add n/NAME [t/TAG]…​` <br> e.g., `add n/James Ho t/friend t/colleague`
 **Clear**  | `clear`
-**AddCategory**  | `addCategory 1 c/class d/warrior`
+**AddCategory**  | `addCategory INDEX c/CATEGORY d/DESCRIPTION`<br> e.g., `addCategory 1 c/class d/warrior`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**DeleteCategory**  | `deleteCategory INDEX [c/CATEGORY]…​` <br> e.g., `deleteCategory 1 c/clan`
-**Edit**   | `edit INDEX [c/CATEGORY] [d/DESCRIPTION] …​`<br> e.g.,`edit 2 c/clan d/rainbow` <br><br> `edit INDEX [t/TAG]` <br> e.g.,`edit 1 t/warrior t/mage`
-**Find**   | `find [c/CATEGORY]…[d/DESCRIPTION]…​`<br> e.g., `find c/clan d/rainbow` <br><br> `find t/[TAG]…​` <br> e.g., `find t/leader`
+**DeleteCategory**  | `deleteCategory INDEX c/CATEGORY…​` <br> e.g., `deleteCategory 1 c/clan`
+**Edit**   | `edit INDEX c/CATEGORY d/DESCRIPTION …​`<br> e.g.,`edit 2 c/clan d/rainbow` <br><br> `edit INDEX t/TAG …​` <br> e.g.,`edit 1 t/warrior t/mage`
+**Find**   | `find c/CATEGORY d/DESCRIPTION…​`<br> e.g., `find c/clan d/rainbow` <br><br> `find t/[TAG]…​` <br> e.g., `find t/leader`
 **Undo**   | `undo`
 **Redo**   | `redo`
-**Group**  | `group c/clan`
+**Group**  | `group c/CATEGORY` <br> e.g., `group c/clan`
 **List**   | `list`
 **Help**   | `help`
+
+### Glossary
+
+* **Category**: The type of field to assign to a Person. For example, "Name", "Age", "Class",
+* **Description**: The content of the field assigned to a Person. For example, for a category "Name", description can be "John". 
+* **Tag**: A grouping or description for a Person that does not have a category, such as "Family", "Friend", or "Enemy"
+* **Batch Processing** : Allows for multiple inputs at a time. For example, addCategory 1 c/clan d/Warriors c/Type d/Allies …
