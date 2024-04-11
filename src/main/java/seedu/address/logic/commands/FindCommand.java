@@ -21,6 +21,16 @@ public class FindCommand extends Command {
         + "and displays them as a list with index numbers. Use prefixes 'c/' for category and 'd/' for description.\n"
         + "Parameters: c/CATEGORY d/DESCRIPTION\n"
         + "Example: " + COMMAND_WORD + " c/email d/johndoe@example.com";
+    public static final String COMMAND_FORMAT_CAT_DESC = "Category and Description should come in a pair. \n"
+        + "Example: " + COMMAND_WORD + " c/<Category> d/<Description> is a pair. \n"
+        + "Cannot be c/<Category> d/<Description> d/<Description> \n"
+        + "or c/<Category> c/<Category> d/<Description>.";
+    public static final String COMMAND_CAT_DESC_TAG = "Category, description and tag should be a trio. \n"
+        + "Example: " + COMMAND_WORD + " c/<Category> d/<Description> t/<Tag> is a trio. \n"
+        + "Cannot be c/<Category> d/<Description> t/<Tag> c/<Category> d/<Description> \n"
+        + "or c/<Category> d/<Description> c/<Category> d/<Description> t/<Tag>.";
+    public static final String EMPTY_CAT_OR_DESC = "Category and description cannot be empty";
+    public static final String EMPTY_TAG = "Tag cannot be empty";
     private final PersonFieldsContainKeywordPredicate predicate;
     /**
      * Creates a FindCommand to find all persons whose fields match the criteria specified by the provided

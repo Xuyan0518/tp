@@ -43,14 +43,34 @@ public class FindCommandParser implements Parser<FindCommand> {
         if (arePrefixesPresent(argMultimap, PREFIX_CATEGORY, PREFIX_DESCRIPTION)) {
             List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
             List<String> descriptions = argMultimap.getAllValues(PREFIX_DESCRIPTION);
+            if (categories.size() != descriptions.size()) {
+                throw new ParseException("Invalid command format! \n" + FindCommand.COMMAND_FORMAT_CAT_DESC);
+            }
+            if (categories.contains("") || descriptions.contains("")) {
+                throw new ParseException("Invalid command format! \n" + FindCommand.EMPTY_CAT_OR_DESC);
+            }
             for (int i = 0; i < categories.size(); i++) {
                 categoryDescriptionMap.computeIfAbsent(categories.get(i).trim(), k -> new ArrayList<>())
                     .add(descriptions.get(i).trim());
             }
         }
         Set<String> tags = new HashSet<>();
+        List<String> scannedTags = argMultimap.getAllValues(PREFIX_TAG);
         if (isTagPresent) {
-            tags.addAll(new HashSet<>(argMultimap.getAllValues(PREFIX_TAG)));
+            tags.addAll(new HashSet<>(scannedTags));
+            if (scannedTags.contains("")) {
+                throw new ParseException("Invalid command format! \n" + FindCommand.EMPTY_TAG);
+            }
+            if (argMultimap.getAllValues(PREFIX_CATEGORY).contains("")
+                || argMultimap.getAllValues(PREFIX_DESCRIPTION).contains("")) {
+                throw new ParseException("Invalid command format! \n" + FindCommand.EMPTY_CAT_OR_DESC);
+            }
+            if ((!categoryDescriptionMap.keySet().isEmpty()
+                && argMultimap.getAllValues(PREFIX_CATEGORY).size() != scannedTags.size())
+                || (!categoryDescriptionMap.values().isEmpty()
+                && argMultimap.getAllValues(PREFIX_DESCRIPTION).size() != scannedTags.size())) {
+                throw new ParseException("Invalid command format! \n" + FindCommand.COMMAND_CAT_DESC_TAG);
+            }
         }
         if (categoryDescriptionMap.isEmpty() && tags.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
