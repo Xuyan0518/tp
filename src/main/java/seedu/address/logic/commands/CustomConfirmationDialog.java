@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -26,10 +28,23 @@ public class CustomConfirmationDialog extends Dialog<ButtonType> {
         setHeaderText(null);
         setContentText(message);
 
-        ButtonType okButton = new ButtonType("OK");
-        ButtonType cancelButton = new ButtonType("Cancel");
+        ButtonType okButton = new ButtonType("OK", ButtonType.OK.getButtonData());
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonType.CANCEL.getButtonData());
 
         getDialogPane().getButtonTypes().addAll(okButton, cancelButton);
+
+        EventHandler<ActionEvent> actionEventHandler = event -> {
+            ButtonType resultButtonType = ((Button) event.getSource()).getText().equals("OK")
+                    ? ButtonType.OK : ButtonType.CANCEL;
+            setResult(resultButtonType);
+            hide();
+        };
+
+        Button okBtn = (Button) getDialogPane().lookupButton(okButton);
+        okBtn.setOnAction(actionEventHandler);
+
+        Button cancelBtn = (Button) getDialogPane().lookupButton(cancelButton);
+        cancelBtn.setOnAction(actionEventHandler);
 
         getDialogPane().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
