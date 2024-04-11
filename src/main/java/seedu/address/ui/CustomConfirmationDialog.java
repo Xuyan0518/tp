@@ -1,4 +1,4 @@
-package seedu.address.logic.commands;
+package seedu.address.ui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
