@@ -14,13 +14,13 @@
         <Insets bottom="5" left="15" right="5" top="5" />
       </padding>
       <HBox alignment="CENTER_LEFT" spacing="5">
-        <Label fx:id="id" text="\$id">
-          <minWidth>
-            <Region fx:constant="USE_PREF_SIZE" />
-          </minWidth>
-        </Label>
         <ScrollPane prefHeight="48.0" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="NEVER">
           <HBox>
+              <Label fx:id="id" text="\$id">
+                <minWidth>
+                  <Region fx:constant="USE_PREF_SIZE" />
+                </minWidth>
+              </Label>
             <Label fx:id="name" styleClass="cell_big_label" text="\$first" />
           </HBox>
         </ScrollPane>
