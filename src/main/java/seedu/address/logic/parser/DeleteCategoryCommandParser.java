@@ -46,7 +46,7 @@ public class DeleteCategoryCommandParser implements Parser<DeleteCategoryCommand
         for (int i = 0; i < categories.size(); i++) {
             String category = categories.get(i);
 
-            if (category.equals("Name")) {
+            if (category.equalsIgnoreCase("Name")) {
                 throw new ParseException(MESSAGE_CANNOT_DELETE_NAME);
             }
         }

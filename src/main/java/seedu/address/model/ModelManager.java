@@ -160,27 +160,19 @@ public class ModelManager implements Model {
     }
     @Override
     public void redo() {
-        if (undoActionTracker.isEmpty()) {
-            System.out.println("Nothing to redo.");
-            return;
-        }
         // Peek at the last undo action to decide whether it's a group or non-group action.
         boolean lastUndoActionWasGroup = undoActionTracker.peek();
-        if (lastUndoActionWasGroup) {
-            // If the last undo action was a group action and there's something to redo.
-            if (!groupUndoHistory.isEmpty()) {
-                redoGrouping();
-                // After redoing, pop the action type since it's been handled.
-                actionTracker.push(undoActionTracker.pop());
-            }
-        } else {
-            // If the last undo action was a non-group action and there's something to redo.
-            if (!undoHistory.isEmpty()) {
-                saveAddressBookState();
-                setAddressBook(undoHistory.pop());
-                // After redoing, pop the action type since it's been handled.
-                actionTracker.push(undoActionTracker.pop());
-            }
+        // If the last undo action was a group action and there's something to redo.
+        if (lastUndoActionWasGroup && !groupUndoHistory.isEmpty()) {
+            redoGrouping();
+            // After redoing, pop the action type since it's been handled.
+            actionTracker.push(undoActionTracker.pop());
+        // If the last undo action was a non-group action and there's something to redo.
+        } else if (!undoHistory.isEmpty()) {
+            saveAddressBookState();
+            setAddressBook(undoHistory.pop());
+            // After redoing, pop the action type since it's been handled.
+            actionTracker.push(undoActionTracker.pop());
         }
     }
     private void undoGrouping() {
