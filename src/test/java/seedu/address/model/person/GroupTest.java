@@ -14,10 +14,10 @@ import seedu.address.model.AddressBook;
 
 
 public class GroupTest {
-    private AddressBook addressBook = getTypicalAddressBook();
+    private final AddressBook addressBook = getTypicalAddressBook();
+    private final Group group = new Group();
     @Test
-    public void group_nonEmptyListDifferentCategoriesSuccess() throws CommandException {
-        Group group = new Group();
+    public void group_nonEmptyListDifferentCategories_success() throws CommandException {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
         group.group(persons, "Clan");
         ArrayList<Person> groupedPersons = group.getGroupList();
@@ -25,8 +25,7 @@ public class GroupTest {
         assertEquals(7, groupedPersons.size());
     }
     @Test
-    public void group_nonEmptyListMissingCategoryGroupedInNoCategory() throws CommandException {
-        Group group = new Group();
+    public void group_nonEmptyListMissingCategory_groupedInNoCategory() throws CommandException {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
         group.group(persons, "Clan");
         ArrayList<Person> groupedPersons = group.getGroupList();
@@ -34,18 +33,14 @@ public class GroupTest {
         // Assuming there's one person with a category and one without
         assertEquals(7, groupedPersons.size());
     }
-
     @Test
     public void group_emptyList_throwsCommandException() {
-        Group group = new Group();
         ArrayList<Person> persons = new ArrayList<>();
 
         assertThrows(CommandException.class, () -> group.group(persons, "Category"));
     }
-
     @Test
     public void getGroupList_afterGrouping_returnsCorrectGroups() throws CommandException {
-        Group group = new Group();
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
 
         group.group(persons, "Clan");
@@ -54,6 +49,4 @@ public class GroupTest {
         assertNotNull(groupedPersons);
         assertEquals(7, groupedPersons.size());
     }
-
-
 }

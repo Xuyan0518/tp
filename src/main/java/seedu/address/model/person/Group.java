@@ -13,10 +13,9 @@ import seedu.address.logic.commands.exceptions.CommandException;
  * corresponds to a unique value of a specified category.
  */
 public class Group {
-
     private static final String MESSAGE_EMPTY_ADDRESS_BOOK = "Address book is empty!";
+    private static final String NO_GROUP_TEXT = "No group";
     private ArrayList<Person> groupList;
-
     /**
      * Groups a list of {@code Person} objects based on the specified category.
      * Each group is represented by a {@code Person} object where the "Group Name"
@@ -27,11 +26,12 @@ public class Group {
      * @param category The category used to group the {@code Person} objects.
      */
     public void group(ArrayList<Person> personArrayList, String category) throws CommandException {
+        assert personArrayList != null;
         if (personArrayList.isEmpty()) {
             throw new CommandException(MESSAGE_EMPTY_ADDRESS_BOOK);
         }
         Map<String, Person> groupMap = new HashMap<>();
-        Person noCategoryGroup = new Person(new Entry("Group Name", "No group"), new HashSet<>());
+        Person noCategoryGroup = new Person(new Entry("Group Name", NO_GROUP_TEXT), new HashSet<>());
         boolean noCategoryGroupAdded = false;
 
         for (Person person : personArrayList) {
@@ -55,8 +55,6 @@ public class Group {
         }
         groupList = groupedPerson;
     }
-
-
     public ArrayList<Person> getGroupList() {
         return groupList;
     }
