@@ -5,7 +5,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Group;
 
 
 /**
@@ -26,7 +25,6 @@ public class GroupCommand extends Command {
             + PREFIX_CATEGORY + "CLAN ";
 
     private String category;
-    private Group group = new Group();
 
     /**
      * Constructs a GroupCommand with the specified category.
