@@ -44,7 +44,6 @@ public class ModelManager implements Model {
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
-        //creates an empty addressbook for group.
         this.groupAddressBook = new AddressBook();
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
@@ -149,27 +148,14 @@ public class ModelManager implements Model {
 
     @Override
     public void undo() {
-        if (actionTracker.isEmpty()) {
-            System.out.println("Nothing to undo.");
-            return;
-        }
-        // Peek at the last action to decide whether it's a group or non-group action.
         boolean lastActionWasGroup = actionTracker.peek();
-        if (lastActionWasGroup) {
-            // If the last action was a group action and there's something to undo.
-            if (!groupCommandHistory.isEmpty()) {
-                undoGrouping();
-                // After undoing, pop the action type since it's been handled.
-                undoActionTracker.push(actionTracker.pop());
-            }
-        } else {
-            // If the last action was a non-group action and there's something to undo.
-            if (!commandHistory.isEmpty()) {
-                saveUndoneAddressBookState();
-                setAddressBook(commandHistory.pop());
-                // After undoing, pop the action type since it's been handled.
-                undoActionTracker.push(actionTracker.pop());
-            }
+        if (lastActionWasGroup && !groupCommandHistory.isEmpty()) {
+            undoGrouping();
+            undoActionTracker.push(actionTracker.pop());
+        } else if (!commandHistory.isEmpty()) {
+            saveUndoneAddressBookState();
+            setAddressBook(commandHistory.pop());
+            undoActionTracker.push(actionTracker.pop());
         }
     }
     @Override

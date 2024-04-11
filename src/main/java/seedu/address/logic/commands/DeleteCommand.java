@@ -3,11 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.Optional;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -30,7 +26,6 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
-    public static final String MESSAGE_CANCEL_DELETE = "Deletion cancelled.";
 
     private final Index targetIndex;
 
@@ -41,32 +36,18 @@ public class DeleteCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        model.saveAddressBookState();
-        ModelManager.getActionTracker().push(false);
-        model.clearUndoHistory();
         List<Person> lastShownList = model.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
-
+        model.saveAddressBookState();
+        ModelManager.getActionTracker().push(false);
+        model.clearUndoHistory();
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
-
-        // Create a confirmation dialog
-        Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Delete Command");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Are you sure you want to delete this person?\n"
-                + personToDelete.getEntry("Name").getDescription());
-
-        Optional<ButtonType> result = confirmationAlert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            model.deletePerson(personToDelete);
-            return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
-                    personToDelete.getEntry("Name").getDescription()));
-        } else {
-            return new CommandResult(MESSAGE_CANCEL_DELETE);
-        }
+        model.deletePerson(personToDelete);
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS,
+            personToDelete.getEntry("Name").getDescription()));
     }
 
     @Override
