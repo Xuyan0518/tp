@@ -50,6 +50,7 @@ public class Group {
             }
         }
         ArrayList<Person> groupedPerson = new ArrayList<>(groupMap.values());
+
         if (noCategoryGroupAdded) {
             groupedPerson.add(noCategoryGroup);
         }

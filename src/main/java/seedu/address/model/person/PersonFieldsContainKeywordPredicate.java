@@ -12,7 +12,6 @@ import java.util.function.Predicate;
  * descriptions, or tags. This allows for complex queries against a person's attributes to be executed in a
  * streamlined manner. The predicate evaluates to true if any of the person's entries match the specified
  * categories or descriptions, or if any of the person's tags match the specified tags.
- *
  * Each person's entry is checked against a map of category descriptions, where the key is the category and
  * the value is the description to match. Additionally, a set of tags can be provided to further filter the
  * persons based on the tags associated with them.
@@ -42,8 +41,8 @@ public class PersonFieldsContainKeywordPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         boolean matchesCategoryDescription = categoryDescriptionMap.entrySet().stream().anyMatch(entry ->
-            Optional.ofNullable(person.getList().getEntries()).orElse(Collections.emptyList()).stream()
-                .filter(e -> Optional.ofNullable(e.getCategory()).orElse("").toLowerCase()
+            Optional.ofNullable(person.getList().getEntries()).orElse(Collections.emptyList())
+                .stream().filter(e -> Optional.ofNullable(e.getCategory()).orElse("").toLowerCase()
                     .contains(entry.getKey().toLowerCase()))
                 .anyMatch(e ->
                     entry.getValue().stream()

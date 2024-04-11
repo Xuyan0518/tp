@@ -19,7 +19,6 @@ public class GroupTest {
 
     private Group group;
     private final AddressBook addressBook = getTypicalAddressBookGroup();
-
     @BeforeEach
     public void setUp() {
         group = new Group();
@@ -83,7 +82,6 @@ public class GroupTest {
         ArrayList<Person> groupedPersons3 = group.getGroupList();
         assertEquals(3, groupedPersons3.size());
     }
-
     @Test
     public void group_nonEmptyListDifferentCategoriesUsingTypicalPerson_success() throws CommandException {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
