@@ -217,16 +217,19 @@ Examples:
 
 Find a specific person from the address book.
 
-*Format:* `find c/CATEGORY d/DESCRIPTON` or `find t/TAG`
+*Format:* `find c/CATEGORY d/DESCRIPTON` or `find t/TAG` or `find c/CATEGORY d/DESCRIPTION t/TAG`
 
-* Find anyone in the address book with matching category and description or tag only
+* Find anyone in the address book with matching category and description or tag or category and description and tag only.
 * Category refers to a field a person has, such as `name`, `phone` and etc.
 * Tag refers to the specific type of person in the address book, such as `friends`, `neighbours` and etc.
-* If using batch processing, the number of specified Categories and Descriptions must be the same!
+* If using batch processing, the number of specified Categories and Descriptions must be the same, and the order specified is imported!
+* If using batch processing, the number of specified Categories, Descriptions and Tags must be the same, and the order specifeid is important!
+  * Order being important means Category and Description form a pair, Category and Description and Tag form a trio.
 
 Examples:
 * `find c/name d/Joe` Finds the person named "Joe" in the address book.
 * `find t/friend` Finds the person whose tag is "friend".
+* `find c/name d/Joe t/friend` Finds teh person named "Joe" in the address book and "Joe" has tag friend.
 ![FindCommand](images/FindCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -294,7 +297,8 @@ You cannot undo or redo a clear command!
 --------------------------------------------------------------------------------------------------------------------
 
 ## Undoing a command
-Undoes a non-clear command.
+Undoes a non-clear command, as well as any other command that changes the state of the address book.
+* Command that CANNOT be undone: clear, help, exit and find.
 
 Format `undo`
 - Able to go back to the most recent state of the address book.
@@ -312,7 +316,7 @@ Format `redo`
 --------------------------------------------------------------------------------------------------------------------
 ## Group all Persons by Category : `Group`
 
-Groups the addressbook by a specified category
+Groups the address book by a specified category
 
 Format: `group c/CATEGORY`
 

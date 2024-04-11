@@ -70,14 +70,14 @@ public class AddCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        model.saveAddressBookState();
-        ModelManager.getActionTracker().push(false);
-        model.clearUndoHistory();
         assert toAdd != null : "Person to add cannot be null";
 
         if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_NAME);
         }
+        model.saveAddressBookState();
+        ModelManager.getActionTracker().push(false);
+        model.clearUndoHistory();
         if (entryList == null) {
             model.addPerson(toAdd);
         } else {

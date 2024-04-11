@@ -38,18 +38,6 @@ public class Person implements Comparable<Person> {
         this.entryList = entryList;
         this.tags.addAll(tags);
     }
-    /**
-     * Sets the new comparator for each person for group function
-     * @param category to set as toCompare
-     */
-    public void toCompare(String category) {
-        Entry entry = this.getEntry(category);
-        if (entry == null) {
-            toCompare = "";
-            return;
-        }
-        toCompare = entry.getDescription();
-    }
 
     /**
      * Compares this person with the specified person for order. Returns a negative integer,
@@ -84,7 +72,6 @@ public class Person implements Comparable<Person> {
     public void addEntry(Entry entry) {
         entryList.add(entry);
         entryList.sort();
-
     }
 
     public Entry getEntry(String category) {

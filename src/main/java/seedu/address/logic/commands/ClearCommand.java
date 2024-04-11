@@ -8,6 +8,7 @@ import javafx.scene.control.ButtonType;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
+import seedu.address.ui.CustomConfirmationDialog;
 
 /**
  * Clears the address book.
