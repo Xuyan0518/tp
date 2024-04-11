@@ -26,6 +26,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Entry;
+import seedu.address.model.person.EntryList;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
@@ -115,6 +116,53 @@ public class EditCommandTest {
 
         assertCommandFailure(editCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
+
+    @Test
+    public void setCategory_validCategory_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        String category = "Finance";
+        descriptor.setCategory(category);
+        assertEquals(category, descriptor.getCategory());
+    }
+
+    @Test
+    public void setDescription_validDescription_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        String description = "Managing financial records";
+        descriptor.setDescription(description);
+        assertEquals(description, descriptor.getDescription());
+    }
+
+    @Test
+    public void set_newEntry_addsEntry() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        Entry entry = new Entry("Finance", "Managing budgets");
+        descriptor.set("Finance", entry);
+        assertEquals(entry, descriptor.getEntryList().get("Finance"));
+    }
+
+    @Test
+    public void set_existingEntry_updatesEntry() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        Entry originalEntry = new Entry("Finance", "Managing budgets");
+        descriptor.addEntry(originalEntry);
+
+        Entry updatedEntry = new Entry("Finance", "Managing financial records");
+        descriptor.set("Finance", updatedEntry);
+        Entry resultEntry = descriptor.getEntryList().get("Finance");
+        assertEquals(updatedEntry.getDescription(), resultEntry.getDescription());
+    }
+
+    @Test
+    public void setEntryList_validEntryList_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+        EntryList entryList = new EntryList();
+        entryList.add(new Entry("Finance", "Managing budgets"));
+        descriptor.setEntryList(entryList);
+        assertEquals(entryList, descriptor.getEntryList());
+    }
+
+
     @Test
     public void equals() {
         final EditCommand standardCommand = new EditCommand(INDEX_FIRST_PERSON, DESC_AMY);

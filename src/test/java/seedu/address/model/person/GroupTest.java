@@ -1,7 +1,9 @@
 package seedu.address.model.person;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBookGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,12 +12,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.AddressBook;
 import seedu.address.testutil.PersonBuilder;
 
 public class GroupTest {
 
     private Group group;
-
+    private final AddressBook addressBook = getTypicalAddressBookGroup();
     @BeforeEach
     public void setUp() {
         group = new Group();
@@ -78,5 +81,32 @@ public class GroupTest {
         group.group(personArrayList, "Name");
         ArrayList<Person> groupedPersons3 = group.getGroupList();
         assertEquals(3, groupedPersons3.size());
+    }
+    @Test
+    public void group_nonEmptyListDifferentCategoriesUsingTypicalPerson_success() throws CommandException {
+        ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
+        group.group(persons, "Clan");
+        ArrayList<Person> groupedPersons = group.getGroupList();
+
+        assertEquals(4, groupedPersons.size());
+    }
+    @Test
+    public void group_nonEmptyListMissingCategoryUsingTypicalPerson_groupedInNoCategory() throws CommandException {
+        ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
+        group.group(persons, "Clan");
+        ArrayList<Person> groupedPersons = group.getGroupList();
+
+        // Assuming there's one person with a category and one without
+        assertEquals(4, groupedPersons.size());
+    }
+    @Test
+    public void getGroupList_afterGroupingUsingTypicalPerson_returnsCorrectGroups() throws CommandException {
+        ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
+
+        group.group(persons, "Clan");
+        ArrayList<Person> groupedPersons = group.getGroupList();
+
+        assertNotNull(groupedPersons);
+        assertEquals(4, groupedPersons.size());
     }
 }

@@ -63,6 +63,7 @@ public class CommandTestUtil {
 
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
+    public static final EditCommand.EditPersonDescriptor DESC_TEST;
 
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().addEditorEntry(new Entry("Name", VALID_NAME_AMY))
@@ -74,6 +75,10 @@ public class CommandTestUtil {
                 .addEditorEntry(new Entry("Clan", VALID_CLAN_BOB))
                 .addEditorEntry(new Entry("Class", VALID_CLASS_BOB))
                 .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+        DESC_TEST = new EditPersonDescriptorBuilder().addEditorEntry(new Entry("Name", VALID_NAME_AMY))
+                .addEditorEntry(new Entry("Clan", "rainbow"))
+                .withTags("tag1")
+                .build();
     }
 
 

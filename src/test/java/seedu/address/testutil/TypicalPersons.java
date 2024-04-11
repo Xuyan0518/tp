@@ -73,10 +73,6 @@ public class TypicalPersons {
                     TypicalPersons.entry("Game", "Science"))
             .withTag("Innovative", "Smart").build();
 
-    public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
-
-    private TypicalPersons() {} // prevents instantiation
-
     /**
      * Returns an {@code AddressBook} with all the typical persons.
      */
@@ -87,7 +83,19 @@ public class TypicalPersons {
         }
         return ab;
     }
-
+    public static AddressBook getTypicalAddressBookGroup() {
+        AddressBook ab = new AddressBook();
+        for (Person person : getTypicalPersonsGroup()) {
+            ab.addPerson(person);
+        }
+        return ab;
+    }
+    public static List<Person> getTypicalPersonsGroup() {
+        return new ArrayList<>(Arrays.asList(new PersonBuilder(HOON).build(),
+                new PersonBuilder(IDA).build(),
+                new PersonBuilder(AMY).build(),
+                new PersonBuilder(BOB).build()));
+    }
     public static List<Person> getTypicalPersons() {
         return new ArrayList<>(Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE));
     }

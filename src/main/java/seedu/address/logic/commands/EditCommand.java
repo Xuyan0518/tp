@@ -75,10 +75,8 @@ public class EditCommand extends Command {
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
-        //Finds the person
         Person personToEdit = lastShownList.get(index.getZeroBased());
         Person originalPerson = personToEdit.deepCopy();
-        //Over here, they replaced the old person info with the new person (editpersondescriptor)
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
@@ -99,14 +97,12 @@ public class EditCommand extends Command {
         assert personToEdit != null;
         assert editPersonDescriptor != null;
         EntryList entryList = editPersonDescriptor.getEntryList();
-        //Checks whether category exist for this person.
         for (int i = 0; i < entryList.size(); i++) {
             Entry toAdd = entryList.get(i);
             Entry test = personToEdit.getEntry(toAdd.getCategory().toLowerCase());
             if (test == null) {
                 throw new CommandException(MESSAGE_CATEGORY_DOESNT_EXIST);
             } else {
-                //if the category exit
                 Entry entryToAdd = new Entry(test.getCategory(), toAdd.getDescription());
                 personToEdit.deleteEntry(toAdd.getCategory());
                 personToEdit.addEntry(entryToAdd);
@@ -155,7 +151,6 @@ public class EditCommand extends Command {
          * A defensive copy of {@code tags} is used internally.
          */
         public EditPersonDescriptor() {}
-
         /**
          * Copy constructor.
          * A defensive copy of {@code tags} is used internally.
@@ -216,14 +211,12 @@ public class EditCommand extends Command {
         public void addEntry(Entry entry) {
             entryList.add(entry);
         }
-
         public void setEntryList(EntryList entryList) {
             this.entryList = entryList;
         }
         public EntryList getEntryList() {
             return entryList;
         }
-
         /**
          * Gets category from the entry
          * @param category of the entry list

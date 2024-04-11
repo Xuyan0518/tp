@@ -41,11 +41,10 @@ public class EditCommandParser implements Parser<EditCommand> {
         } catch (ParseException pe) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
         }
-        //Check whether the String that is parsed in contains the following prefix.
+
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
         List<String> descriptions = argMultimap.getAllValues(PREFIX_DESCRIPTION);
-        //check for duplicate category
         if (hasDuplicates(categories)) {
             throw new ParseException(EditCommand.MESSAGE_DUPLICATE_CATEGORY);
         }
@@ -57,16 +56,12 @@ public class EditCommandParser implements Parser<EditCommand> {
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
         boolean categoryExists = !categories.isEmpty();
         boolean descriptionExists = !descriptions.isEmpty();
-        //Checks if either category or description exist, the other must exist
-        //Doing this allows tags to exist without both fields
         if ((categoryExists && !descriptionExists) || (!categoryExists && descriptionExists)) {
             throw new ParseException(EditCommand.ENTRY_NOT_ADDED);
         }
-        //Ensure they are both of same size
         if (categories.size() != descriptions.size()) {
             throw new ParseException(EditCommand.DIFFERENT_NUMBER_CATEGORIES_DESCRIPTIONS);
         }
-
         if (categories.isEmpty() && !editPersonDescriptor.isAnyTagEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
         }

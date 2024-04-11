@@ -53,7 +53,11 @@ public class HelpWindow extends UiPart<Stage> {
             + DASH
             + "Redo: redo\n"
             + DASH
-            + "Clear: clear\n";
+            + "Clear: clear\n"
+            + DASH
+            + "help: help"
+            + DASH
+            + "exit: exit";
 
     public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
 
