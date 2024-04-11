@@ -21,7 +21,6 @@ public class Group {
      * Each group is represented by a {@code Person} object where the "Group Name"
      * entry is set to the category value. If the category is not present in a person,
      * they are added to a default group named "No group".
-     *
      * @param personArrayList The list of {@code Person} objects to be grouped.
      * @param category The category used to group the {@code Person} objects.
      */
@@ -60,4 +59,3 @@ public class Group {
         return groupList;
     }
 }
-
