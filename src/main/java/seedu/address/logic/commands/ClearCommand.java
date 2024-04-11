@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -22,8 +21,6 @@ public class ClearCommand extends Command {
     public static final String MESSAGE_CONFIRMATION =
             "Are you sure you want to clear the address book? This action cannot be undone.";
 
-    private Alert confirmationAlert; // Alert dialog used for confirmation.
-
     /**
      * Executes the clear command.
      *
@@ -37,11 +34,11 @@ public class ClearCommand extends Command {
         model.clearAllCommandHistories();
         ModelManager.getActionTracker().clear();
         ModelManager.getUndoActionTracker().clear();
-        confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Clear Command");
-        confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText(MESSAGE_CONFIRMATION);
-        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        CustomConfirmationDialog confirmationDialog = new CustomConfirmationDialog("Clear Command",
+                MESSAGE_CONFIRMATION);
+        Optional<ButtonType> result = confirmationDialog.showAndWait();
+
         if (result.isPresent() && result.get() == ButtonType.OK) {
             model.setAddressBook(new AddressBook());
             model.setGroupAddressBook(new AddressBook());
@@ -51,3 +48,4 @@ public class ClearCommand extends Command {
         }
     }
 }
+
