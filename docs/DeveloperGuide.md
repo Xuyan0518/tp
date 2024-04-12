@@ -168,7 +168,7 @@ Users can also assign multiple categorical information to the new contact added 
 <br>
 <br>
 The sequence diagram below illustrates how the add function can be used.
-<puml src="docs/diagrams/AddSequenceDiagram.puml" alt="Add Command Sequence Diagram" />
+<puml src="diagrams/AddSequenceDiagram.puml" alt="Add Command Sequence Diagram" />
 
 ### AddCategory function
 The new addCategory function allows user to be able to add any category to a person <br>
@@ -313,7 +313,7 @@ Step 4. The user now decides that adding the person was a mistake, and decides t
 than attempting to perform the undo.
 
 </box>
-=======
+
 ### DeleteCategory function
 
 The command `deleteCategory INDEX c/CATEGORY` allows users to delete the `CATEGORY` of a person at the specified `INDEX`.
@@ -344,7 +344,38 @@ If the format of command is wrong or the category does not exist, the `DeleteCat
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
+### Group function
 
+The group command function groups `persons` based on the `category` the user specifies.
+The sequence diagram below illustrates the interaction within `Logic` component, taking `execute("group c/Clan)` API call as an example.
+
+<puml src="diagrams/GroupSequence.puml" alt="Group Sequence Diagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `GroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
+
+#### 1. How the feature is implemented
+The group feature in the address book application is implemented through the `GroupCommand`, `GroupCommandParser`
+, `ModelManager` and `Group` classes. The `GroupCommandParser` parses user input, validates the input and extracts `categories` and 
+parse it into the `GroupCommand` object. The `GroupCommand` object will then instantiate the `ModelManger` to create a `Group` object by
+provide an `ArrayList` of persons extracted from the addressbook. The `Group` object would then call the method `Group`, which will group
+this `ArrayList` of persons into another `ArrayList` of groups. `ModelManager` will then create a new addressbook called `GroupAddressBook`
+and store this `ArrayList` of groups. This will then later be called in the `UI`.
+
+### 2. Why is it implemented that way
+The feature is implemented this way to ensure that `group` command does not group the original person list, leaving the person list sorted
+by the latest entry. This also means that the user will have to call `group` everytime the user wants to group the person list according to
+their customisation. Additionally, the `GroupAddressBook` is essentially a list of `persons` with their `Name` as the Group name/ specified
+category and their categories as the list of people in the same category.
+
+### 3. Alternatives considered.
+Initially, we wanted to just use the original address book to sort the person list, then subsequently group them within the same address book.
+However, this would mean that there will be less flexibility for the user. Also, it imposes a lot of difficulty in terms of displaying it in the
+UI and constantly deleting and creating groups.
+
+--------------------------------------------------------------------------------------------------------------------
 ## **Documentation, logging, testing, configuration, dev-ops**
 
 * [Documentation guide](Documentation.md)
