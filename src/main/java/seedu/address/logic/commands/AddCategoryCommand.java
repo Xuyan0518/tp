@@ -26,7 +26,7 @@ public class AddCategoryCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Add a category to a person "
             + "by the index number used in the displayed person list.\n "
             + "Parameters: INDEX (must be a positive integer) "
-            + PREFIX_CATEGORY + "CATEGORY NAME "
+            + PREFIX_CATEGORY + "CATEGORY "
             + PREFIX_DESCRIPTION + "DESCRIPTION "
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_CATEGORY + "CLAN "
