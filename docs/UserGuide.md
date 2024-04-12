@@ -324,7 +324,7 @@ Format: `group c/CATEGORY`
 * Persons with the same description for the specified category will be grouped together.
 * Persons without this category will be grouped under 'No Group'.
 * If this category does not exist for any Person, all Persons will be listed under 'No Group'
-* The group panel will not refresh unless 'Group' is called.
+* The group panel will not refresh unless 'Group' is called, even if a Person is updated.
 * If the app is closed and reopened, active groups will not be saved. Call 'Group' again to redisplay the groups.
 * If you wish to ungroup, call the Undo function to return the Group Panels to a previous state.
 * If the group panels are being cut off, please maximise your window to see the entire group panel.

@@ -177,13 +177,17 @@ he sequence diagram below illustrates the interaction within the `Logic` compone
 <puml src="diagrams/AddCategorySequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `addCategory 1 c/class d/warrior` Command" />
 
 #### 1. How the feature is implemented
-Upon specification of a string for category and description, an entry object is created , which is then added to the person
-specified by the index given by the user. If a duplicate category or invalid index is provided, an error will be thrown
+New entries are added to Persons through the `AddCategoryCommand` and `AddCategoryCommandParser` classes.
+The `AddCategoryCommand` class handles the logic of adding a person's details, such as category and description.
+The execute method in `AddCategoryCommand` performs the actual update, ensuring that the edited person does not duplicate existing categories.
+The `AddCategoryCommandParser` class parses user input into an `AddCategoryCommand` object. It validates the input and extracts the necessary information
+(like index, category and description) to instantiate a `AddCategoryCommand`.
 
 #### 2. Why it is implemented that way.
 Entry requiring only two Strings meant that the type of entries that can be created by the user is limitless, suitable for an application that inputs potential characteristics
-from games. However, due to deleteCategory requiring the category name, it was decided that categories be unique per person. It was required that index be specified as Name can be non unique in addressbook.
+from games. As such, all numbers and characters are allowed. However, due to deleteCategory requiring the category name, it was decided that categories be unique per person. It was required that index be specified as Name can be non unique in addressbook.
 
+Splitting the responsibilities of interpreting the user input and converting it into an output into a Parser class and Command class allows for ease in maintaining the code.
 #### 3. Alternatives considered.
 Given our initial vision of a customisable field option for the addressbook persons, there wasnt really much of an alternative as gaming contacts can vary quite widely. It would not make sense to have compulsory fields except for name since many things like phone, address and email may be unknown to the user for online or gaming contacts otherwise. This way, things like gaming information can be captured with no restrictions.
 
