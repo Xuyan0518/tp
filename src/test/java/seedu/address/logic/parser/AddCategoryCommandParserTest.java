@@ -11,8 +11,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Entry;
 import seedu.address.model.person.EntryList;
 
-
-
 public class AddCategoryCommandParserTest {
 
     private final AddCategoryCommandParser parser = new AddCategoryCommandParser();
@@ -44,5 +42,20 @@ public class AddCategoryCommandParserTest {
         assertThrows(ParseException.class, () -> parser.parse(args));
     }
 
-    // Add more test cases as needed
+    @Test
+    public void parse_duplicateCategories_throwsParseException() {
+        String args = "1 " + CliSyntax.PREFIX_CATEGORY + "TestCategory "
+                + CliSyntax.PREFIX_DESCRIPTION + "TestDescription "
+                + CliSyntax.PREFIX_CATEGORY + "TestCategory "
+                + CliSyntax.PREFIX_DESCRIPTION + "TestDescription";
+        assertThrows(ParseException.class, () -> parser.parse(args));
+    }
+
+    @Test
+    public void parse_differentNumberCategoriesDescriptions_throwsParseException() {
+        String args = "1 " + CliSyntax.PREFIX_CATEGORY + "TestCategory1 " + CliSyntax.PREFIX_DESCRIPTION
+                + "TestDescription "
+                + CliSyntax.PREFIX_CATEGORY + "TestCategory2";
+        assertThrows(ParseException.class, () -> parser.parse(args));
+    }
 }

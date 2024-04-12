@@ -50,7 +50,6 @@ public class AddCategoryCommandParser implements Parser<AddCategoryCommand> {
         if (categories.size() != descriptions.size()) {
             throw new ParseException(AddCategoryCommand.DIFFERENT_NUMBER_CATEGORIES_DESCRIPTIONS);
         }
-
         EntryList entrylist = ParserUtil.parseEntries(categories, descriptions);
         return new AddCategoryCommand(index, entrylist);
 
@@ -74,4 +73,3 @@ public class AddCategoryCommandParser implements Parser<AddCategoryCommand> {
         return false; // No duplicates found
     }
 }
-

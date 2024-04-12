@@ -26,11 +26,6 @@ public class Entry implements Comparable<Entry> {
     public String getDescription() {
         return description;
     }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
