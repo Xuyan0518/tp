@@ -15,7 +15,7 @@ If you are:
 [Features](#features)
 1. [Viewing help : help](#viewing-the-menu-of-commands-help)
 2. [Adding a person: add](#adding-a-person-add)
-3. [Adding a category to a person](#adding-a-category-to-a-person-addcategory)
+3. [Adding a category to a person: addCategory](#adding-a-category-to-a-person-addcategory)
 4. [Listing all persons : list](#listing-all-persons-list)
 5. [Editing a person : edit](#editing-a-person-edit)
 6. [Finding person/s : find](#finding-persons-by-category-and-description-or-by-tag-find)
