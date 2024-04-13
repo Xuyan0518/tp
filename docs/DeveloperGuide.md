@@ -61,6 +61,7 @@ For example, the `Logic` component defines its API in the `Logic.java` interface
 
 The sections below give more details of each component.
 
+
 ### UI component
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
@@ -77,6 +78,7 @@ The `UI` component,
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+
 
 ### Logic component
 
@@ -111,6 +113,7 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
+
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
@@ -144,6 +147,7 @@ The `Storage` component,
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
+
 ### Common classes
 
 Classes used by multiple components are in the `seedu.addressbook.commons` package.
@@ -170,6 +174,7 @@ Users can also assign multiple categorical information to the new contact added 
 The sequence diagram below illustrates how the add function can be used.
 <puml src="diagrams/AddSequenceDiagram.puml" alt="Add Command Sequence Diagram" />
 
+
 ### AddCategory function
 The new addCategory function allows user to be able to add any category to a person <br>
 The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("edit 1 c/Clan d/rainbow")` API call as an example.
@@ -190,6 +195,53 @@ from games. As such, all numbers and characters are allowed. However, due to del
 Splitting the responsibilities of interpreting the user input and converting it into an output into a Parser class and Command class allows for ease in maintaining the code.
 #### 3. Alternatives considered.
 Given our initial vision of a customisable field option for the addressbook persons, there wasnt really much of an alternative as gaming contacts can vary quite widely. It would not make sense to have compulsory fields except for name since many things like phone, address and email may be unknown to the user for online or gaming contacts otherwise. This way, things like gaming information can be captured with no restrictions.
+
+
+### DeleteCategory function
+
+The command `deleteCategory INDEX c/CATEGORY` allows users to delete the `CATEGORY` of a person at the specified `INDEX`.
+The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("deleteCategory 1 c/Clan")` API call as an example.
+
+<puml src="diagrams/DeleteCategorySequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `deleteCategory 1 c/Clan` Command" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCategoryCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+
+</box>
+
+#### How the feature is implemented
+
+The feature of deleting category is implemented by the `DeleteCategoryCommand` and `DeleteCategoryCommandParser` classes.
+The `DeleteCategoryCommand` class handles the logic of deleting one of user's category.
+The execute class in `DeleteCategoryCommand` class checks if the input category is existing.
+The `DeleteCategoryCommandParser` class parses user input into an `DeleteCategoryCommand` object. It validates the input and extracts the necessary information to instantiate an `DeleteCategoryCommand`.
+If the format of command is correct, the `DeleteCategoryCommand` class will try to call the `deleteEntry` method from `Parser` class to delete the corresponding category.
+If the format of command is wrong or the category does not exist, the `DeleteCategoryCommand` or `DeleteCategoryCommandParser` class will throw an exception.
+
+#### Why it is implemented that way
+
+Implementing the deleteCategory function this way ensures that users have the ability to maintain accurate and relevant data within their address book.
+By using a dedicated command parser, the application robustly handles input validation and error handling, making the feature reliable and user-friendly.
+
+#### Alternatives considered
+
+One alternative considered was to limit the deletion to a single category per command to simplify the user interface and reduce the risk of accidental deletions.
+However, to enhance usability and efficiency for users who manage extensive profiles, we decided to enable batch deletion of categories.
+This approach allows users to remove multiple categories in a single command, making the management of contact data more efficient, especially when multiple outdated or erroneous categories need to be corrected simultaneously.
+While this increases the complexity of the command, it significantly improves productivity for power users who need to perform bulk updates.
+This decision was balanced with robust error handling and confirmations to mitigate the risk of accidental deletions.
+
+<box type="info" seamless>
+
+**Note:** There are some caveat for `deleteCategory` command:
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* The category **must exist**.
+* The name of person can not be deleted.
+
+</box>
+
 
 ### Edit function
 The new edit function allows user to be able to edit any category based they want.<br>
@@ -274,6 +326,38 @@ The design choices made in implementing the Find Command are based on several co
 In conclusion, the Find Command is implemented with a focus on flexibility, usability, and maintainability, balancing advanced search capabilities with ease of use for the end user. The chosen implementation provides a solid foundation that can be easily extended or modified as the application evolves.
 
 
+### Group function
+
+The group command function groups `persons` based on the `category` the user specifies.
+The sequence diagram below illustrates the interaction within `Logic` component, taking `execute("group c/Clan)` API call as an example.
+
+<puml src="diagrams/GroupSequence.puml" alt="Group Sequence Diagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `GroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
+
+#### 1. How the feature is implemented
+The group feature in the address book application is implemented through the `GroupCommand`, `GroupCommandParser`
+, `ModelManager` and `Group` classes. The `GroupCommandParser` parses user input, validates the input and extracts `categories` and
+parse it into the `GroupCommand` object. The `GroupCommand` object will then instantiate the `ModelManger` to create a `Group` object by
+provide an `ArrayList` of persons extracted from the addressbook. The `Group` object would then call the method `Group`, which will group
+this `ArrayList` of persons into another `ArrayList` of groups. `ModelManager` will then create a new address book called `GroupAddressBook`
+and store this `ArrayList` of groups. This will then later be called in the `UI`.
+
+#### 2. Why is it implemented that way
+The feature is implemented this way to ensure that `group` command does not group the original person list, leaving the person list sorted
+by the latest entry. This also means that the user will have to call `group` everytime the user wants to group the person list according to
+their customisation. Additionally, the `GroupAddressBook` is essentially a list of `persons` with their `Name` as the Group name/ specified
+category and their categories as the list of people in the same category.
+
+#### 3. Alternatives considered.
+Initially, we wanted to just use the original address book to sort the person list, then subsequently group them within the same address book.
+However, this would mean that there will be less flexibility for the user. Also, it imposes a lot of difficulty in terms of displaying it in the
+UI and constantly deleting and creating groups.
+
+
 ### Redo function
 
 The redo command provides users the ability to revert the address book back to the state following an undo operation.
@@ -314,87 +398,65 @@ Fortunately, only the **clear** command has this feature, and this command does 
 
 <box type="info" seamless>
 
-**Note:** The **clear** command will remove all undo and redo history! Hence, this command is really dangerous.
+**Note:** The **clear** command will remove all undo and redo history. This command cannot be undone or redone.
 
 </box>
 
+### Undo function
+The undo command provides users the ability to revert the address book back to the state before a command was executed. <br>
+The previous command has to be one that changes the internal state of the address book (except for clear command):
+* Add or delete a person.
+* Add or delete or edit the category of a person.
+* Group the people based on their categories.
 
-### DeleteCategory function
+This means that commands that do not change the internal state of the address book cannot be undone, for example:
+* Find
+* List
+* Help
+* Exit
 
-The command `deleteCategory INDEX c/CATEGORY` allows users to delete the `CATEGORY` of a person at the specified `INDEX`.
-The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("deleteCategory 1 c/Clan")` API call as an example.
+The sequence diagrams below illustrates the interaction within the `Logic` and `Model` components, taking `execute("undo")` API call as an example.
 
-<puml src="diagrams/DeleteCategorySequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `deleteCategory 1 c/Clan` Command" />
+<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="Interactions Inside the Logic Component for the `redo` Command" />
+
+<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="Interactions Inside the Model Component for the `redo` Command" />
 
 <box type="info" seamless>
 
-**Note:** The lifeline for `DeleteCategoryCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+**Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 
 </box>
 
 #### How the feature is implemented
 
-The feature of deleting category is implemented by the `DeleteCategoryCommand` and `DeleteCategoryCommandParser` classes.
-The `DeleteCategoryCommand` class handles the logic of deleting one of user's category.
-The execute class in `DeleteCategoryCommand` class checks if the input category is existing.
-The `DeleteCategoryCommandParser` class parses user input into an `DeleteCategoryCommand` object. It validates the input and extracts the necessary information to instantiate an `DeleteCategoryCommand`.
-If the format of command is correct, the `DeleteCategoryCommand` class will try to call the `deleteEntry` method from `Parser` class to delete the corresponding category.
-If the format of command is wrong or the category does not exist, the `DeleteCategoryCommand` or `DeleteCategoryCommandParser` class will throw an exception.
+The feature of undo is implemented by the `UndoCommand`, `CommandHistory` classes and some methods from `ModelManager` class. <br>
+* The `CommandHistory` class makes use of a deque to record the states of the address book after each undoable command. <br>
+* For `AddCommand` and `DeleteCommand`, the state of the address book will be pushed into the `CommandHistory` deque before executing the commands. <br>
+* For `AddCategoryCommand`, `DeleteCategory` and `EditCommand`, a state of the address book with the original person will be pushed into the `CommandHistory` deque before executing the commands. <br>
+* For `GroupCommand`, the group address book state will be pushed into a `CommandHistory` instance for group address book before the command is executed. <br>
+* To distinguish group and non-group commands so that the correct address book state is reset, a stack called `ActionTracker` will be used to record the type of command:
+  * Boolean value `true` for the command executed is a group command.
+  * Boolean value `false` for non-group command executed.
+* The above logic is handled in ModelManager class.
+* After which, `UndoCommand` class will execute the command by calling the `undo` method in `ModelManager` class, which will pop the `CommandHistory` deque, to retrieve the previous state of the address book.
+
 
 #### Why it is implemented that way
 
-Implementing the deleteCategory function this way ensures that users have the ability to maintain accurate and relevant data within their address book.
-By using a dedicated command parser, the application robustly handles input validation and error handling, making the feature reliable and user-friendly.
+* Storing the address book states for both group and non-group commands allows the differentiation of the type of commands, such that group and non-group commands can be undone smoothly without confusion.
+* Using a deque to store the states of address book as it satisfies the criterion of undoing the most recent command by retrieving the most recent address book state.
+* The `ActionTracker` stack also allows the clear distinction between group and non-group commands.
 
-#### Alternatives considered
+#### Alternatives Considered
 
-One alternative considered was to limit the deletion to a single category per command to simplify the user interface and reduce the risk of accidental deletions.
-However, to enhance usability and efficiency for users who manage extensive profiles, we decided to enable batch deletion of categories.
-This approach allows users to remove multiple categories in a single command, making the management of contact data more efficient, especially when multiple outdated or erroneous categories need to be corrected simultaneously.
-While this increases the complexity of the command, it significantly improves productivity for power users who need to perform bulk updates.
-This decision was balanced with robust error handling and confirmations to mitigate the risk of accidental deletions.
+* Saving the entire state of an address book when a command is executed might be costly if the address book size is huge.
+* A less costly way of undoing could be implemented in the future to make the app more robust.
 
 <box type="info" seamless>
 
-**Note:** There are some caveat for `deleteCategory` command:
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
-* The category **must exist**.
-* The name of person can not be deleted.
+**Note:** The **clear** command will remove all undo and redo history. This command cannot be undone or redone.
 
 </box>
-
---------------------------------------------------------------------------------------------------------------------
-### Group function
-
-The group command function groups `persons` based on the `category` the user specifies.
-The sequence diagram below illustrates the interaction within `Logic` component, taking `execute("group c/Clan)` API call as an example.
-
-<puml src="diagrams/GroupSequence.puml" alt="Group Sequence Diagram" />
-
-<box type="info" seamless>
-
-**Note:** The lifeline for `GroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
-</box>
-
-#### 1. How the feature is implemented
-The group feature in the address book application is implemented through the `GroupCommand`, `GroupCommandParser`
-, `ModelManager` and `Group` classes. The `GroupCommandParser` parses user input, validates the input and extracts `categories` and 
-parse it into the `GroupCommand` object. The `GroupCommand` object will then instantiate the `ModelManger` to create a `Group` object by
-provide an `ArrayList` of persons extracted from the addressbook. The `Group` object would then call the method `Group`, which will group
-this `ArrayList` of persons into another `ArrayList` of groups. `ModelManager` will then create a new addressbook called `GroupAddressBook`
-and store this `ArrayList` of groups. This will then later be called in the `UI`.
-
-#### 2. Why is it implemented that way
-The feature is implemented this way to ensure that `group` command does not group the original person list, leaving the person list sorted
-by the latest entry. This also means that the user will have to call `group` everytime the user wants to group the person list according to
-their customisation. Additionally, the `GroupAddressBook` is essentially a list of `persons` with their `Name` as the Group name/ specified
-category and their categories as the list of people in the same category.
-
-#### 3. Alternatives considered.
-Initially, we wanted to just use the original address book to sort the person list, then subsequently group them within the same address book.
-However, this would mean that there will be less flexibility for the user. Also, it imposes a lot of difficulty in terms of displaying it in the
-UI and constantly deleting and creating groups.
 
 --------------------------------------------------------------------------------------------------------------------
 ## **Documentation, logging, testing, configuration, dev-ops**
