@@ -158,51 +158,83 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Add functon
-The new add function allows user to add new contacts to the address book. <br>
+### Add function
+
+The new add function allows user to add new contacts to the address book.
 <br>
-Users can now choose to add tags to the contact upon addition of new contacts by running the command as `add n/name t/tag`. <br>
+Users can now choose to add tags to the contact upon addition of new contacts by running the command as `add n/name t/tag`.
 <br>
-Users can also add multiple tags to a person upon addition of a new contact by running `add n/name t/tag1 t/tag2`<br>
+Users can also add multiple tags to a person upon addition of a new contact by running `add n/name t/tag1 t/tag2`.
 <br>
 Users can also assign new contact categories upon addition by running `add n/name t/tag c/cat d/description`, where `cat` is the category associated
-with the new contact and `description` is the category information that is assigned to the new contact. <br>
+with the new contact and `description` is the category information that is assigned to the new contact.
 <br>
-Users can also assign multiple categorical information to the new contact added by running `add n/name t/tag c/cat1, cat2, cat3 d/d1, d2, d3`, where `cat1` corresponds to `d1` and `cat2` corresponds to `d2` and so on. Users can definitely add more than 3 categories with descriptions in one addition.
-<br>
+Users can also assign multiple categorical information to the new contact added by running `add n/name t/tag c/cat1, cat2, cat3 d/d1, d2, d3`,
+where `cat1` corresponds to `d1` and `cat2` corresponds to `d2` and so on. Users can definitely add more than 3 categories with descriptions in one addition.
 <br>
 The sequence diagram below illustrates how the add function can be used.
+
 <puml src="diagrams/AddSequenceDiagram.puml" alt="Add Command Sequence Diagram" />
+<br>
 
 
 ### AddCategory function
-The new addCategory function allows user to be able to add any category to a person <br>
+
+The new addCategory function allows user to be able to add any category to a person.
+<br>
 The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("edit 1 c/Clan d/rainbow")` API call as an example.
 
 <puml src="diagrams/AddCategorySequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `addCategory 1 c/class d/warrior` Command" />
+<br>
 
 #### 1. How the feature is implemented
+
 New entries are added to Persons through the `AddCategoryCommand` and `AddCategoryCommandParser` classes.
+<br>
 The `AddCategoryCommand` class handles the logic of adding a person's details, such as category and description.
+<br>
 The execute method in `AddCategoryCommand` performs the actual update, ensuring that the edited person does not duplicate existing categories.
+<br>
 The `AddCategoryCommandParser` class parses user input into an `AddCategoryCommand` object. It validates the input and extracts the necessary information
 (like index, category and description) to instantiate a `AddCategoryCommand`.
+<br>
 
-#### 2. Why it is implemented that way.
+#### 2. Why it is implemented that way
+
 Entry requiring only two Strings meant that the type of entries that can be created by the user is limitless, suitable for an application that inputs potential characteristics
-from games. As such, all numbers and characters are allowed. However, due to deleteCategory requiring the category name, it was decided that categories be unique per person. It was required that index be specified as Name can be non unique in addressbook.
-
+from games. As such, all numbers and characters are allowed. However, due to deleteCategory requiring the category name, it was decided that categories be unique per person.
+<br>
+It was required that index be specified as Name can be non-unique in addressbook.
+<br>
 Splitting the responsibilities of interpreting the user input and converting it into an output into a Parser class and Command class allows for ease in maintaining the code.
-#### 3. Alternatives considered.
+<br>
+
+#### 3. Alternatives considered
+
 Given our initial vision of a customisable field option for the addressbook persons, there wasnt really much of an alternative as gaming contacts can vary quite widely. It would not make sense to have compulsory fields except for name since many things like phone, address and email may be unknown to the user for online or gaming contacts otherwise. This way, things like gaming information can be captured with no restrictions.
+<br>
+
+
+### Delete function
+
+The delete function allows users to remove existing contacts from the address book.
+<br>
+Users can delete a contact by specifying the contact's index in the displayed list by running the command `delete INDEX`. For example, `delete 3` will remove the third contact from the address book.
+<br>
+The sequence diagram below illustrates how the delete function can be used.
+
+<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
+<br>
 
 
 ### DeleteCategory function
 
 The command `deleteCategory INDEX c/CATEGORY` allows users to delete the `CATEGORY` of a person at the specified `INDEX`.
+<br>
 The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("deleteCategory 1 c/Clan")` API call as an example.
 
 <puml src="diagrams/DeleteCategorySequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `deleteCategory 1 c/Clan` Command" />
+<br>
 
 <box type="info" seamless>
 
@@ -213,24 +245,37 @@ The sequence diagram below illustrates the interaction within the `Logic` compon
 #### How the feature is implemented
 
 The feature of deleting category is implemented by the `DeleteCategoryCommand` and `DeleteCategoryCommandParser` classes.
+<br>
 The `DeleteCategoryCommand` class handles the logic of deleting one of user's category.
+<br>
 The execute class in `DeleteCategoryCommand` class checks if the input category is existing.
+<br>
 The `DeleteCategoryCommandParser` class parses user input into an `DeleteCategoryCommand` object. It validates the input and extracts the necessary information to instantiate an `DeleteCategoryCommand`.
+<br>
 If the format of command is correct, the `DeleteCategoryCommand` class will try to call the `deleteEntry` method from `Parser` class to delete the corresponding category.
+<br>
 If the format of command is wrong or the category does not exist, the `DeleteCategoryCommand` or `DeleteCategoryCommandParser` class will throw an exception.
+<br>
 
 #### Why it is implemented that way
 
 Implementing the deleteCategory function this way ensures that users have the ability to maintain accurate and relevant data within their address book.
+<br>
 By using a dedicated command parser, the application robustly handles input validation and error handling, making the feature reliable and user-friendly.
+<br>
 
 #### Alternatives considered
 
 One alternative considered was to limit the deletion to a single category per command to simplify the user interface and reduce the risk of accidental deletions.
+<br>
 However, to enhance usability and efficiency for users who manage extensive profiles, we decided to enable batch deletion of categories.
+<br>
 This approach allows users to remove multiple categories in a single command, making the management of contact data more efficient, especially when multiple outdated or erroneous categories need to be corrected simultaneously.
+<br>
 While this increases the complexity of the command, it significantly improves productivity for power users who need to perform bulk updates.
+<br>
 This decision was balanced with robust error handling and confirmations to mitigate the risk of accidental deletions.
+<br>
 
 <box type="info" seamless>
 
@@ -244,7 +289,9 @@ This decision was balanced with robust error handling and confirmations to mitig
 
 
 ### Edit function
+
 The new edit function allows user to be able to edit any category based they want.<br>
+<br>
 The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("edit 1 c/Clan d/rainbow")` API call as an example.
 
 <puml src="diagrams/EditSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `edit 1 c/Clan d/rainbow` Command" />
@@ -252,16 +299,24 @@ The sequence diagram below illustrates the interaction within the `Logic` compon
 <box type="info" seamless>
 
 **Note:** The lifeline for `EditCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+
 </box>
 
 #### 1. How the feature is implemented
+
 The edit feature in the address book application is implemented through the `EditCommand` and `EditCommandParser` classes.
+<br>
 The `EditCommand` class handles the logic of editing a person's details, such as category, description, and tags.
+<br>
 It uses an inner class, `EditPersonDescriptor`, to hold the values to be edited, allowing partial updates to a person's information.
+<br>
 The execute method in `EditCommand` performs the actual update, ensuring that the edited person does not duplicate existing entries.
+<br>
 The `EditCommandParser` class parses user input into an `EditCommand` object. It validates the input and extracts the necessary information
 (like index, category, description, and tags) to create an `EditPersonDescriptor`, which is then used to instantiate an `EditCommand`.
+<br>
 Below is the method used to instantiate the `EditPersonDescriptor` used to "remember" what category and description is being changed.
+<br>
 ```
 editPersonDescriptor.set(category, ParserUtil.parse(category, category));
 editPersonDescriptor.setCategory(category);
@@ -271,25 +326,30 @@ Additionally, in the `EditCommand` class, the method:
 Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 ```
 Creates this `EditPersonDescriptor` for it to edit the necessary code implemented by the user.
+<br>
 
-#### 2. Why it is implemented that way.
+#### 2. Why it is implemented that way
+
 This implementation segregates the parsing of user input from the execution logic, adhering to the single responsibility principle
 and making the code more maintainable and testable. The `EditCommand` class focuses solely on the business logic of editing a person's details,
 while the `EditCommandParser` deals with interpreting the user's input. This separation allows for clearer structure and easier debugging,
 as each class has a distinct responsibility. The use of `EditPersonDescriptor` as a way to encapsulate the editable attributes of a person enables a
 flexible design where only specified fields can be updated, enhancing the user experience by allowing partial edits.
+<br>
 
-#### 3. Alternatives considered.
+#### 3. Alternatives considered
 Alternatives that might have been considered include implementing the parsing logic directly within the `EditCommand class`, which would reduce the number
 of classes and potentially simplify the command's initiation process. However, this approach could lead to a more complex `EditCommand` class, making it
 harder to manage and maintain. Another alternative could be the use of reflection to dynamically update fields in the `Person` class based on input,
 which would make adding new fields easier. However, this could increase complexity and decrease code readability and security due to the dynamic nature of reflection.
 Additionally, the `EditPersonDescriptor` could be completely remove as the implementation of the `Entry` class would allow the edit of categories directly.
+<br>
 
 
 ### Find function
 
 The Find Command feature within the provided address book application is structured to enable users to search for persons based on specified criteria.
+<br>
 
 #### Implementation
 
@@ -302,6 +362,7 @@ The feature is implemented through several interconnected components:
 3. **FindCommandParser Class**: Parses the user input into a usable format for the `FindCommand`. It ensures the input adheres to the expected format, extracting relevant information to create a `PersonFieldsContainKeywordPredicate`.
 
 4. **Model Interface**: Defines the API that the `FindCommand` interacts with, specifically the `updateFilteredPersonList` method that updates the list of displayed persons based on the predicate.
+<br>
 
 #### Rationale
 
@@ -316,6 +377,7 @@ The design choices made in implementing the Find Command are based on several co
 - **Enables Batch Processing**: Specifying multiple `c/<category> d/<description>` allows the user to look for multiple people who satisfy the at least one of the `c/ d/`.
 
 - **Tags**: Finding with tags also allows batch processing, which enhances the users' experience in searching for people who belong to different tags.
+<br>
 
 #### Alternatives Considered
 
@@ -324,44 +386,53 @@ The design choices made in implementing the Find Command are based on several co
 2. **Separate Commands for Different Criteria**: Creating separate commands for searching by category, description, and tag could simplify the implementation. However, this approach was likely rejected because it would complicate the user experience, requiring users to remember and choose from multiple commands based on their search needs.
 
 In conclusion, the Find Command is implemented with a focus on flexibility, usability, and maintainability, balancing advanced search capabilities with ease of use for the end user. The chosen implementation provides a solid foundation that can be easily extended or modified as the application evolves.
+<br>
 
 
 ### Group function
 
 The group command function groups `persons` based on the `category` the user specifies.
+<br>
 The sequence diagram below illustrates the interaction within `Logic` component, taking `execute("group c/Clan)` API call as an example.
 
-<puml src="diagrams/GroupSequence.puml" alt="Group Sequence Diagram" />
+<puml src="diagrams/GroupSequenceDiagram.puml" alt="Group Sequence Diagram" />
 
 <box type="info" seamless>
 
 **Note:** The lifeline for `GroupCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+
 </box>
 
 #### 1. How the feature is implemented
+
 The group feature in the address book application is implemented through the `GroupCommand`, `GroupCommandParser`
 , `ModelManager` and `Group` classes. The `GroupCommandParser` parses user input, validates the input and extracts `categories` and
 parse it into the `GroupCommand` object. The `GroupCommand` object will then instantiate the `ModelManger` to create a `Group` object by
 provide an `ArrayList` of persons extracted from the addressbook. The `Group` object would then call the method `Group`, which will group
 this `ArrayList` of persons into another `ArrayList` of groups. `ModelManager` will then create a new address book called `GroupAddressBook`
 and store this `ArrayList` of groups. This will then later be called in the `UI`.
+<br>
 
 #### 2. Why is it implemented that way
 The feature is implemented this way to ensure that `group` command does not group the original person list, leaving the person list sorted
 by the latest entry. This also means that the user will have to call `group` everytime the user wants to group the person list according to
 their customisation. Additionally, the `GroupAddressBook` is essentially a list of `persons` with their `Name` as the Group name/ specified
 category and their categories as the list of people in the same category.
+<br>
 
-#### 3. Alternatives considered.
+#### 3. Alternatives considered
 Initially, we wanted to just use the original address book to sort the person list, then subsequently group them within the same address book.
 However, this would mean that there will be less flexibility for the user. Also, it imposes a lot of difficulty in terms of displaying it in the
 UI and constantly deleting and creating groups.
+<br>
 
 
 ### Redo function
 
 The redo command provides users the ability to revert the address book back to the state following an undo operation.
+<br>
 This function is particularly useful in a user environment where changes need to be reviewed and possibly reverted temporarily before final confirmation.
+<br>
 The sequence diagrams below illustrates the interaction within the `Logic` and `Model` components, taking `execute("redo")` API call as an example.
 
 <puml src="diagrams/RedoSequenceDiagram-Logic.puml" alt="Interactions Inside the Logic Component for the `redo` Command" />
@@ -377,23 +448,35 @@ The sequence diagrams below illustrates the interaction within the `Logic` and `
 #### How the feature is implemented
 
 The feature of redo is implemented by the `RedoCommand`, `UndoHistory` classes and some functions from `ModelManager` class.
+<br>
 The `RedoCommand` class handles the logic of recovering the state of address book back to the state before undo command.
+<br>
 The execute class in `RedoCommand` class checks if the current state of address book allows redo.
+<br>
 The `UndoHistory` represents a history of commands that have been undone in the address book, allowing for redo operations.
+<br>
 In the `ModelManager` class, `undoHistory` field stores the history of **non-group** operations, `groupUndoHistory` field stores the history of **group** operations.
+<br>
 The stack `undoActionTracker` tracks actions that have been undone. It is referenced during redo operations to determine which type of action (group or non-group) should be redone.
+<br>
 If the user has ever performed an **undo** operation, the `ModelManager` class call the `redo` method to push the current address book state to the history of command and load the undone state from the history of undo. 
+<br>
 If the history of **undo** is empty, `RedoCommand` will throw an exception.
+<br>
 
 #### Why it is implemented that way
 
 Implementing the redo feature this way provides a straightforward and reliable method to manage changes within the application.
+<br>
 It allows users to experiment with different modifications without the risk of permanently altering data.
+<br>
 
 #### Alternatives Considered
 
 Since the non-group operation and group operation have different logic, we have to distinguish between them.
+<br>
 If a command performs both group and non-group operations, the undo and redo commands need to be redesigned.
+<br>
 Fortunately, only the **clear** command has this feature, and this command does not allow undo and redo.
 
 <box type="info" seamless>
@@ -403,7 +486,9 @@ Fortunately, only the **clear** command has this feature, and this command does 
 </box>
 
 ### Undo function
-The undo command provides users the ability to revert the address book back to the state before a command was executed. <br>
+
+The undo command provides users the ability to revert the address book back to the state before a command was executed.
+<br>
 The previous command has to be one that changes the internal state of the address book (except for clear command):
 * Add or delete a person.
 * Add or delete or edit the category of a person.
@@ -446,6 +531,7 @@ The feature of undo is implemented by the `UndoCommand`, `CommandHistory` classe
 * Storing the address book states for both group and non-group commands allows the differentiation of the type of commands, such that group and non-group commands can be undone smoothly without confusion.
 * Using a deque to store the states of address book as it satisfies the criterion of undoing the most recent command by retrieving the most recent address book state.
 * The `ActionTracker` stack also allows the clear distinction between group and non-group commands.
+<br>
 
 #### Alternatives Considered
 
