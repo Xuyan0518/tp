@@ -172,7 +172,7 @@ The sequence diagram below illustrates how the add function can be used.
 
 ### AddCategory function
 The new addCategory function allows user to be able to add any category to a person <br>
-he sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("edit 1 c/Clan d/rainbow")` API call as an example.
+The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("edit 1 c/Clan d/rainbow")` API call as an example.
 
 <puml src="diagrams/AddCategorySequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `addCategory 1 c/class d/warrior` Command" />
 
@@ -274,49 +274,50 @@ The design choices made in implementing the Find Command are based on several co
 In conclusion, the Find Command is implemented with a focus on flexibility, usability, and maintainability, balancing advanced search capabilities with ease of use for the end user. The chosen implementation provides a solid foundation that can be easily extended or modified as the application evolves.
 
 
-### \[Proposed\] Undo/redo feature
+### Redo function
 
-#### Proposed Implementation
+The redo command provides users the ability to revert the address book back to the state following an undo operation.
+This function is particularly useful in a user environment where changes need to be reviewed and possibly reverted temporarily before final confirmation.
+The sequence diagrams below illustrates the interaction within the `Logic` and `Model` components, taking `execute("redo")` API call as an example.
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+<puml src="diagrams/RedoSequenceDiagram-Logic.puml" alt="Interactions Inside the Logic Component for the `redo` Command" />
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
-
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
-
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
-
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
-
-<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
-
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
-
-<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
-
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
+<puml src="diagrams/RedoSequenceDiagram-Model.puml" alt="Interactions Inside the Model Component for the `redo` Command" />
 
 <box type="info" seamless>
 
-**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+**Note:** The lifeline for `RedoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 
 </box>
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+#### How the feature is implemented
 
-<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
+The feature of redo is implemented by the `RedoCommand`, `UndoHistory` classes and some functions from `ModelManager` class.
+The `RedoCommand` class handles the logic of recovering the state of address book back to the state before undo command.
+The execute class in `RedoCommand` class checks if the current state of address book allows redo.
+The `UndoHistory` represents a history of commands that have been undone in the address book, allowing for redo operations.
+In the `ModelManager` class, `undoHistory` field stores the history of **non-group** operations, `groupUndoHistory` field stores the history of **group** operations.
+The stack `undoActionTracker` tracks actions that have been undone. It is referenced during redo operations to determine which type of action (group or non-group) should be redone.
+If the user has ever performed an **undo** operation, the `ModelManager` class call the `redo` method to push the current address book state to the history of command and load the undone state from the history of undo. 
+If the history of **undo** is empty, `RedoCommand` will throw an exception.
 
+#### Why it is implemented that way
+
+Implementing the redo feature this way provides a straightforward and reliable method to manage changes within the application.
+It allows users to experiment with different modifications without the risk of permanently altering data.
+
+#### Alternatives Considered
+
+Since the non-group operation and group operation have different logic, we have to distinguish between them.
+If a command performs both group and non-group operations, the undo and redo commands need to be redesigned.
+Fortunately, only the **clear** command has this feature, and this command does not allow undo and redo.
 
 <box type="info" seamless>
 
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+**Note:** The **clear** command will remove all undo and redo history! Hence, this command is really dangerous.
 
 </box>
+
 
 ### DeleteCategory function
 
@@ -331,12 +332,27 @@ The sequence diagram below illustrates the interaction within the `Logic` compon
 
 </box>
 
+#### How the feature is implemented
+
 The feature of deleting category is implemented by the `DeleteCategoryCommand` and `DeleteCategoryCommandParser` classes.
 The `DeleteCategoryCommand` class handles the logic of deleting one of user's category.
 The execute class in `DeleteCategoryCommand` class checks if the input category is existing.
 The `DeleteCategoryCommandParser` class parses user input into an `DeleteCategoryCommand` object. It validates the input and extracts the necessary information to instantiate an `DeleteCategoryCommand`.
-If the format of command is correct, the `DeleteCategory` object will try to call the `deleteEntry` method from `Parser` class to delete the corresponding category.
+If the format of command is correct, the `DeleteCategoryCommand` class will try to call the `deleteEntry` method from `Parser` class to delete the corresponding category.
 If the format of command is wrong or the category does not exist, the `DeleteCategoryCommand` or `DeleteCategoryCommandParser` class will throw an exception.
+
+#### Why it is implemented that way
+
+Implementing the deleteCategory function this way ensures that users have the ability to maintain accurate and relevant data within their address book.
+By using a dedicated command parser, the application robustly handles input validation and error handling, making the feature reliable and user-friendly.
+
+#### Alternatives considered
+
+One alternative considered was to limit the deletion to a single category per command to simplify the user interface and reduce the risk of accidental deletions.
+However, to enhance usability and efficiency for users who manage extensive profiles, we decided to enable batch deletion of categories.
+This approach allows users to remove multiple categories in a single command, making the management of contact data more efficient, especially when multiple outdated or erroneous categories need to be corrected simultaneously.
+While this increases the complexity of the command, it significantly improves productivity for power users who need to perform bulk updates.
+This decision was balanced with robust error handling and confirmations to mitigate the risk of accidental deletions.
 
 <box type="info" seamless>
 
@@ -344,6 +360,7 @@ If the format of command is wrong or the category does not exist, the `DeleteCat
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 * The category **must exist**.
+* The name of person can not be deleted.
 
 </box>
 
@@ -368,13 +385,13 @@ provide an `ArrayList` of persons extracted from the addressbook. The `Group` ob
 this `ArrayList` of persons into another `ArrayList` of groups. `ModelManager` will then create a new addressbook called `GroupAddressBook`
 and store this `ArrayList` of groups. This will then later be called in the `UI`.
 
-### 2. Why is it implemented that way
+#### 2. Why is it implemented that way
 The feature is implemented this way to ensure that `group` command does not group the original person list, leaving the person list sorted
 by the latest entry. This also means that the user will have to call `group` everytime the user wants to group the person list according to
 their customisation. Additionally, the `GroupAddressBook` is essentially a list of `persons` with their `Name` as the Group name/ specified
 category and their categories as the list of people in the same category.
 
-### 3. Alternatives considered.
+#### 3. Alternatives considered.
 Initially, we wanted to just use the original address book to sort the person list, then subsequently group them within the same address book.
 However, this would mean that there will be less flexibility for the user. Also, it imposes a lot of difficulty in terms of displaying it in the
 UI and constantly deleting and creating groups.
