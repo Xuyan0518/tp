@@ -9,7 +9,7 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+Libraries used: [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), [JUnit5](https://github.com/junit-team/junit5)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -182,7 +182,7 @@ The sequence diagram below illustrates how the add function can be used.
 
 The new addCategory function allows user to be able to add any category to a person.
 <br>
-The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("edit 1 c/Clan d/rainbow")` API call as an example.
+The sequence diagram below illustrates the interaction within the `Logic` component, taking `execute("addCategory 1 c/class d/warrior")` API call as an example.
 
 <puml src="diagrams/AddCategorySequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `addCategory 1 c/class d/warrior` Command" />
 <br>
@@ -204,14 +204,14 @@ The `AddCategoryCommandParser` class parses user input into an `AddCategoryComma
 Entry requiring only two Strings meant that the type of entries that can be created by the user is limitless, suitable for an application that inputs potential characteristics
 from games. As such, all numbers and characters are allowed. However, due to deleteCategory requiring the category name, it was decided that categories be unique per person.
 <br>
-It was required that index be specified as Name can be non-unique in addressbook.
+It was required that index be specified as Name can be non-unique in address book.
 <br>
 Splitting the responsibilities of interpreting the user input and converting it into an output into a Parser class and Command class allows for ease in maintaining the code.
 <br>
 
 #### 3. Alternatives considered
 
-Given our initial vision of a customisable field option for the addressbook persons, there wasnt really much of an alternative as gaming contacts can vary quite widely. It would not make sense to have compulsory fields except for name since many things like phone, address and email may be unknown to the user for online or gaming contacts otherwise. This way, things like gaming information can be captured with no restrictions.
+Given our initial vision of a customisable field option for the address book persons, there was not really much of an alternative as gaming contacts can vary quite widely. It would not make sense to have compulsory fields except for name since many things like phone, address and email may be unknown to the user for online or gaming contacts otherwise. This way, things like gaming information can be captured with no restrictions.
 <br>
 
 
@@ -545,6 +545,18 @@ The feature of undo is implemented by the `UndoCommand`, `CommandHistory` classe
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
+## **Planned Enhancement**
+1. Improve the UI so that the users can customize the window size.
+2. Make the feedback box scroll bar visible.
+3. Enable viewing a person's full detail when selecting a person in the person list panel.
+4. Edit function will allow the user to edit the category.
+5. Implement ungroup command.
+6. Implement SaveGroup command.
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
 ## **Documentation, logging, testing, configuration, dev-ops**
 
 * [Documentation guide](Documentation.md)
@@ -707,12 +719,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should work on any _mainstream OS_.
 2.  Java `11` or above installed in the user's device.
 3.  The application should not have access to the internet.
-4.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-5.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-6.  The user should be someone who plays strategy games, MOBAs (Multiplayer Online Battle Arenas), or certain RPGs (Role-Playing Games).
-7.  The application should implement robust security measures to protect user data as the user will be adding sensitive information of others.
-8.  The application will provide comprehensive documentation and tutorials for users to get the most out of the application.
-9.  The application should feature an optimized search algorithm to handle quick searches through extensive data, providing immediate feedback and results to users.
+4.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+5.  The user should be someone who plays strategy games, MOBAs (Multiplayer Online Battle Arenas), or certain RPGs (Role-Playing Games).
+6.  The application will provide comprehensive documentation and tutorials for users to get the most out of the application.
 
 
 *{More to be added}*
