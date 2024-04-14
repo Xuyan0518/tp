@@ -39,6 +39,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         ArgumentMultimap argMultimap =
             ArgumentTokenizer.tokenize(args, PREFIX_CATEGORY, PREFIX_DESCRIPTION, PREFIX_TAG);
         boolean isTagPresent = arePrefixesPresent(argMultimap, PREFIX_TAG);
+        System.out.println(isTagPresent);
         Map<String, List<String>> categoryDescriptionMap = new HashMap<>();
         if (arePrefixesPresent(argMultimap, PREFIX_CATEGORY, PREFIX_DESCRIPTION)) {
             List<String> categories = argMultimap.getAllValues(PREFIX_CATEGORY);
@@ -87,8 +88,7 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @return true if all specified prefixes are present and contain non-empty values, otherwise false.
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent()
-            && !argumentMultimap.getValue(prefix).get().isEmpty());
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
 

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.exceptions.CommandException;
 
 /**
@@ -16,6 +18,7 @@ public class Group {
     private static final String MESSAGE_EMPTY_ADDRESS_BOOK = "Address book is empty!";
     private static final String NO_GROUP_TEXT = "No group";
     private ArrayList<Person> groupList;
+    private final Logger logger = LogsCenter.getLogger(getClass());
     /**
      * Groups a list of {@code Person} objects based on the specified category.
      * Each group is represented by a {@code Person} object where the "Group Name"
@@ -27,6 +30,7 @@ public class Group {
     public void group(ArrayList<Person> personArrayList, String category) throws CommandException {
         assert personArrayList != null;
         if (personArrayList.isEmpty()) {
+            logger.warning("The addressbook is empty. Check json file.");
             throw new CommandException(MESSAGE_EMPTY_ADDRESS_BOOK);
         }
         Map<String, Person> groupMap = new HashMap<>();
@@ -54,6 +58,7 @@ public class Group {
             groupedPerson.add(noCategoryGroup);
         }
         groupList = groupedPerson;
+        logger.info("Grouped people: " + groupList);
     }
     public ArrayList<Person> getGroupList() {
         return groupList;

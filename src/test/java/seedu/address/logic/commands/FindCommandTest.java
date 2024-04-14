@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.ALICE;
@@ -22,6 +23,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
+import seedu.address.logic.parser.FindCommandParser;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -147,6 +150,90 @@ public class FindCommandTest {
         expectedModel.updateFilteredPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(ALICE, BENSON), model.getFilteredPersonList());
+    }
+    /**
+     * Tests the parser for FindCommand to throw exception when
+     * there is unequal number of categories and descriptions.
+     */
+    @Test
+    public void execute_unevenCategoryDescription_parseFail() {
+        String eMessage = "Invalid command format! \n" + FindCommand.COMMAND_FORMAT_CAT_DESC;
+        String args = " c/class d/high c/clan d/good c/game";
+        FindCommandParser parser = new FindCommandParser();
+        ParseException pe = assertThrows(ParseException.class, () -> parser.parse(args));
+        assertEquals(eMessage, pe.getMessage());
+    }
+    /**
+     * Test the parser for FindCommand to throw exception when
+     * there is missing category and description.
+     */
+    @Test
+    public void execute_missingCategoryDescription_parseFail() {
+        String eMessage = "Invalid command format! \n" + FindCommand.EMPTY_CAT_OR_DESC;
+        String args = " c/ d/ c/clan d/rainbow";
+        FindCommandParser parser = new FindCommandParser();
+        ParseException pe = assertThrows(ParseException.class, () -> parser.parse(args));
+        assertEquals(eMessage, pe.getMessage());
+    }
+    /**
+     * Test the parser for FindCommand to throw exception when
+     * there is missing tag.
+     */
+    @Test
+    public void execute_missingTag_parseFail() {
+        String eMessage = "Invalid command format! \n" + FindCommand.EMPTY_TAG;
+        String args = " t/ t/Explorer";
+        FindCommandParser parser = new FindCommandParser();
+        ParseException pe = assertThrows(ParseException.class, () -> parser.parse(args));
+        assertEquals(eMessage, pe.getMessage());
+    }
+    /**
+     * Test the parser for FindCommand to throw exception when
+     * there is missing tag, in the presence of category and description prefixes.
+     */
+    @Test
+    public void execute_missingTagWithCatDesc_parseFail() {
+        String eMessage = "Invalid command format! \n" + FindCommand.EMPTY_TAG;
+        String args = " c/clan d/rainbow t/";
+        FindCommandParser parser = new FindCommandParser();
+        ParseException pe = assertThrows(ParseException.class, () -> parser.parse(args));
+        assertEquals(eMessage, pe.getMessage());
+    }
+    /**
+     * Tests the parser of FindCommand to throw exception when
+     * there is unequal number of category and description in the presence of tag prefix.
+     */
+    @Test
+    public void execute_unevenCatDescWithTag_parseFail() {
+        String eMessage = "Invalid command format! \n" + FindCommand.COMMAND_FORMAT_CAT_DESC;
+        String args = " c/ c/clan d/rainbow t/noob";
+        FindCommandParser parser = new FindCommandParser();
+        ParseException pe = assertThrows(ParseException.class, () -> parser.parse(args));
+        assertEquals(eMessage, pe.getMessage());
+    }
+    /**
+     * Tests the parser of FindCommand to throw exception when
+     * there is missing category and description in the presence of tag prefix.
+     */
+    @Test
+    public void execute_missingCatDescWithTag_parseFail() {
+        String eMessage = "Invalid command format! \n" + FindCommand.EMPTY_CAT_OR_DESC;
+        String args = " c/ d/ t/noob";
+        FindCommandParser parser = new FindCommandParser();
+        ParseException pe = assertThrows(ParseException.class, () -> parser.parse(args));
+        assertEquals(eMessage, pe.getMessage());
+    }
+    /**
+     * Tests the parser of FindCommand to throw exception when
+     * there tag, category and description do not form a trio.
+     */
+    @Test
+    public void execute_catDescTagNotATrio_parseFail() {
+        String eMessage = "Invalid command format! \n" + FindCommand.COMMAND_CAT_DESC_TAG;
+        String args = " c/clan d/rainbow t/noob c/class d/priest";
+        FindCommandParser parser = new FindCommandParser();
+        ParseException pe = assertThrows(ParseException.class, () -> parser.parse(args));
+        assertEquals(eMessage, pe.getMessage());
     }
     /**
      * Helper method to prepare a {@link PersonFieldsContainKeywordPredicate} based on the provided category

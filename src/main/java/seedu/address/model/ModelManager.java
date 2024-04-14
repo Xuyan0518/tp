@@ -70,6 +70,7 @@ public class ModelManager implements Model {
     @Override
     public void groupPerson(String category) throws CommandException {
         ArrayList<Person> persons = new ArrayList<>(addressBook.getPersonList());
+        logger.info("List of people before grouping: " + persons);
         group.group(persons, category);
         saveGroupAddressBookState();
         groupAddressBook.setPersons(group.getGroupList());
