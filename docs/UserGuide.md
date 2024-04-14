@@ -15,7 +15,7 @@ If you are:
 [Features](#features)
 1. [Viewing help : help](#viewing-the-menu-of-commands-help)
 2. [Adding a person: add](#adding-a-person-add)
-3. [Adding a category to a person](#adding-a-category-to-a-person-addcategory)
+3. [Adding a category to a person: addCategory](#adding-a-category-to-a-person-addcategory)
 4. [Listing all persons : list](#listing-all-persons-list)
 5. [Editing a person : edit](#editing-a-person-edit)
 6. [Finding person/s : find](#finding-persons-by-category-and-description-or-by-tag-find)
@@ -36,6 +36,8 @@ If you are:
 [Known issues](#known-issues)
 
 [Command summary](#command-summary)
+
+[Glossary](#glossary)
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -161,7 +163,7 @@ Adds a person to the address book.
 - A person can have any number of categories with corresponding description. **But the number of categories and descriptions must match.**
 - Adding of tags, or category and description, is optional.
 - If using batch processing, the number of specified Categories and Descriptions must be the same!
-- </box>
+</box>
 
 Examples:
 * `add n/John Doe t/friend` Adds the person named "John Doe" to the address book with one tag "friend"
@@ -355,6 +357,7 @@ Groups the address book by a specified category
 * The group panel will not refresh unless `group` is called.
 * If the app is closed and reopened, active groups will not be saved. Call `group` again to redisplay the groups.
 * If you wish to ungroup, call the `undo` function to return the Group Panels to a previous state.
+
 * If the group panels are being cut off, please maximise your window to see the entire group panel.
 <box type="tip" seamless>
 
@@ -398,13 +401,14 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
 
+
 **Q**: Why are my descriptions being cut off?
 **A**: All panels are horizontally scrollable.
 
 **Q**: How do I save my data?
 **A**: All data is saved automatically after every command.
 
-**Q**: Can i save characters, objects and game details instead of Persons?
+**Q**: Can i save characters, objects and game details instead of Persons?<br>
 **A**: Yes! Our inputs allow any characters, so feel free to save any type of information. You can tag these objects to allow for easier finding in the future.
 
 --------------------------------------------------------------------------------------------------------------------
@@ -426,7 +430,7 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add n/NAME [t/TAG]… [c/CATEGORY d/DESCRIPTION]...​` <br> e.g., `add n/James Ho t/friend t/colleague`
 **Clear**  | `clear`
-**AddCategory**  | `addCategory INDEX c/CATEGORY d/DESCRIPTION`<br> e.g., `addCategory 1 c/class d/warrior`
+**AddCategory**  | `addCategory INDEX c/CATEGORY d/DESCRIPTION…​`<br> e.g., `addCategory 1 c/class d/warrior`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **DeleteCategory**  | `deleteCategory INDEX c/CATEGORY…​` <br> e.g., `deleteCategory 1 c/clan`
 **Edit**   | `edit INDEX c/CATEGORY d/DESCRIPTION …​`<br> e.g.,`edit 2 c/clan d/rainbow` <br><br> `edit INDEX t/TAG …​` <br> e.g.,`edit 1 t/warrior t/mage`

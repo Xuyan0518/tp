@@ -30,7 +30,7 @@ public class HelpWindow extends UiPart<Stage> {
             + "e.g. addCategory 1 c/class d/warrior\n"
             + DASH
             + "Delete a Category: deleteCategory INDEX [c/CATEGORY]\n"
-            + "deleteCategory 1 c/class\n"
+            + "e.g. deleteCategory 1 c/class\n"
             + DASH
             + "Edit a category: edit INDEX [c/CATEGORY] [d/DESCRIPTION]\n"
             + "Or\n"
@@ -55,9 +55,9 @@ public class HelpWindow extends UiPart<Stage> {
             + DASH
             + "Clear: clear\n"
             + DASH
-            + "help: help"
+            + "Help: help\n"
             + DASH
-            + "exit: exit";
+            + "Exit: exit";
 
     public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
 

@@ -12,7 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
@@ -25,6 +27,7 @@ import seedu.address.model.tag.Tag;
  * Testing
  */
 public class EditCommandParser implements Parser<EditCommand> {
+    private final Logger logger = LogsCenter.getLogger(getClass());
 
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand
@@ -67,6 +70,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
         EntryList entrylist = ParserUtil.parseEntries(categories, descriptions);
         editPersonDescriptor.setEntryList(entrylist);
+        logger.info("Edit Person Desriptor: " + editPersonDescriptor);
         return new EditCommand(index, editPersonDescriptor);
     }
 
