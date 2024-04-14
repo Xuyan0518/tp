@@ -172,7 +172,7 @@ Examples:
 <br>
 <br>
 `add n/Joe t/classmate c/class d/CS2103T c/team d/3` Adds the person named "Joe" to the address book with the tag "classmate". It also adds 2 categories, "class" and "team" with corresponding descriptions "CS2103T" and "3".
-Successful execution of the above command will result in the following being displayed:
+Successful execution of the command will result in the following being displayed:
 ![SuccessfulAddCommand](images/SuccessfulAddCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -192,14 +192,14 @@ Edits an existing person in the address book.
 * You can just edit the tags without needing to specify the category and description.
 * If using batch processing, the number of specified Categories and Descriptions must be the same!
 
-<box type="tip" seamless>
+<box type="warning" seamless>
 
 Warning:
 * When editing tags, the existing tags of the person will be replaced.
 * E.g. If your person has tags tag1 and tag2, executing edit 1 t/tag3 will result in the person only having tag3.
 * You can remove all the person’s tags by typing t/ without
   specifying any tags after it.
-  </box>
+</box>
 
 * Examples:
 * `edit 1 c/Clan d/rainbow` Edits person 1's clan name to "rainbow".
@@ -208,7 +208,7 @@ Warning:
 <br>
 <br>
 `edit 4 c/team d/4` Edits the team category from 3 to 4 for the person named "Joe" (index 4) in the address book.
-Successful execution of the above command will result in the following being displayed:
+Successful execution of the command will result in the following being displayed:
 ![EditCommand](images/EditCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -230,8 +230,7 @@ Examples:
 <br>
 <br>
 `addCategory 1 c/class d/CS2103T` Adds a category class with the description CS2103T to the person named "John Doe" (index 1) in the address book.
-
-Successful execution of the above command will result in the following being displayed:
+Successful execution of the command will result in the following being displayed:
 ![AddCategoryCommand](images/AddCategoryCommand.png)
 
 
@@ -241,7 +240,7 @@ Successful execution of the above command will result in the following being dis
 
 Find a specific person from the address book.
 
-*Format:* `find [c/CATEGORY d/DESCRIPTON] [t/TAG]`
+*Format:* `find [c/CATEGORY d/DESCRIPTON]... [t/TAG]...`
 
 * Find anyone in the address book with matching category and description or tag.
 * Category refers to a field a person has, such as `name`, `phone` and etc.
@@ -254,7 +253,7 @@ Examples:
 <br>
 <br>
 `find c/name d/Joe t/classmate` Finds the person named "Joe" in the address book and "Joe" has tag classmate.
-Successful execution of the above command will result in the following being displayed:
+Successful execution of the command will result in the following being displayed:
 ![FindCommand](images/FindCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -270,11 +269,10 @@ Deletes the specified person from the address book.
 * The index **must be a positive integer** 1, 2, 3, …​
 * The index **must NOT be greater than the number of contacts in the address book**.
 
-Examples: 
-<br> 
-
+Example:
+<br>
 `delete 1` Deletes the first person in the address book.
-Successful execution of the above command will result in the following being displayed:
+Successful execution of the command will result in the following being displayed:
 ![DeleteCommand](images/DeleteCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -293,11 +291,11 @@ Deletes the specified category of a person.
 
 Examples:
 * `deleteCategory 2 c/Email` deletes the category "Email" of the second person in the list.
-`deleteCategory 1 c/Address` deletes the category "Address" of the first person in the address book.
+* `deleteCategory 1 c/Address` deletes the category "Address" of the first person in the address book.
 <br>
 <br>
 `deleteCategory 3 c/team` Deletes the category "team" of the third person in the address book.
-Successful execution of the above command will result in the following being displayed:
+Successful execution of the command will result in the following being displayed:
 ![DeleteCategory](images/DeleteCategory.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -365,7 +363,7 @@ Groups the address book by a specified category
 </box>
 
 `group c/class` Groups all persons with the same class together.
-Successful execution of the above command will result in the following being displayed:
+Successful execution of the command will result in the following being displayed:
 ![GroupCommand](images/GroupCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -402,13 +400,13 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
 
 
-**Q**: Why are my descriptions being cut off?
+**Q**: Why are my descriptions being cut off?<br>
 **A**: All panels are horizontally scrollable.
 
-**Q**: How do I save my data?
+**Q**: How do I save my data?<br>
 **A**: All data is saved automatically after every command.
 
-**Q**: Can i save characters, objects and game details instead of Persons?<br>
+**Q**: Can I save characters, objects and game details instead of Persons?<br>
 **A**: Yes! Our inputs allow any characters, so feel free to save any type of information. You can tag these objects to allow for easier finding in the future.
 
 --------------------------------------------------------------------------------------------------------------------
@@ -416,7 +414,6 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-<br>
 <br>
 <box type="warning" seamless>
 <strong>Caution:</strong>
