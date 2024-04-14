@@ -41,6 +41,7 @@ If you are:
 
 <!-- * Table of Contents -->
 <page-nav-print />
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Quick start
@@ -112,6 +113,11 @@ The application supports custom fields, enabling you to record any information y
   4. deleteCategory
   5. find
 
+* If using batch processing, the number of specified Categories and Descriptions must be the same, and the order of specification is important!
+    * Inputs from `c/` and `d/` form pairs in the order of specification.
+    * For example: 
+      * The first `c/` corresponds to the first `d/` (i.e. they form a pair). And the second `c/` and `d/` will form another pair, and so on.
+
 > **Note**
 > * After calling `group`, subsequent commands will not refresh your groups until you call `group` again.
 
@@ -148,7 +154,7 @@ Example:
 
 Adds a person to the address book.
 
-*Format:* `add n/NAME [t/TAG…] [c/ CATEGORY d/DESCRIPTION]` 
+*Format:* `add n/NAME [t/TAG]... [c/CATEGORY d/DESCRIPTION]...` 
 
 <box type="tip" seamless>
 
@@ -156,7 +162,6 @@ Adds a person to the address book.
 - A person can have any number of tags (including 0).
 - A person can have any number of categories with corresponding description. **But the number of categories and descriptions must match.**
 - Adding of tags, or category and description, is optional.
-- Name added is a Description, with "Name" as its Category.
 - If using batch processing, the number of specified Categories and Descriptions must be the same!
 </box>
 
@@ -164,10 +169,10 @@ Examples:
 * `add n/John Doe t/friend` Adds the person named "John Doe" to the address book with one tag "friend"
 * `add n/Betsy Crowe t/lover t/family` Adds the person named "Betsy Crowe" to the address book with two tags, "lover" and "family".
 * `add n/Cedric t/classmate c/class d/CS2103T` Adds the person named "Cedric" to the address book with the tag "classmate". It also adds a category "class" with corresponding description "CS2103T".
-* `add n/Joe t/classmate c/class d/CS2103T c/team d/3` Adds the person named "Joe"  to the address book with the tag "classmate". It also adds 2 categories, "class" and "team" with corresponding descriptions "CS2103T" and "3".
 <br>
 <br>
-Successful execution of the above commands will result in the following being displayed:
+`add n/Joe t/classmate c/class d/CS2103T c/team d/3` Adds the person named "Joe" to the address book with the tag "classmate". It also adds 2 categories, "class" and "team" with corresponding descriptions "CS2103T" and "3".
+Successful execution of the above command will result in the following being displayed:
 ![SuccessfulAddCommand](images/SuccessfulAddCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -176,7 +181,7 @@ Successful execution of the above commands will result in the following being di
 
 Edits an existing person in the address book.
 
-*Format:* `edit INDEX [c/CATEGORY d/DESCRIPTION] [t/TAG…]`
+*Format:* `edit INDEX [c/CATEGORY d/DESCRIPTION]... [t/TAG]...`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The category you want to edit must **exist**.
@@ -185,13 +190,25 @@ Edits an existing person in the address book.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
 * You can just edit the tags without needing to specify the category and description.
-* If you want to add more than 1 tag, cascade your commands. 
 * If using batch processing, the number of specified Categories and Descriptions must be the same!
+
+<box type="tip" seamless>
+
+Warning:
+* When editing tags, the existing tags of the person will be replaced.
+* E.g. If your person has tags tag1 and tag2, executing edit 1 t/tag3 will result in the person only having tag3.
+* You can remove all the person’s tags by typing t/ without
+  specifying any tags after it.
+  </box>
 
 * Examples:
 * `edit 1 c/Clan d/rainbow` Edits person 1's clan name to "rainbow".
 * `edit 1 c/Clan d/rainbow t/warrior` Edits person 1's clan name to "rainbow" and his tags to "warrior".
 * `edit 1 t/warrior t/mage` Edits person 1's tags to "warrior" and "mage".
+<br>
+<br>
+`edit 4 c/team d/4` Edits the team category from 3 to 4 for the person named "Joe" (index 4) in the address book.
+Successful execution of the above command will result in the following being displayed:
 ![EditCommand](images/EditCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -200,7 +217,7 @@ Edits an existing person in the address book.
 
 Adds an entry to an existing person in the address book.
 
-*Format:* `addCategory INDEX c/CATEGORY d/DESCRIPTION`
+*Format:* `addCategory INDEX c/CATEGORY... d/DESCRIPTION...`
 
 * Adds an entry to the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * The category you want to add must not already **exist** for that person.
@@ -209,7 +226,12 @@ Adds an entry to an existing person in the address book.
 
 Examples:
 * `addCategory 1 c/Clan d/rainbow` Adds the clan name "rainbow" to person 1.
-* `addCategory 1 t/class d/warrior` Adds the class "warrior" to person 1.
+* `addCategory 1 c/class d/warrior` Adds the class "warrior" to person 1.
+<br>
+<br>
+`addCategory 1 c/class d/CS2103T` Adds a category class with the description CS2103T to the person named "John Doe" (index 1) in the address book.
+
+Successful execution of the above command will result in the following being displayed:
 ![AddCategoryCommand](images/AddCategoryCommand.png)
 
 
@@ -219,18 +241,20 @@ Examples:
 
 Find a specific person from the address book.
 
-*Format:* `find c/CATEGORY d/DESCRIPTON` or `find t/TAG` or `find c/CATEGORY d/DESCRIPTION t/TAG`
+*Format:* `find [c/CATEGORY d/DESCRIPTON] [t/TAG]`
 
-* Find anyone in the address book with matching category and description or tag or category and description and tag only.
+* Find anyone in the address book with matching category and description or tag.
 * Category refers to a field a person has, such as `name`, `phone` and etc.
 * Tag refers to the specific type of person in the address book, such as `friends`, `neighbours` and etc.
-* If using batch processing, the number of specified Categories, Descriptions and Tags must be the same, and the order specifeid is important!
-  * Order being important means Category and Description form a pair, Category and Description and Tag form a trio.
+* If the category, description and tag prefixes are all present, the people with the matching category, description and tag will be found.
 
 Examples:
 * `find c/name d/Joe` Finds the person named "Joe" in the address book.
-* `find t/friend` Finds the person whose tag is "friend".
-* `find c/name d/Joe t/friend` Finds teh person named "Joe" in the address book and "Joe" has tag friend.
+* `find t/classmate` Finds the person whose tag is "classmate".
+<br>
+<br>
+`find c/name d/Joe t/classmate` Finds the person named "Joe" in the address book and "Joe" has tag classmate.
+Successful execution of the above command will result in the following being displayed:
 ![FindCommand](images/FindCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -245,14 +269,12 @@ Deletes the specified person from the address book.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 * The index **must NOT be greater than the number of contacts in the address book**.
-* After `delete` command is called, there will be a pop-up alert asking whether the user wants to delete the person.
-![DeleteAlert](images/DeleteAlert.png)
-* If the user clicks "Ok", the person will be deleted from the address book. 
-* If the user clicks "Cancel", the deletion will be aborted. 
-* If using a keyboard only, the arrow keys can be used to navigate the popup alert between OK and Cancel, using the ENTER key to confirm.
 
-Examples:
-* `delete 1` deletes the first person in the address book.
+Examples: 
+<br> 
+
+`delete 1` Deletes the first person in the address book.
+Successful execution of the above command will result in the following being displayed:
 ![DeleteCommand](images/DeleteCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -271,7 +293,11 @@ Deletes the specified category of a person.
 
 Examples:
 * `deleteCategory 2 c/Email` deletes the category "Email" of the second person in the list.
-* `deleteCategory 1 c/Address` deletes the category "Address" of the first person in the address book.
+`deleteCategory 1 c/Address` deletes the category "Address" of the first person in the address book.
+<br>
+<br>
+`deleteCategory 3 c/team` Deletes the category "team" of the third person in the address book.
+Successful execution of the above command will result in the following being displayed:
 ![DeleteCategory](images/DeleteCategory.png)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -279,31 +305,31 @@ Examples:
 ## Clearing all entries : `clear`
 
 Clears all entries from the address book.
-* After the `clear` command is called, there will be a pop-up alert asking whether the user really wants to clear the address book.
-![ClearAlert](images/ClearAlert.png)
-* If the user clicks "Ok", the address book will be cleared.
-* If the user clicks "Cancel", the `clear` action will be aborted.
-* If using a keyboard only, the arrow keys can be used to navigate the popup alert between OK and Cancel, using the ENTER key to confirm.
-
-**WARNING: This command CANNOT be undone!**
 
 *Format:* `clear`
+* After the `clear` command is called, there will be a pop-up alert asking whether the user really wants to clear the address book.
+![ClearAlert](images/ClearAlert.png)
+* If the user clicks `Ok`, the address book will be cleared.
+* If the user clicks `Cancel`, the `clear` action will be aborted.
+* If using a keyboard only, the arrow keys can be used to navigate the pop-up alert between `Ok` and `Cancel`, using the `ENTER` key to confirm.
 
-Examples:
+**WARNING: This command CANNOT be undone or redone!**
+
+Successful execution of the `clear` command will result in the following being displayed:
 ![ClearCommand](images/ClearCommand.png)
 
 <box type="warning" seamless>
-**Caution:**
-You cannot undo or redo a clear command!
+<strong>Caution: You cannot undo or redo a clear command!</strong>
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Undoing a command
 Undoes a non-clear command, as well as any other command that changes the state of the address book.
+
+*Format:* `undo`
 * Command that CANNOT be undone: clear, help, exit and find.
 
-Format `undo`
 - Able to go back to the most recent state of the address book.
 - Supports multiple `undo` actions, until the point where the address book was not changed during the same launch.
 
@@ -311,33 +337,36 @@ Format `undo`
 ## Redoing an undo command
 Redoes an undo command.
 
-Format `redo`
+*Format:* `redo`
 
-- Able to go back to the previous state of the address book after an undo command.
-- Supports multiple `redo` actions, until the point where there is no more existing undo state.
+- Able to go back to the previous state of the address book after an `undo` command.
+- Supports multiple `redo` actions, until the point where there is no more existing `undo` state.
+- `redo` can only be carried out immediately after an `undo` action.
 
 --------------------------------------------------------------------------------------------------------------------
 ## Group all Persons by Category : `Group`
 
 Groups the address book by a specified category
 
-Format: `group c/CATEGORY`
+*Format:* `group c/CATEGORY`
 
 * Groups all persons by the specified category.
 * Persons with the same description for the specified category will be grouped together.
 * Persons without this category will be grouped under 'No Group'.
 * If this category does not exist for any Person, all Persons will be listed under 'No Group'
-* The group panel will not refresh unless 'Group' is called, even if a Person is updated.
-* If the app is closed and reopened, active groups will not be saved. Call 'Group' again to redisplay the groups.
-* If you wish to ungroup, call the Undo function to return the Group Panels to a previous state.
+* The group panel will not refresh unless `group` is called.
+* If the app is closed and reopened, active groups will not be saved. Call `group` again to redisplay the groups.
+* If you wish to ungroup, call the `undo` function to return the Group Panels to a previous state.
+
 * If the group panels are being cut off, please maximise your window to see the entire group panel.
 <box type="tip" seamless>
 
-**Tip:** Each Group Panel is scrollable horizontally! There is a invisible scrollpane for the group name, as well as for the names of the Persons in that group.
+**Tip:** Each Group Panel is horizontally scrollable! There is a invisible scroll pane for the group name, as well as for the names of the Persons in that group.
 </box>
 
-Examples:
-* `list` followed by `group c/clan`  groups all persons with the same clan together
+`group c/class` Groups all persons with the same class together.
+Successful execution of the above command will result in the following being displayed:
+![GroupCommand](images/GroupCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -360,7 +389,7 @@ AddressBook data are saved in the hard disk automatically after any command that
 AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
-**Caution:**
+<strong>Caution:</strong> 
 If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
@@ -372,10 +401,11 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
 
-**Q**: Why are my Descriptions being cut off?<br>
-**A**: All panels are scrollable horizontally.
 
-**Q**: How do i save my data?<br>
+**Q**: Why are my descriptions being cut off?
+**A**: All panels are horizontally scrollable.
+
+**Q**: How do I save my data?
 **A**: All data is saved automatically after every command.
 
 **Q**: Can i save characters, objects and game details instead of Persons?<br>
@@ -386,25 +416,33 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-
+<br>
+<br>
+<box type="warning" seamless>
+<strong>Caution:</strong>
+Arabic characters will cause the UI to be problematic. 
+</box>
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
 
 Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME [t/TAG]…​` <br> e.g., `add n/James Ho t/friend t/colleague`
+**Add**    | `add n/NAME [t/TAG]… [c/CATEGORY d/DESCRIPTION]...​` <br> e.g., `add n/James Ho t/friend t/colleague`
 **Clear**  | `clear`
 **AddCategory**  | `addCategory INDEX c/CATEGORY d/DESCRIPTION…​`<br> e.g., `addCategory 1 c/class d/warrior`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **DeleteCategory**  | `deleteCategory INDEX c/CATEGORY…​` <br> e.g., `deleteCategory 1 c/clan`
 **Edit**   | `edit INDEX c/CATEGORY d/DESCRIPTION …​`<br> e.g.,`edit 2 c/clan d/rainbow` <br><br> `edit INDEX t/TAG …​` <br> e.g.,`edit 1 t/warrior t/mage`
-**Find**   | `find c/CATEGORY d/DESCRIPTION…​`<br> e.g., `find c/clan d/rainbow` <br><br> `find t/[TAG]…​` <br> e.g., `find t/leader`
+**Find**   | `find c/CATEGORY d/DESCRIPTION…​`<br> e.g., `find c/clan d/rainbow` <br><br> `find t/[TAG]…​` <br> e.g., `find t/leader` <br><br> `find c/CATEGORY d/DESCRIPTION t/TAG…​` <br> e.g., `find c/clan d/rainbow t/leader`
 **Undo**   | `undo`
 **Redo**   | `redo`
 **Group**  | `group c/CATEGORY` <br> e.g., `group c/clan`
 **List**   | `list`
 **Help**   | `help`
+
+--------------------------------------------------------------------------------------------------------------------
+
 
 ### Glossary
 
