@@ -54,7 +54,7 @@ If you are:
 
 1. Open a command terminal, navigate into the folder you put the jar file in using `cd FILE_PATH`, and use the `java -jar Rainbow_Dragon.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds if you are a first-time user. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png) <br><br> The UI below will only be displayed if `group` command is called and the different groups will be displayed as follows:  ![UiWithGroups](images/UiWithGroups.png)
+   <br>![Ui](images/Ui.png) <br><br> The UI below will only be displayed if `group` command is called and the different groups will be displayed as follows:  <br> ![UiWithGroups](images/UiWithGroups.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
@@ -137,7 +137,7 @@ The help menu requires a mouse to close. This is intentional to allow for using 
 <br>
 *Format:* `help`
 
-![help message](images/helpMessage.png)
+<br>![help message](images/helpMessage.png)
 
 --------------------------------------------------------------------------------------------------------------------
 ## Listing all persons : `list`
@@ -147,7 +147,7 @@ Shows a list of all persons in the address book.
 *Format:* `list`
 
 Example:
-![ListCommand](images/ListCommand.png)
+<br>![ListCommand](images/ListCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 ## Adding a person: `add`
@@ -173,7 +173,7 @@ Examples:
 <br>
 `add n/Joe t/classmate c/class d/CS2103T c/team d/3` Adds the person named "Joe" to the address book with the tag "classmate". It also adds 2 categories, "class" and "team" with corresponding descriptions "CS2103T" and "3".
 Successful execution of the command will result in the following being displayed:
-![SuccessfulAddCommand](images/SuccessfulAddCommand.png)
+<br>![SuccessfulAddCommand](images/SuccessfulAddCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -209,7 +209,7 @@ Examples:
 <br>
 `edit 4 c/team d/4` Edits the team category from 3 to 4 for the person named "Joe" (index 4) in the address book.
 Successful execution of the command will result in the following being displayed:
-![EditCommand](images/EditCommand.png)
+<br>![EditCommand](images/EditCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -231,7 +231,7 @@ Examples:
 <br>
 `addCategory 1 c/class d/CS2103T` Adds a category class with the description CS2103T to the person named "John Doe" (index 1) in the address book.
 Successful execution of the command will result in the following being displayed:
-![AddCategoryCommand](images/AddCategoryCommand.png)
+<br>![AddCategoryCommand](images/AddCategoryCommand.png)
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -254,7 +254,7 @@ Examples:
 <br>
 `find c/name d/Joe t/classmate` Finds the person named "Joe" in the address book and "Joe" has tag classmate.
 Successful execution of the command will result in the following being displayed:
-![FindCommand](images/FindCommand.png)
+<br>![FindCommand](images/FindCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -273,7 +273,7 @@ Example:
 <br>
 `delete 1` Deletes the first person in the address book.
 Successful execution of the command will result in the following being displayed:
-![DeleteCommand](images/DeleteCommand.png)
+<br>![DeleteCommand](images/DeleteCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -296,7 +296,7 @@ Examples:
 <br>
 `deleteCategory 3 c/team` Deletes the category "team" of the third person in the address book.
 Successful execution of the command will result in the following being displayed:
-![DeleteCategory](images/DeleteCategory.png)
+<br>![DeleteCategory](images/DeleteCategory.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -306,7 +306,7 @@ Clears all entries from the address book.
 
 *Format:* `clear`
 * After the `clear` command is called, there will be a pop-up alert asking whether the user really wants to clear the address book.
-![ClearAlert](images/ClearAlert.png)
+<br>![ClearAlert](images/ClearAlert.png)
 * If the user clicks `Ok`, the address book will be cleared.
 * If the user clicks `Cancel`, the `clear` action will be aborted.
 * If using a keyboard only, the arrow keys can be used to navigate the pop-up alert between `Ok` and `Cancel`, using the `ENTER` key to confirm.
@@ -314,7 +314,7 @@ Clears all entries from the address book.
 **WARNING: This command CANNOT be undone or redone!**
 
 Successful execution of the `clear` command will result in the following being displayed:
-![ClearCommand](images/ClearCommand.png)
+<br>![ClearCommand](images/ClearCommand.png)
 
 <box type="warning" seamless>
 <strong>Caution: You cannot undo or redo a clear command!</strong>
@@ -364,7 +364,7 @@ Groups the address book by a specified category
 
 `group c/class` Groups all persons with the same class together.
 Successful execution of the command will result in the following being displayed:
-![GroupCommand](images/GroupCommand.png)
+<br>![GroupCommand](images/GroupCommand.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
