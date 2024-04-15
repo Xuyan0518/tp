@@ -201,7 +201,7 @@ Warning:
   specifying any tags after it.
 </box>
 
-* Examples:
+Examples:
 * `edit 1 c/Clan d/rainbow` Edits person 1's clan name to "rainbow".
 * `edit 1 c/Clan d/rainbow t/warrior` Edits person 1's clan name to "rainbow" and his tags to "warrior".
 * `edit 1 t/warrior t/mage` Edits person 1's tags to "warrior" and "mage".
