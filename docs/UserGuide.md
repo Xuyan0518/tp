@@ -419,6 +419,7 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 <strong>Caution:</strong>
 Arabic characters will cause the UI to be problematic. 
 </box>
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
